@@ -10,7 +10,12 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +30,11 @@ import io.github.saksa84.chinamapquiz.ui.game.FindScreen
 import io.github.saksa84.chinamapquiz.ui.game.LevelSelectScreen
 import io.github.saksa84.chinamapquiz.ui.game.ResultScreen
 import io.github.saksa84.chinamapquiz.ui.game.TypeScreen
+import io.github.saksa84.chinamapquiz.ui.common.LocalShowHanzi
 import io.github.saksa84.chinamapquiz.ui.home.HomeScreen
+import io.github.saksa84.chinamapquiz.ui.home.ProgressScreen
+import io.github.saksa84.chinamapquiz.ui.home.REVIEW_SIZE
+import io.github.saksa84.chinamapquiz.ui.home.SettingsScreen
 import io.github.saksa84.chinamapquiz.ui.learn.LearnScreen
 
 /**
@@ -37,6 +46,19 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
     val activity = LocalContext.current as? Activity
     // Bouton retour du téléphone : écran précédent, ou fermeture depuis l'accueil.
     BackHandler { if (!vm.back()) activity?.finish() }
+
+    // Icônes de la barre d'état (heure, batterie) : foncées sur l'écran Apprendre en thème clair,
+    // claires partout ailleurs (écrans de quiz sur fond sombre).
+    val view = LocalView.current
+    val lightBackground = vm.screen == Screen.LEARN && !isSystemInDarkTheme()
+    SideEffect {
+        activity?.window?.let { window ->
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = lightBackground
+                isAppearanceLightNavigationBars = lightBackground
+            }
+        }
+    }
 
     when (val load = vm.loadState) {
         LoadState.Loading -> QuizBackground {
@@ -53,10 +75,30 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                 modifier = Modifier.align(Alignment.Center).padding(24.dp),
             )
         }
-        is LoadState.Ready -> when (vm.screen) {
-            Screen.HOME -> HomeScreen(onLearn = vm::openLearn, onMode = vm::chooseMode)
+        is LoadState.Ready -> CompositionLocalProvider(LocalShowHanzi provides vm.settings.showHanzi) { when (vm.screen) {
+            Screen.HOME -> HomeScreen(
+                levels = load.levels,
+                progress = vm.progress,
+                onLearn = { vm.open(Screen.LEARN) },
+                onMode = vm::chooseMode,
+                onProgress = { vm.open(Screen.PROGRESS) },
+                onSettings = { vm.open(Screen.SETTINGS) },
+            )
             Screen.LEARN -> LearnScreen(load.data, onBack = { vm.back() })
-            Screen.LEVELS -> LevelSelectScreen(vm.mode, load.levels, onStart = vm::startLevel, onBack = { vm.back() })
+            Screen.LEVELS -> LevelSelectScreen(vm.mode, load.levels, vm.progress, onStart = vm::startLevel, onBack = { vm.back() })
+            Screen.PROGRESS -> ProgressScreen(
+                catalog = load.data.catalog,
+                levels = load.levels,
+                progress = vm.progress,
+                onReview = { vm.reviewMissed(REVIEW_SIZE) },
+                onBack = { vm.back() },
+            )
+            Screen.SETTINGS -> SettingsScreen(
+                settings = vm.settings,
+                onShowHanzi = vm::setShowHanzi,
+                onResetProgress = vm::resetProgress,
+                onBack = { vm.back() },
+            )
             Screen.GAME -> vm.game?.let { state ->
                 when (state.mode) {
                     GameMode.FIND -> FindScreen(
@@ -91,13 +133,14 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                 ResultScreen(
                     mode = vm.mode,
                     summary = summary,
+                    newRecord = vm.newRecord,
                     catalog = load.data.catalog,
                     onReplayMistakes = vm::replayMistakes,
                     onReplay = vm::replay,
                     onBack = { vm.back() },
                 )
             }
-        }
+        } }
     }
 }
 

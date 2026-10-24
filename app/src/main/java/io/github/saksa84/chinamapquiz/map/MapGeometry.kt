@@ -22,7 +22,14 @@ data class MapBounds(val minX: Float, val minY: Float, val maxX: Float, val maxY
  * Contour d'un lieu : anneaux aplatis [x0, y0, x1, y1, …]. Les anneaux extérieurs, les trous
  * et les îles sont mélangés : la règle pair-impair suffit à savoir si un point est dedans.
  */
-class MapShape(val id: String, val rings: List<FloatArray>) {
+class MapShape(
+    val id: String,
+    val rings: List<FloatArray>,
+    /** Où écrire le nom : point intérieur loin des bords (calculé par le script), sinon centre du cadre. */
+    label: MapPoint? = null,
+    /** Distance entre [label] et le bord le plus proche : place disponible pour écrire le nom. */
+    labelRoom: Float? = null,
+) {
     val bounds: MapBounds = run {
         var minX = Float.MAX_VALUE
         var minY = Float.MAX_VALUE
@@ -36,6 +43,9 @@ class MapShape(val id: String, val rings: List<FloatArray>) {
         }
         MapBounds(minX, minY, maxX, maxY)
     }
+
+    val label: MapPoint = label ?: MapPoint((bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2)
+    val labelRoom: Float = labelRoom ?: (minOf(bounds.width, bounds.height) / 4)
 
     /** Surface approximative (somme des anneaux, trous compris), en unités de carte au carré. */
     val area: Float = rings.sumOf { ring ->
@@ -115,7 +125,12 @@ class MapGeometry(
             require(file.yAxis == "down") { "Orientation de l'axe y inattendue : ${file.yAxis}" }
 
             val shapes = file.features.map { feature ->
-                MapShape(feature.id, feature.polygons.flatten().map { ring -> ring.toFloatArray() })
+                MapShape(
+                    feature.id,
+                    feature.polygons.flatten().map { ring -> ring.toFloatArray() },
+                    feature.label?.takeIf { it.size >= 2 }?.let { MapPoint(it[0], it[1]) },
+                    feature.label?.getOrNull(2),
+                )
             }
             val (minX, minY, maxX, maxY) = file.bounds
             val p = file.projection
@@ -128,7 +143,7 @@ class MapGeometry(
 private data class ProjectionParams(val name: String, val lon0: Double, val lat0: Double, val lat1: Double, val lat2: Double)
 
 @Serializable
-private data class FeatureGeometry(val id: String, val polygons: List<List<List<Float>>>)
+private data class FeatureGeometry(val id: String, val polygons: List<List<List<Float>>>, val label: List<Float>? = null)
 
 @Serializable
 private data class MapGeometryFile(

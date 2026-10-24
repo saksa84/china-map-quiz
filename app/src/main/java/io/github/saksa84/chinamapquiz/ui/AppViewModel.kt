@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.data.AssetGeoRepository
 import io.github.saksa84.chinamapquiz.data.Category
 import io.github.saksa84.chinamapquiz.data.MapData
@@ -18,12 +19,15 @@ import io.github.saksa84.chinamapquiz.game.QuizLevel
 import io.github.saksa84.chinamapquiz.game.QuizLevels
 import io.github.saksa84.chinamapquiz.game.QuizSession
 import io.github.saksa84.chinamapquiz.game.QuizSummary
+import io.github.saksa84.chinamapquiz.progress.Progress
+import io.github.saksa84.chinamapquiz.progress.ProgressStore
+import io.github.saksa84.chinamapquiz.progress.Settings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-enum class Screen { HOME, LEARN, LEVELS, GAME, RESULT }
+enum class Screen { HOME, LEARN, LEVELS, GAME, RESULT, PROGRESS, SETTINGS }
 
 /** Modes de quiz jouables. */
 enum class GameMode { FIND, TYPE, ELIMINATE }
@@ -78,6 +82,18 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var confirmingQuit by mutableStateOf(false)
         private set
 
+    /** Progression sauvegardée (meilleurs scores, erreurs fréquentes) et réglages. */
+    var progress by mutableStateOf(Progress())
+        private set
+    var settings by mutableStateOf(Settings())
+        private set
+
+    /** La dernière partie a battu le meilleur résultat du niveau. */
+    var newRecord by mutableStateOf(false)
+        private set
+
+    private val store = ProgressStore(application)
+
     private var level: QuizLevel? = null
     private var quiz: QuizSession? = null
     private var eliminate: EliminateSession? = null
@@ -87,6 +103,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     private val clock = { SystemClock.elapsedRealtime() }
 
     init {
+        viewModelScope.launch { store.progress.collect { progress = it } }
+        viewModelScope.launch { store.settings.collect { settings = it } }
         viewModelScope.launch {
             loadState = withContext(Dispatchers.IO) {
                 runCatching {
@@ -104,8 +122,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun openLearn() {
-        screen = Screen.LEARN
+    fun open(target: Screen) {
+        screen = target
+    }
+
+    fun resetProgress() {
+        viewModelScope.launch { store.reset() }
+    }
+
+    fun setShowHanzi(show: Boolean) {
+        viewModelScope.launch { store.setShowHanzi(show) }
     }
 
     fun chooseMode(newMode: GameMode) {
@@ -130,7 +156,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
         screen = when (screen) {
             Screen.HOME -> return false
-            Screen.LEARN, Screen.LEVELS -> Screen.HOME
+            Screen.LEARN, Screen.LEVELS, Screen.PROGRESS, Screen.SETTINGS -> Screen.HOME
             Screen.GAME, Screen.RESULT -> Screen.LEVELS
         }
         return true
@@ -233,6 +259,15 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun finish(result: QuizSummary) {
+        val lvl = level
+        if (lvl != null) {
+            // « Rejouer les erreurs » ne porte que sur une partie du niveau : pas de record, mais les erreurs comptent.
+            val isReplay = lvl.id.endsWith(MISTAKES_SUFFIX)
+            val outcome = progress.record(mode.name, lvl.id.removeSuffix(MISTAKES_SUFFIX), result, countsForBest = !isReplay)
+            progress = outcome.progress
+            newRecord = outcome.newRecord
+            viewModelScope.launch { store.save(outcome.progress) }
+        }
         summary = result
         screen = Screen.RESULT
     }
@@ -241,12 +276,28 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         level?.let(::startLevel)
     }
 
+    /** Révision (mode Trouver) des lieux le plus souvent manqués, toutes parties confondues. */
+    fun reviewMissed(count: Int) {
+        val ready = loadState as? LoadState.Ready ?: return
+        val playable = ready.levels.flatMap { it.targetIds }.toSet()
+        val ids = progress.mostMissed(count).map { it.first }.filter { it in playable }
+        if (ids.isEmpty()) return
+        mode = GameMode.FIND
+        val name = getApplication<Application>().getString(R.string.review_level)
+        startLevel(QuizLevel("review$MISTAKES_SUFFIX", name, includesSpecial = true, targetIds = ids))
+    }
+
     /** Nouvelle partie limitée aux lieux manqués. */
     fun replayMistakes() {
         val lvl = level ?: return
         val missed = summary?.missedTargetIds.orEmpty()
         if (missed.isEmpty()) return
-        startLevel(lvl.copy(id = "${lvl.id}-mistakes", targetIds = missed))
+        val baseId = lvl.id.removeSuffix(MISTAKES_SUFFIX)
+        startLevel(lvl.copy(id = baseId + MISTAKES_SUFFIX, targetIds = missed))
+    }
+
+    private companion object {
+        const val MISTAKES_SUFFIX = "-mistakes"
     }
 
     private fun refresh() {

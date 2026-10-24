@@ -32,6 +32,7 @@ import io.github.saksa84.chinamapquiz.ui.common.formatDuration
 fun ResultScreen(
     mode: GameMode,
     summary: QuizSummary,
+    newRecord: Boolean,
     catalog: GeoCatalog,
     onReplayMistakes: () -> Unit,
     onReplay: () -> Unit,
@@ -55,6 +56,15 @@ fun ResultScreen(
                             Text(stringResource(R.string.eliminate_errors, summary.mistakes.size), color = QuizColors.OnDark, fontSize = big)
                         }
                         Text(stringResource(R.string.result_time, formatDuration(summary.durationMs)), color = QuizColors.OnDark, fontSize = big)
+                        if (newRecord) {
+                            Text(
+                                stringResource(R.string.result_new_record),
+                                color = QuizColors.Accent,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier.padding(top = 16.dp),
+                            )
+                        }
                     }
                 }
                 item {

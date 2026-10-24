@@ -66,6 +66,14 @@ class RealMapTest {
     }
 
     @Test
+    fun labelPointsLieInsideTheirShape() {
+        // Y compris pour les formes tordues (Gansu, Nei Mongol) où le centre du cadre tombe dehors.
+        geometry.shapes.forEach { shape ->
+            assertTrue("Étiquette hors de ${shape.id}", shape.contains(shape.label.x, shape.label.y))
+        }
+    }
+
+    @Test
     fun northIsUp() {
         val harbin = geometry.project(126.5, 45.8)
         val haikou = geometry.project(110.2, 20.0)

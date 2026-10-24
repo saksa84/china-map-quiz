@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -17,6 +18,9 @@ import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
 import io.github.saksa84.chinamapquiz.data.GeoEntity
 import java.util.Locale
+
+/** Réglage « afficher les caractères chinois », fourni une fois à la racine de l'application. */
+val LocalShowHanzi = compositionLocalOf { true }
 
 /** Fiche d'un lieu : nom, hanzi, type, capitale, grande région, statut disputé, alias. */
 @Composable
@@ -29,7 +33,8 @@ fun EntityInfo(
 ) {
     Column(modifier) {
         Text(entity.name, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = color)
-        val subtitle = listOfNotNull(entity.hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
+        val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
+        val subtitle = listOfNotNull(hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
         Text(subtitle, style = MaterialTheme.typography.titleMedium, color = color)
         Spacer(Modifier.height(8.dp))
 
@@ -41,6 +46,15 @@ fun EntityInfo(
                 else stringResource(R.string.info_region_with_sub, top.name, sub.name),
                 color = color,
             )
+        }
+        if (entity.type == FeatureType.REGION) {
+            val members = entity.memberIds.mapNotNull { catalog[it]?.name }
+            Text(stringResource(R.string.info_members, members.joinToString(", ")), color = color)
+            val subRegions = catalog.children(entity.id).filter { it.type == FeatureType.REGION }
+            if (subRegions.isNotEmpty()) {
+                val text = subRegions.joinToString(", ") { sub -> "${sub.name} (${sub.memberIds.mapNotNull { catalog[it]?.name }.joinToString(", ")})" }
+                Text(stringResource(R.string.info_subregions, text), color = color)
+            }
         }
         if (entity.claimedBy.isNotEmpty()) {
             // Noms des pays fournis par le système, à partir des codes ISO : aucune liste à maintenir.
@@ -67,5 +81,6 @@ private fun typeLabel(type: FeatureType): Int = when (type) {
     FeatureType.MUNICIPALITY -> R.string.type_municipality
     FeatureType.SPECIAL_ADMINISTRATIVE_REGION -> R.string.type_special_administrative_region
     FeatureType.ISLAND_GROUP -> R.string.type_island_group
+    FeatureType.REGION -> R.string.type_region
     else -> R.string.type_other
 }

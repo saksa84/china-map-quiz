@@ -38,7 +38,13 @@ Installation sur un téléphone branché en USB :
 
 | Dossier | Contenu |
 |---|---|
-| `app/src/main/java/.../data` | Modèle des entités géographiques, lecture et validation des données |
-| `app/src/main/assets/geo` | Données géographiques (à venir) |
+| `app/src/main/java/.../data` | Modèle des lieux, lecture et validation des données |
+| `app/src/main/java/.../map` | Géométrie, projection, zoom et détection du toucher (sans Android) |
+| `app/src/main/java/.../game` | Moteurs de jeu : parties, niveaux, validation des réponses tapées |
+| `app/src/main/java/.../progress` | Progression (records, erreurs fréquentes) et sauvegarde locale |
+| `app/src/main/java/.../ui` | Écrans Compose : accueil, Apprendre, jeux, résultat, progression, paramètres |
+| `app/src/main/assets/geo` | Données géographiques (voir `docs/data-sources.md`) |
+| `app/src/main/assets/game` | Configuration des niveaux |
+| `tools/` | Scripts Python de préparation des données et de l'icône |
 | `app/src/test` | Tests unitaires (exécutés sur le PC, sans émulateur) |
 | `docs/` | Plan, sources de données, licences |

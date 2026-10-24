@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -90,7 +91,12 @@ fun BackButton(onBack: () -> Unit) {
     }
 }
 
-/** Tuile carrée des menus (modes, niveaux). */
+/**
+ * Tuile carrée des menus (modes, niveaux).
+ * @param record ligne de meilleur résultat (« 12 / 15 · 0:45.2 »), si le niveau a déjà été joué
+ * @param progress barre de progression en bas de la tuile (0 à 1), ou null pour ne pas l'afficher
+ * @param perfect étoile en haut à droite : niveau réussi sans faute
+ */
 @Composable
 fun MenuTile(
     title: String,
@@ -98,20 +104,45 @@ fun MenuTile(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    record: String? = null,
+    progress: Float? = null,
+    perfect: Boolean = false,
 ) {
-    Column(
+    Box(
         modifier
             .aspectRatio(1f)
             .alpha(if (enabled) 1f else 0.45f)
             .background(QuizColors.Tile, RoundedCornerShape(4.dp))
             .clickable(enabled = enabled, onClick = onClick)
             .padding(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
     ) {
-        Text(title, color = QuizColors.OnDark, fontSize = 22.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Medium)
-        if (subtitle != null) {
-            Text(subtitle, color = QuizColors.Muted, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+        if (perfect) {
+            Text("★", color = QuizColors.Accent, fontSize = 26.sp, modifier = Modifier.align(Alignment.TopEnd))
+        }
+        Column(
+            Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            if (record != null) {
+                Text(record, color = QuizColors.OnDark, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+                Spacer(Modifier.size(6.dp))
+            }
+            Text(title, color = QuizColors.OnDark, fontSize = 22.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Medium)
+            if (subtitle != null) {
+                Text(subtitle, color = QuizColors.Muted, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+            }
+        }
+        if (progress != null) {
+            Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                LinearProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.fillMaxWidth(0.85f),
+                    color = QuizColors.OnDark,
+                    trackColor = QuizColors.Muted.copy(alpha = 0.35f),
+                    drawStopIndicator = {},
+                )
+                Text("${(progress * 100).toInt()} %", color = QuizColors.Muted, fontSize = 12.sp)
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 | `regions.json` | Écrit à la main |
 | `islands.json` | Écrit à la main |
 | `map.geometry.json` | **Généré** par `tools/build_map_geometry.py`. Ne pas modifier à la main. |
+| `res/drawable/ic_launcher_foreground.xml` (icône) | **Généré** par `tools/build_icon.py` à partir de `map.geometry.json` |
 
 ## Sources évaluées et écartées
 
@@ -44,7 +45,8 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 3. Projection conique équivalente d'Albers, sphère de rayon 6 371 km, méridien central 105°E, parallèles 25°N et 47°N. Résultat en kilomètres.
 4. Simplification de Douglas-Peucker, tolérance **0,5 km**, appliquée **par arc** : chaque frontière commune à deux unités est simplifiée une seule fois et réutilisée des deux côtés, ce qui évite trous et chevauchements.
 5. Suppression des îles de moins de **2 km²**, sauf la plus grande partie de chaque unité (Macao est donc conservé).
-6. Quantification à **100 m** (coordonnées entières) et axe y inversé (y croît vers le bas, comme à l'écran).
+6. **Point d'étiquette** de chaque lieu, pour écrire son nom sur la carte : le point de la plus grande partie le plus éloigné des bords (recherche sur grille en trois passes), avec cette distance, qui sert à savoir si le nom tient à un zoom donné.
+7. Quantification à **100 m** (coordonnées entières) et axe y inversé (y croît vers le bas, comme à l'écran).
 
 Résultat le 2026-10-24 : 35 entités (34 unités et les îles Paracel), 54 214 sommets ramenés à 20 924, fichier de 260 Ko.
 

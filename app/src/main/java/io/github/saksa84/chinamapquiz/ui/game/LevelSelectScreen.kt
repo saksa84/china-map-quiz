@@ -17,11 +17,19 @@ import io.github.saksa84.chinamapquiz.game.QuizLevel
 import io.github.saksa84.chinamapquiz.ui.GameMode
 import io.github.saksa84.chinamapquiz.ui.common.MenuTile
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
+import io.github.saksa84.chinamapquiz.progress.Progress
 import io.github.saksa84.chinamapquiz.ui.common.ScreenHeader
+import io.github.saksa84.chinamapquiz.ui.common.formatDuration
 
 /** Choix du niveau : zone (Nord, Sud, Toute la Chine) × variante (continent, complet). Communs aux modes. */
 @Composable
-fun LevelSelectScreen(mode: GameMode, levels: List<QuizLevel>, onStart: (QuizLevel) -> Unit, onBack: () -> Unit) {
+fun LevelSelectScreen(
+    mode: GameMode,
+    levels: List<QuizLevel>,
+    progress: Progress,
+    onStart: (QuizLevel) -> Unit,
+    onBack: () -> Unit,
+) {
     QuizBackground {
         Column(Modifier.fillMaxSize()) {
             ScreenHeader(stringResource(R.string.levels_title, stringResource(modeName(mode))), onBack)
@@ -34,7 +42,15 @@ fun LevelSelectScreen(mode: GameMode, levels: List<QuizLevel>, onStart: (QuizLev
                 items(levels, key = { it.id }) { level ->
                     val variant = stringResource(if (level.includesSpecial) R.string.variant_complete else R.string.variant_mainland)
                     val count = pluralStringResource(R.plurals.question_count, level.targetIds.size, level.targetIds.size)
-                    MenuTile(level.zoneName, "$variant\n$count", onClick = { onStart(level) })
+                    val best = progress.bestFor(mode.name, level.id)
+                    MenuTile(
+                        title = level.zoneName,
+                        subtitle = "$variant · $count",
+                        onClick = { onStart(level) },
+                        record = best?.let { "${it.correct} / ${it.total} · ${formatDuration(it.timeMs)}" },
+                        progress = best?.fraction ?: 0f,
+                        perfect = best?.perfect == true,
+                    )
                 }
             }
         }

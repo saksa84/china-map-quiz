@@ -116,7 +116,16 @@ Chaque étape compile, est testée et se termine par un commit si tu le demandes
 | 11 | APK release signé (clé hors Git) + publication GitHub | APK installé sur le téléphone |
 | 12+ | Niveau 2 (préfectures), niveau 3 (villes), modes futurs | — |
 
-**Avancement au 2026-10-24** : les étapes 1 à 7 sont faites. On a donc les données des 34 unités, la carte interactive, le mode Apprendre, et les modes Trouver, Saisir et Éliminer avec niveaux, résultat et révision des erreurs. Prochaines étapes : la 8 (mode Learn enrichi), puis la 9 (progression et meilleurs scores). Les fleuves, montagnes et villes de la version 1 restent à planifier.
+**Avancement au 2026-10-24** : les étapes 1 à 10 sont faites.
+- Données des 34 unités et carte interactive.
+- Mode Apprendre, avec les noms sur la carte et la vue grandes régions.
+- Modes Trouver, Saisir et Éliminer, avec niveaux, résultat et révision des erreurs.
+- Progression sauvegardée : records, temps, étoiles et lieux les plus manqués.
+- Écrans Progression et Paramètres, icône de l'application.
+
+Prochaines étapes :
+- étape 11 : APK release signé et publication GitHub ;
+- puis la suite de la version 1 : grandes villes, fleuves et montagnes, et le mode Contours.
 
 ## 7. Périmètre de la version minimale (V1)
 
@@ -170,5 +179,7 @@ Exclu : modes de jeu, progression, villes, préfectures, traduction.
 | 2026-10-24 | Modes au menu | Trouver, Éliminer, Saisir, Contours (les autres modes des applications de référence sont écartés) |
 | 2026-10-24 | Validation dans Trouver | Toucher pour sélectionner, puis bouton Confirmer ou second toucher sur la même région |
 | 2026-10-24 | Résultats | Liste des erreurs en fin de partie et option « rejouer les erreurs » ; le moteur garde le détail pour une révision plus riche plus tard |
+| 2026-10-24 | Progression | Sauvegarde locale (DataStore, JSON versionné) du meilleur résultat par mode et niveau : plus de bonnes réponses, puis moins d'erreurs, puis plus rapide. On enregistre aussi le nombre de parties où chaque lieu a été manqué. « Rejouer les erreurs » ne compte pas comme record. Pas de verrouillage de niveaux. |
+| 2026-10-24 | Navigation | Pas de bibliothèque de navigation : une simple variable « écran courant » dans le ViewModel, avec le bouton retour géré à la main. Suffisant pour une dizaine d'écrans, à revoir si l'app grandit beaucoup. |
 | 2026-10-24 | Inspirations | Captures d'applications commerciales dans `Inspirations/`, exclues de Git |
 | 2026-10-24 | Appareil cible | Pixel 8 Pro ; minSdk 26 conservé (le Pixel 8 Pro est bien au-dessus) |

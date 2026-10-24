@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">China Map Quiz</string>
 
-    <string name="learn_title">Apprendre : provinces</string>
+    <string name="learn_title">Apprendre</string>
     <string name="learn_hint">Touchez une région pour afficher son nom.\nPincez pour zoomer, glissez pour vous déplacer.</string>
     <string name="map_recenter">Recentrer</string>
     <string name="loading">Chargement de la carte…</string>
@@ -54,6 +54,29 @@
     <string name="eliminate_errors">Erreurs : %1$d</string>
     <string name="eliminate_wrong">Non, ça c\'est : %1$s</string>
 
+    <string name="result_new_record">Nouveau record !</string>
+
+    <string name="progress_title">Progression</string>
+    <string name="progress_sub">Records et erreurs</string>
+    <string name="progress_games">Parties jouées : %1$d</string>
+    <string name="progress_most_missed">Lieux les plus souvent manqués</string>
+    <string name="progress_no_missed">Aucune erreur enregistrée pour l\'instant.</string>
+    <string name="progress_missed_count">manqué %1$d ×</string>
+    <string name="progress_review">Réviser ces %1$d lieux</string>
+    <string name="review_level">Révision</string>
+
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_hanzi">Caractères chinois</string>
+    <string name="settings_hanzi_sub">Afficher le nom en hanzi dans les fiches</string>
+    <string name="settings_reset">Réinitialiser la progression</string>
+    <string name="reset_title">Réinitialiser la progression ?</string>
+    <string name="reset_message">Tous les records, temps et erreurs enregistrés seront effacés. Cette action est définitive.</string>
+    <string name="reset_confirm">Effacer</string>
+    <string name="reset_cancel">Annuler</string>
+    <string name="about_title">À propos</string>
+    <string name="about_text">China Map Quiz, version %1$s. Application personnelle d\'apprentissage de la géographie chinoise : hors ligne, sans compte, sans publicité ni collecte de données.</string>
+    <string name="about_sources">Cartes : Made with Natural Earth (domaine public), version 5.1.2. Codes des provinces : ISO 3166-2:CN. Territoires disputés présentés de façon neutre (« revendiqué par »).</string>
+
     <string name="quit_title">Quitter la partie ?</string>
     <string name="quit_message">La partie en cours sera perdue.</string>
     <string name="quit_confirm">Quitter</string>
@@ -78,5 +101,12 @@
     <string name="type_municipality">Municipalité</string>
     <string name="type_special_administrative_region">Région administrative spéciale</string>
     <string name="type_island_group">Archipel</string>
+    <string name="type_region">Grande région</string>
+    <string name="info_members">Provinces : %1$s</string>
+    <string name="info_subregions">Sous-régions : %1$s</string>
+    <string name="learn_view_provinces">Provinces</string>
+    <string name="learn_view_regions">Grandes régions</string>
+    <string name="learn_show_names">Noms</string>
+    <string name="learn_hint_regions">Touchez une province pour afficher sa grande région.</string>
     <string name="type_other">Lieu</string>
 </resources>

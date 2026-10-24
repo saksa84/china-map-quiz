@@ -13,6 +13,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.sp
+import io.github.saksa84.chinamapquiz.map.MapPoint
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -44,6 +52,12 @@ data class ShapeStyle(
 )
 
 /**
+ * Nom à écrire sur la carte.
+ * @param fitWidth largeur disponible (unités de carte) : le nom n'est écrit que s'il y tient
+ */
+data class MapLabel(val text: String, val at: MapPoint, val fitWidth: Float)
+
+/**
  * Carte interactive : dessin des contours, zoom à deux doigts, déplacement, toucher.
  *
  * @param styleOf couleur de chaque lieu selon son identifiant
@@ -59,6 +73,7 @@ fun ChinaMap(
     onShapeTap: (String?) -> Unit,
     modifier: Modifier = Modifier,
     recenterKey: Int = 0,
+    labels: List<MapLabel> = emptyList(),
     seaColor: Color = Color(0xFFD6E9F8),
     borderColor: Color = Color(0xFF5A6470),
     selectedBorderColor: Color = Color(0xFF1B1B1B),
@@ -99,6 +114,19 @@ fun ChinaMap(
     val dotBorderPx = with(LocalDensity.current) { 1.dp.toPx() }
     val reticleRadiusPx = with(LocalDensity.current) { 46.dp.toPx() }
     val reticleStrokePx = with(LocalDensity.current) { 1.5.dp.toPx() }
+
+    // Les noms sont mesurés une fois ; on ne décide qu'au dessin lesquels ont la place d'apparaître.
+    val textMeasurer = rememberTextMeasurer()
+    val measuredLabels = remember(labels) {
+        val style = TextStyle(
+            color = Color(0xFF263033),
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Medium,
+            shadow = Shadow(Color.White, blurRadius = 6f),
+        )
+        // Les plus grands lieux d'abord : en cas de chevauchement, ce sont eux qui gardent leur nom.
+        labels.sortedByDescending { it.fitWidth }.map { it to textMeasurer.measure(it.text, style) }
+    }
     // Les gestionnaires de gestes sont créés une fois : ils lisent toujours la dernière valeur via ces références.
     val currentViewport by rememberUpdatedState(viewport)
     val currentOnTap by rememberUpdatedState(onShapeTap)
@@ -146,6 +174,21 @@ fun ChinaMap(
             selectedId?.let { paths[it] }?.let { path ->
                 drawPath(path, selectedBorderColor, style = Stroke(width = selectedBorderPx / vp.scale))
             }
+        }
+
+        // Noms : seulement ceux qui tiennent dans leur lieu à ce zoom, sans chevaucher un nom déjà écrit.
+        // Plus on zoome, plus il y a de place : les noms des petites provinces apparaissent.
+        val placed = mutableListOf<Rect>()
+        for ((label, layout) in measuredLabels) {
+            val width = layout.size.width.toFloat()
+            val height = layout.size.height.toFloat()
+            if (width > label.fitWidth * vp.scale) continue
+            val x = label.at.x * vp.scale + vp.offsetX - width / 2
+            val y = label.at.y * vp.scale + vp.offsetY - height / 2
+            val box = Rect(x - 2, y, x + width + 2, y + height)
+            if (placed.any { it.overlaps(box) }) continue
+            placed += box
+            drawText(layout, topLeft = Offset(x, y))
         }
 
         // Lieux minuscules à ce zoom, dessinés en coordonnées écran pour garder une taille fixe.

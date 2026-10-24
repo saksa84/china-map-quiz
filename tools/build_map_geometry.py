@@ -334,6 +334,57 @@ def simplify_units(units):
     return output, neighbours
 
 
+# --- Points d'étiquette -----------------------------------------------------------------
+
+def point_in_rings(rings, x, y):
+    inside = False
+    for ring in rings:
+        j = len(ring) - 1
+        for i in range(len(ring)):
+            (xi, yi), (xj, yj) = ring[i], ring[j]
+            if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi:
+                inside = not inside
+            j = i
+    return inside
+
+
+def distance_to_rings(rings, x, y):
+    best = float("inf")
+    for ring in rings:
+        for (ax, ay), (bx, by) in zip(ring, ring[1:] + ring[:1]):
+            dx, dy = bx - ax, by - ay
+            length_sq = dx * dx + dy * dy
+            t = 0.0 if length_sq == 0 else max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / length_sq))
+            best = min(best, math.hypot(x - ax - t * dx, y - ay - t * dy))
+    return best
+
+
+def label_point(polygons, grid=24):
+    """Point où écrire le nom [x, y, distance au bord] : dans la plus grande partie, le plus loin possible des bords.
+
+    Le centre de gravité tombe parfois hors de la forme (Gansu, Nei Mongol) : on cherche donc
+    sur une grille le point intérieur le plus éloigné du contour, puis on affine autour.
+    """
+    largest = max(polygons, key=lambda p: ring_area(p[0]))
+    xs = [x for x, _ in largest[0]]
+    ys = [y for _, y in largest[0]]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    best = ((x0 + x1) / 2, (y0 + y1) / 2, -1.0)
+    for _ in range(3):  # trois passes de plus en plus fines autour du meilleur point
+        step_x, step_y = (x1 - x0) / grid, (y1 - y0) / grid
+        for i in range(grid + 1):
+            for j in range(grid + 1):
+                x, y = x0 + i * step_x, y0 + j * step_y
+                if point_in_rings(largest, x, y):
+                    d = distance_to_rings(largest, x, y)
+                    if d > best[2]:
+                        best = (x, y, d)
+        cx, cy = best[0], best[1]
+        x0, x1, y0, y1 = cx - 2 * step_x, cx + 2 * step_x, cy - 2 * step_y, cy + 2 * step_y
+    # Troisième valeur : distance au bord le plus proche, pour savoir si le nom tient à un zoom donné.
+    return [round(best[0]), round(best[1]), round(best[2])]
+
+
 # --- Écriture et vérifications ----------------------------------------------------------
 
 def main() -> int:
@@ -371,7 +422,8 @@ def main() -> int:
     lines = []
     for unit_id in sorted(simplified):
         polygons = [[[c for point in ring for c in point] for ring in polygon] for polygon in simplified[unit_id]]
-        lines.append(json.dumps({"id": unit_id, "polygons": polygons}, separators=(",", ":")))
+        label = label_point(simplified[unit_id])
+        lines.append(json.dumps({"id": unit_id, "label": label, "polygons": polygons}, separators=(",", ":")))
     text = json.dumps(header, ensure_ascii=False)[:-1] + ',\n"features":[\n' + ",\n".join(lines) + "\n]}\n"
     OUT_FILE.write_text(text, encoding="utf-8", newline="\n")
 
