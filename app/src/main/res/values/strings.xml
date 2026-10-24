@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">China Map Quiz</string>
+
+    <string name="learn_title">Apprendre : provinces</string>
+    <string name="learn_hint">Touchez une région pour afficher son nom.\nPincez pour zoomer, glissez pour vous déplacer.</string>
+    <string name="map_recenter">Recentrer</string>
+    <string name="loading">Chargement de la carte…</string>
+    <string name="loading_error">Impossible de charger la carte : %1$s</string>
+
+    <string name="info_capital">Capitale : %1$s</string>
+    <string name="info_region">Grande région : %1$s</string>
+    <string name="info_region_with_sub">Grande région : %1$s (%2$s)</string>
+    <string name="info_also_known_as">Aussi : %1$s</string>
+    <string name="info_disputed">Territoire disputé, revendiqué par : %1$s</string>
+
+    <string name="type_country">Pays</string>
+    <string name="type_province">Province</string>
+    <string name="type_autonomous_region">Région autonome</string>
+    <string name="type_municipality">Municipalité</string>
+    <string name="type_special_administrative_region">Région administrative spéciale</string>
+    <string name="type_island_group">Archipel</string>
+    <string name="type_other">Lieu</string>
 </resources>

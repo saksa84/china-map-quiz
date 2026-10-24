@@ -1,0 +1,64 @@
+package io.github.saksa84.chinamapquiz.map
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+class HitTesterTest {
+
+    private fun square(x0: Float, y0: Float, size: Float) = floatArrayOf(x0, y0, x0 + size, y0, x0 + size, y0 + size, x0, y0 + size)
+
+    /** Carré 0..10 percé d'un trou 4..6, plus une petite île 20..21. */
+    private val withHole = MapShape("A", listOf(square(0f, 0f, 10f), square(4f, 4f, 2f), square(20f, 0f, 1f)))
+    private val neighbour = MapShape("B", listOf(square(10f, 0f, 5f)))
+    private val tester = HitTester(listOf(withHole, neighbour))
+
+    @Test
+    fun pointInside_isFound() {
+        assertEquals("A", tester.hit(MapPoint(2f, 2f)))
+        assertEquals("B", tester.hit(MapPoint(12f, 2f)))
+    }
+
+    @Test
+    fun pointInHole_isNotInside() {
+        assertFalse(withHole.contains(5f, 5f))
+        assertNull(tester.hit(MapPoint(5f, 5f)))
+    }
+
+    @Test
+    fun pointOnSeparateIsland_belongsToItsShape() {
+        assertEquals("A", tester.hit(MapPoint(20.5f, 0.5f)))
+    }
+
+    @Test
+    fun pointInSea_withoutTolerance_isNothing() {
+        assertNull(tester.hit(MapPoint(30f, 30f)))
+        assertNull(tester.hit(MapPoint(22f, 0.5f)))
+    }
+
+    @Test
+    fun pointNearSmallIsland_isFoundWithinTolerance() {
+        assertEquals("A", tester.hit(MapPoint(22f, 0.5f), tolerance = 1.5f))
+        assertNull(tester.hit(MapPoint(25f, 0.5f), tolerance = 1.5f))
+    }
+
+    @Test
+    fun toleranceChoosesTheClosestShape() {
+        // Au-dessus de la frontière A/B (x = 10), un peu plus près de B.
+        assertEquals("B", tester.hit(MapPoint(10.4f, -1f), tolerance = 3f))
+        assertEquals("A", tester.hit(MapPoint(9.6f, -1f), tolerance = 3f))
+    }
+
+    @Test
+    fun exactHitWinsOverCloserNeighbourEdge() {
+        assertEquals("A", tester.hit(MapPoint(9.9f, 2f), tolerance = 3f))
+    }
+
+    @Test
+    fun boundsCoverAllRings() {
+        assertEquals(MapBounds(0f, 0f, 21f, 10f), withHole.bounds)
+        assertTrue(withHole.distanceToEdge(2f, 5f) == 2f)
+    }
+}

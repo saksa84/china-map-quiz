@@ -40,16 +40,17 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 ## Transformations (`tools/build_map_geometry.py`)
 
 1. Sélection des 31 unités `adm0_a3 = CHN` d'admin 1 et des îles Paracel, puis de TWN, HKG et MAC d'admin 0. Contrôle que chaque identifiant existe dans `provinces.json` ou `islands.json`, et inversement.
-2. Projection conique équivalente d'Albers, sphère de rayon 6 371 km, méridien central 105°E, parallèles 25°N et 47°N. Résultat en kilomètres.
-3. Simplification de Douglas-Peucker, tolérance **0,5 km**, appliquée **par arc** : chaque frontière commune à deux unités est simplifiée une seule fois et réutilisée des deux côtés, ce qui évite trous et chevauchements.
-4. Suppression des îles de moins de **2 km²**, sauf la plus grande partie de chaque unité (Macao est donc conservé).
-5. Quantification à **100 m** (coordonnées entières) et axe y inversé (y croît vers le bas, comme à l'écran).
+2. **Recollage de Macao sur le Guangdong** : les deux contours viennent de fichiers Natural Earth différents et ne partageaient aucun sommet, ce qui laissait un écart d'environ 100 m visible au zoom. Chaque sommet de Macao à moins de 300 m du Guangdong est accroché sur sa frontière. Entre deux sommets accrochés, Macao reprend exactement le tracé du Guangdong.
+3. Projection conique équivalente d'Albers, sphère de rayon 6 371 km, méridien central 105°E, parallèles 25°N et 47°N. Résultat en kilomètres.
+4. Simplification de Douglas-Peucker, tolérance **0,5 km**, appliquée **par arc** : chaque frontière commune à deux unités est simplifiée une seule fois et réutilisée des deux côtés, ce qui évite trous et chevauchements.
+5. Suppression des îles de moins de **2 km²**, sauf la plus grande partie de chaque unité (Macao est donc conservé).
+6. Quantification à **100 m** (coordonnées entières) et axe y inversé (y croît vers le bas, comme à l'écran).
 
-Résultat le 2026-10-24 : 35 entités (34 unités et les îles Paracel), 54 204 sommets ramenés à 20 918, fichier de 260 Ko.
+Résultat le 2026-10-24 : 35 entités (34 unités et les îles Paracel), 54 214 sommets ramenés à 20 924, fichier de 260 Ko.
 
 ### Limites connues
 
-- **Macao / Guangdong** : les deux contours proviennent de fichiers Natural Earth différents et ne partagent aucun sommet (écart d'environ 100 m). Cela peut se voir comme un fin liseré au zoom maximal.
+- **Macao / Guangdong** : la frontière terrestre de la péninsule est recollée (étape 2). Le chenal entre Taipa-Coloane et l'île de Hengqin reste ouvert : il existe réellement, mais il paraît plus large qu'en réalité à cause de la résolution de Natural Earth.
 - Les contours de Natural Earth 1:10m sont adaptés à une carte nationale, pas à une carte locale détaillée.
 
 ## Régénérer les données

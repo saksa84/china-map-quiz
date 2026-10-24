@@ -53,6 +53,9 @@ GRID_KM = 0.1
 ADMIN0_UNITS = {"TWN": "CN-TW", "HKG": "CN-HK", "MAC": "CN-MO"}
 # Codes Natural Earth non ISO -> nos identifiants (territoires disputés, voir docs/data-sources.md).
 ADMIN1_RENAMED = {"CN-X01~": "IS-PARACEL"}
+# Contours issus de fichiers différents qui ne partagent aucun sommet : on accroche la petite
+# unité sur la grande (unité, voisine, distance maximale en km). Voir stitch().
+STITCHES = [("CN-MO", "CN-GD", 0.3)]
 # Archipels d'îlots : tracé presque intact et aucun îlot supprimé, sinon ils disparaîtraient.
 DETAILED_UNITS = {"IS-PARACEL"}
 DETAILED_TOLERANCE_KM = 0.05
@@ -131,6 +134,85 @@ def project(k):
     rho = EARTH_RADIUS_KM * math.sqrt(_c - 2 * _n * math.sin(math.radians(lat))) / _n
     theta = _n * math.radians(lon - LON0)
     return rho * math.sin(theta), _rho0 - rho * math.cos(theta)
+
+
+# --- Recollage de frontières -------------------------------------------------------------
+
+def stitch(units, small_id, big_id, threshold_km):
+    """Fait coïncider la frontière de `small_id` avec celle de `big_id`.
+
+    1. Chaque sommet de la petite unité à moins de `threshold_km` d'une arête de la grande est
+       déplacé sur cette arête ; le point obtenu est aussi inséré dans le contour de la grande.
+    2. Entre deux sommets ainsi accrochés, la petite unité reprend exactement le tracé de la
+       grande. La frontière devient un arc commun, simplifié une seule fois comme les autres.
+    Renvoie le nombre de sommets accrochés.
+    """
+    big_rings = [ring for polygon in units[big_id] for ring in polygon]
+    big_projected = [[project(k) for k in ring] for ring in big_rings]
+    insertions = defaultdict(list)  # (anneau, segment) -> [(t, clé)]
+    snapped = 0
+
+    for polygon in units[small_id]:
+        for ring in polygon:
+            for i, k in enumerate(ring):
+                px, py = project(k)
+                best = None
+                for ri, pring in enumerate(big_projected):
+                    n = len(pring)
+                    for si in range(n):
+                        (ax, ay), (bx, by) = pring[si], pring[(si + 1) % n]
+                        dx, dy = bx - ax, by - ay
+                        length_sq = dx * dx + dy * dy
+                        t = 0.0 if length_sq == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / length_sq))
+                        d = math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+                        if d <= threshold_km and (best is None or d < best[0]):
+                            best = (d, ri, si, t)
+                if best is None:
+                    continue
+                _, ri, si, t = best
+                a, b = big_rings[ri][si], big_rings[ri][(si + 1) % len(big_rings[ri])]
+                if t < 0.01:
+                    q = a
+                elif t > 0.99:
+                    q = b
+                else:
+                    q = (round(a[0] + (b[0] - a[0]) * t), round(a[1] + (b[1] - a[1]) * t))
+                    insertions[(ri, si)].append((t, q))
+                ring[i] = q
+                snapped += 1
+
+    # Insertion des points accrochés dans les arêtes de la grande unité, dans l'ordre.
+    for ri, ring in enumerate(big_rings):
+        rebuilt = []
+        for si, k in enumerate(ring):
+            rebuilt.append(k)
+            for _, q in sorted(insertions.get((ri, si), [])):
+                if rebuilt[-1] != q:
+                    rebuilt.append(q)
+        ring[:] = rebuilt
+
+    # Entre deux sommets accrochés consécutifs, reprendre le tracé exact de la grande unité.
+    position = {k: (ri, idx) for ri, ring in enumerate(big_rings) for idx, k in enumerate(ring)}
+    for polygon in units[small_id]:
+        for ring in polygon:
+            rebuilt = []
+            n = len(ring)
+            for i, k in enumerate(ring):
+                if not rebuilt or rebuilt[-1] != k:
+                    rebuilt.append(k)
+                nxt = ring[(i + 1) % n]
+                if k in position and nxt in position and position[k][0] == position[nxt][0]:
+                    ri, ia = position[k]
+                    ib = position[nxt][1]
+                    size = len(big_rings[ri])
+                    forward, backward = (ib - ia) % size, (ia - ib) % size
+                    step, count = (1, forward) if forward <= backward else (-1, backward)
+                    if 1 < count <= 200:  # au-delà, ce n'est plus une frontière commune
+                        rebuilt.extend(big_rings[ri][(ia + step * j) % size] for j in range(1, count))
+            while len(rebuilt) > 1 and rebuilt[0] == rebuilt[-1]:
+                rebuilt.pop()
+            ring[:] = rebuilt
+    return snapped
 
 
 # --- Simplification respectant les frontières partagées ---------------------------------
@@ -264,6 +346,10 @@ def main() -> int:
     if missing:
         print(f"ERREUR : unités sans géométrie : {sorted(missing)}")
         return 1
+
+    for small_id, big_id, threshold in STITCHES:
+        count = stitch(units, small_id, big_id, threshold)
+        print(f"recollage {small_id} sur {big_id} : {count} sommets accrochés (seuil {threshold} km)")
 
     simplified, neighbours = simplify_units(units)
     empty = [u for u, polygons in simplified.items() if not polygons]

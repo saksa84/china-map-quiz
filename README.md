@@ -26,6 +26,8 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
 APK debug généré : `app/build/outputs/apk/debug/app-debug.apk`
 
+Guide pas à pas (émulateur, téléphone en USB, APK sans câble) : [docs/build.md](docs/build.md).
+
 Installation sur un téléphone branché en USB :
 
 ```powershell
