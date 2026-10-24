@@ -1,4 +1,4 @@
-package io.github.saksa84.chinamapquiz.ui.find
+package io.github.saksa84.chinamapquiz.ui.game
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,16 +14,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.game.QuizLevel
+import io.github.saksa84.chinamapquiz.ui.GameMode
 import io.github.saksa84.chinamapquiz.ui.common.MenuTile
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
 import io.github.saksa84.chinamapquiz.ui.common.ScreenHeader
 
-/** Choix du niveau du mode Trouver : zone (Nord, Sud, Toute la Chine) × variante (continent, complet). */
+/** Choix du niveau : zone (Nord, Sud, Toute la Chine) × variante (continent, complet). Communs aux modes. */
 @Composable
-fun LevelSelectScreen(levels: List<QuizLevel>, onStart: (QuizLevel) -> Unit, onBack: () -> Unit) {
+fun LevelSelectScreen(mode: GameMode, levels: List<QuizLevel>, onStart: (QuizLevel) -> Unit, onBack: () -> Unit) {
     QuizBackground {
         Column(Modifier.fillMaxSize()) {
-            ScreenHeader(stringResource(R.string.levels_title), onBack)
+            ScreenHeader(stringResource(R.string.levels_title, stringResource(modeName(mode))), onBack)
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 150.dp),
                 contentPadding = PaddingValues(12.dp),
@@ -38,4 +39,10 @@ fun LevelSelectScreen(levels: List<QuizLevel>, onStart: (QuizLevel) -> Unit, onB
             }
         }
     }
+}
+
+fun modeName(mode: GameMode): Int = when (mode) {
+    GameMode.FIND -> R.string.mode_find
+    GameMode.TYPE -> R.string.mode_type
+    GameMode.ELIMINATE -> R.string.mode_eliminate
 }

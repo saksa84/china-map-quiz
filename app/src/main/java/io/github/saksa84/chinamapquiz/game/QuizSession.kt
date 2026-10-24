@@ -5,21 +5,29 @@ import kotlin.random.Random
 /** Réponse donnée à une question : conservée en entier pour l'écran de résultat et la révision des erreurs. */
 data class AnswerRecord(
     val targetId: String,
-    /** Lieu touché, ou null si la question a été passée. */
+    /** Lieu touché (modes Trouver, Éliminer), ou null si rien n'a été touché. */
     val selectedId: String?,
     /** Moment de la réponse, en ms depuis le début de la partie. */
     val atMs: Long,
-) {
-    val correct: Boolean get() = selectedId == targetId
-}
+    /** Texte tapé (mode Saisir), tel que l'utilisateur l'a écrit. */
+    val typed: String? = null,
+    val correct: Boolean = selectedId == targetId,
+)
 
+/**
+ * Bilan d'une partie. Une question peut avoir plusieurs réponses (mode Éliminer) :
+ * elle est réussie si sa première réponse est juste.
+ */
 data class QuizSummary(
     val total: Int,
-    val correct: Int,
     val durationMs: Long,
     val answers: List<AnswerRecord>,
 ) {
+    /** Lieux trouvés du premier coup. */
+    val correct: Int get() = answers.groupBy { it.targetId }.count { (_, tries) -> tries.first().correct }
     val mistakes: List<AnswerRecord> get() = answers.filter { !it.correct }
+    /** Lieux à revoir : au moins une erreur. */
+    val missedTargetIds: List<String> get() = mistakes.map { it.targetId }.distinct()
     val percent: Double get() = if (total == 0) 0.0 else 100.0 * correct / total
 }
 
@@ -64,10 +72,14 @@ class QuizSession(
     /** Temps écoulé ; figé à la dernière réponse. */
     fun elapsedMs(): Long = (endMs ?: clock()) - startMs
 
-    /** Enregistre la réponse à la question en cours. Ignorée si on n'attend pas de réponse. */
-    fun answer(selectedId: String?): AnswerRecord? {
+    /**
+     * Enregistre la réponse à la question en cours. Ignorée si on n'attend pas de réponse.
+     * @param typed texte tapé (mode Saisir) ; [correct] doit alors être fourni par [AnswerChecker]
+     */
+    fun answer(selectedId: String?, typed: String? = null, correct: Boolean? = null): AnswerRecord? {
         if (phase != Phase.ASKING) return null
-        val record = AnswerRecord(targetIds[index], selectedId, clock() - startMs)
+        val target = targetIds[index]
+        val record = AnswerRecord(target, selectedId, clock() - startMs, typed, correct ?: (selectedId == target))
         records += record
         if (index == targetIds.lastIndex) endMs = clock()
         phase = Phase.FEEDBACK
@@ -81,7 +93,7 @@ class QuizSession(
         phase = if (index >= targetIds.size) Phase.FINISHED else Phase.ASKING
     }
 
-    fun summary(): QuizSummary = QuizSummary(total, score, elapsedMs(), answers)
+    fun summary(): QuizSummary = QuizSummary(total, elapsedMs(), answers)
 
     companion object {
         /** Partie sur des lieux tirés dans un ordre aléatoire ; [random] est injectable pour des tests reproductibles. */

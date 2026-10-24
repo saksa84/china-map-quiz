@@ -19,11 +19,13 @@
     <string name="mode_find">Trouver</string>
     <string name="mode_find_sub">Provinces</string>
     <string name="mode_eliminate">Éliminer</string>
+    <string name="mode_eliminate_sub">Jusqu\'à tout trouver</string>
     <string name="mode_type">Saisir</string>
+    <string name="mode_type_sub">Écrire le nom</string>
     <string name="mode_outlines">Contours</string>
     <string name="mode_soon">Bientôt</string>
 
-    <string name="levels_title">Trouver : niveau</string>
+    <string name="levels_title">%1$s : niveau</string>
     <string name="variant_mainland">Continent</string>
     <string name="variant_complete">Complet</string>
     <plurals name="question_count">
@@ -40,6 +42,18 @@
     <string name="find_next">SUIVANT</string>
     <string name="find_results">RÉSULTATS</string>
 
+    <string name="type_prompt">Nommez cette région</string>
+    <string name="type_placeholder">Nom en pinyin…</string>
+    <string name="type_validate">VALIDER</string>
+    <string name="type_skip">Passer</string>
+    <string name="type_correct">Correct ! %1$s</string>
+    <string name="type_wrong">Faux ! C\'était : %1$s\n(vous avez écrit : %2$s)</string>
+    <string name="type_skipped">Passé. C\'était : %1$s</string>
+
+    <string name="eliminate_found">Trouvées : %1$d / %2$d</string>
+    <string name="eliminate_errors">Erreurs : %1$d</string>
+    <string name="eliminate_wrong">Non, ça c\'est : %1$s</string>
+
     <string name="quit_title">Quitter la partie ?</string>
     <string name="quit_message">La partie en cours sera perdue.</string>
     <string name="quit_confirm">Quitter</string>
@@ -47,11 +61,14 @@
 
     <string name="result_title">Partie terminée</string>
     <string name="result_score">Score : %1$d / %2$d</string>
+    <string name="result_first_try">Du premier coup : %1$d / %2$d</string>
     <string name="result_percent">Bonnes réponses : %1$.1f %%</string>
     <string name="result_time">Temps : %1$s</string>
     <string name="result_no_mistakes">Aucune erreur, bravo !</string>
     <string name="result_mistakes_title">Vos erreurs</string>
     <string name="result_you_selected">Vous avez sélectionné : %1$s</string>
+    <string name="result_you_typed">Vous avez écrit : %1$s</string>
+    <string name="result_skipped">Question passée</string>
     <string name="result_replay_mistakes">Rejouer les erreurs (%1$d)</string>
     <string name="result_replay">Rejouer</string>
 

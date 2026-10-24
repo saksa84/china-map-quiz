@@ -116,6 +116,8 @@ Chaque étape compile, est testée et se termine par un commit si tu le demandes
 | 11 | APK release signé (clé hors Git) + publication GitHub | APK installé sur le téléphone |
 | 12+ | Niveau 2 (préfectures), niveau 3 (villes), modes futurs | — |
 
+**Avancement au 2026-10-24** : les étapes 1 à 7 sont faites. On a donc les données des 34 unités, la carte interactive, le mode Apprendre, et les modes Trouver, Saisir et Éliminer avec niveaux, résultat et révision des erreurs. Prochaines étapes : la 8 (mode Learn enrichi), puis la 9 (progression et meilleurs scores). Les fleuves, montagnes et villes de la version 1 restent à planifier.
+
 ## 7. Périmètre de la version minimale (V1)
 
 Inclus : les 34 unités provinciales (selon la décision 1), le mode Learn simple (toucher → nom en pinyin), zoom et déplacement, fonctionnement 100 % hors ligne, APK debug installable.

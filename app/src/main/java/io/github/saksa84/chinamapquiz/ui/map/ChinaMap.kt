@@ -71,14 +71,16 @@ fun ChinaMap(
     var viewport by remember { mutableStateOf<MapViewport?>(null) }
     var lastRecenterKey by remember { mutableStateOf(recenterKey) }
 
-    // Vue d'ensemble au premier affichage et sur demande ; un simple changement de taille
-    // (rotation, panneau du bas) ne doit pas annuler le zoom de l'utilisateur.
+    // Vue d'ensemble au premier affichage et sur demande. Un changement de taille (clavier,
+    // rotation, panneau) recadre la carte si l'on était en vue d'ensemble, mais n'annule pas
+    // un zoom choisi par l'utilisateur.
     LaunchedEffect(viewSize, recenterKey) {
         if (viewSize == IntSize.Zero) return@LaunchedEffect
         val width = viewSize.width.toFloat()
         val height = viewSize.height.toFloat()
         val current = viewport
-        viewport = if (current == null || recenterKey != lastRecenterKey) {
+        val atOverview = current != null && current.scale <= current.minScale * 1.001f
+        viewport = if (current == null || atOverview || recenterKey != lastRecenterKey) {
             MapViewport.fit(geometry.bounds, width, height)
         } else {
             current.constrainedTo(geometry.bounds, width, height)

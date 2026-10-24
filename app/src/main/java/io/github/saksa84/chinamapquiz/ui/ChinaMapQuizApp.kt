@@ -20,9 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
 import io.github.saksa84.chinamapquiz.ui.common.QuizColors
-import io.github.saksa84.chinamapquiz.ui.find.FindScreen
-import io.github.saksa84.chinamapquiz.ui.find.LevelSelectScreen
-import io.github.saksa84.chinamapquiz.ui.find.ResultScreen
+import io.github.saksa84.chinamapquiz.ui.game.EliminateScreen
+import io.github.saksa84.chinamapquiz.ui.game.FindScreen
+import io.github.saksa84.chinamapquiz.ui.game.LevelSelectScreen
+import io.github.saksa84.chinamapquiz.ui.game.ResultScreen
+import io.github.saksa84.chinamapquiz.ui.game.TypeScreen
 import io.github.saksa84.chinamapquiz.ui.home.HomeScreen
 import io.github.saksa84.chinamapquiz.ui.learn.LearnScreen
 
@@ -52,31 +54,42 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
             )
         }
         is LoadState.Ready -> when (vm.screen) {
-            Screen.HOME -> HomeScreen(onLearn = { vm.open(Screen.LEARN) }, onFind = { vm.open(Screen.LEVELS) })
+            Screen.HOME -> HomeScreen(onLearn = vm::openLearn, onMode = vm::chooseMode)
             Screen.LEARN -> LearnScreen(load.data, onBack = { vm.back() })
-            Screen.LEVELS -> LevelSelectScreen(load.levels, onStart = vm::startLevel, onBack = { vm.back() })
-            Screen.FIND -> vm.find?.let { state ->
-                FindScreen(
-                    data = load.data,
-                    state = state,
-                    elapsedMs = vm::elapsedMs,
-                    onTap = vm::tap,
-                    onConfirm = vm::confirm,
-                    onNext = vm::next,
-                    onBack = { vm.back() },
-                )
-                if (vm.confirmingQuit) {
-                    AlertDialog(
-                        onDismissRequest = vm::keepPlaying,
-                        title = { Text(stringResource(R.string.quit_title)) },
-                        text = { Text(stringResource(R.string.quit_message)) },
-                        confirmButton = { TextButton(onClick = vm::quitGame) { Text(stringResource(R.string.quit_confirm)) } },
-                        dismissButton = { TextButton(onClick = vm::keepPlaying) { Text(stringResource(R.string.quit_stay)) } },
+            Screen.LEVELS -> LevelSelectScreen(vm.mode, load.levels, onStart = vm::startLevel, onBack = { vm.back() })
+            Screen.GAME -> vm.game?.let { state ->
+                when (state.mode) {
+                    GameMode.FIND -> FindScreen(
+                        data = load.data,
+                        state = state,
+                        elapsedMs = vm::elapsedMs,
+                        onTap = vm::tap,
+                        onConfirm = vm::confirm,
+                        onNext = vm::next,
+                        onBack = { vm.back() },
+                    )
+                    GameMode.TYPE -> TypeScreen(
+                        data = load.data,
+                        state = state,
+                        elapsedMs = vm::elapsedMs,
+                        onSubmit = vm::submitTyped,
+                        onSkip = vm::skip,
+                        onNext = vm::next,
+                        onBack = { vm.back() },
+                    )
+                    GameMode.ELIMINATE -> EliminateScreen(
+                        data = load.data,
+                        state = state,
+                        elapsedMs = vm::elapsedMs,
+                        onTap = vm::tap,
+                        onBack = { vm.back() },
                     )
                 }
+                if (vm.confirmingQuit) QuitDialog(onQuit = vm::quitGame, onStay = vm::keepPlaying)
             }
             Screen.RESULT -> vm.summary?.let { summary ->
                 ResultScreen(
+                    mode = vm.mode,
                     summary = summary,
                     catalog = load.data.catalog,
                     onReplayMistakes = vm::replayMistakes,
@@ -86,4 +99,15 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
             }
         }
     }
+}
+
+@Composable
+private fun QuitDialog(onQuit: () -> Unit, onStay: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onStay,
+        title = { Text(stringResource(R.string.quit_title)) },
+        text = { Text(stringResource(R.string.quit_message)) },
+        confirmButton = { TextButton(onClick = onQuit) { Text(stringResource(R.string.quit_confirm)) } },
+        dismissButton = { TextButton(onClick = onStay) { Text(stringResource(R.string.quit_stay)) } },
+    )
 }

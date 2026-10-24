@@ -46,6 +46,7 @@ object QuizColors {
     val Land = Color(0xFFC9CFCF)
     val Highlight = Color.White
     val LandOutOfLevel = Color(0xFF6C8487)
+    val Eliminated = Color(0xFF6FAE86) // mode Éliminer : région déjà trouvée
     val Border = Color.White
 }
 

@@ -117,6 +117,24 @@ class QuizSessionTest {
         assertEquals(34, a.size)
     }
 
+    @Test
+    fun typedAnswers_keepTheTextAndTheCheckerVerdict() {
+        val s = session("CN-SC", "CN-XZ")
+        assertTrue(s.answer(selectedId = null, typed = "Sìchuān", correct = true)!!.correct)
+        s.next()
+        val wrong = s.answer(selectedId = null, typed = "Tibey", correct = false)!!
+        assertFalse(wrong.correct)
+        assertEquals("Tibey", s.summary().mistakes.single().typed)
+        assertEquals(1, s.score)
+    }
+
+    @Test
+    fun skippedQuestion_isAMistake() {
+        val s = session("A")
+        s.answer(selectedId = null, typed = null, correct = false)
+        assertEquals(listOf("A"), s.summary().missedTargetIds)
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun duplicateTargets_areRejected() {
         session("A", "A")

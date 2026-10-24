@@ -254,6 +254,10 @@ L'écran de résultat affiche le score, le pourcentage de bonnes réponses, le t
 - Valider les réponses en tenant compte des alias autorisés.
 - Afficher un retour clair en cas de bonne ou mauvaise réponse.
 - Permettre de poursuivre le quiz sans bloquer l'utilisateur.
+- Décisions du 2026-10-24 :
+  - La région demandée est colorée sur la carte ; on tape son nom au clavier du téléphone, sans suggestion.
+  - **Une seule chance**, avec un bouton « Passer ».
+  - **Normalisation stricte** : on ignore la casse, les espaces, les tons et accents (Sìchuān = Sichuan), les apostrophes et les tirets. On accepte le nom principal et les alias listés dans les données. Toute autre faute est une erreur : Shanxi et Shaanxi restent distincts.
 
 ### Mode Eliminate
 
@@ -264,6 +268,12 @@ L'écran de résultat affiche le score, le pourcentage de bonnes réponses, le t
 - Afficher le résultat final.
 
 Définis précisément les règles de ce mode avant de le développer. Il doit être possible de faire évoluer la logique sans modifier le moteur cartographique.
+
+Règles retenues le 2026-10-24 :
+- Une consigne « Trouver : X » à la fois, dans un ordre aléatoire.
+- **Erreurs illimitées** : un toucher vaut une réponse, sans confirmation. Une erreur fait clignoter la région touchée en rouge et la consigne reste la même.
+- Une région trouvée est **éliminée** : elle reste colorée et n'est plus touchable, si bien que la carte se vide peu à peu.
+- La partie se termine quand tout est trouvé. Le résultat compte les régions trouvées du premier coup, les erreurs et le temps ; la liste des erreurs et « rejouer les erreurs » fonctionnent comme dans Trouver.
 
 ### Modes futurs
 
