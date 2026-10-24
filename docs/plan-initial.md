@@ -138,6 +138,12 @@ Exclu : modes de jeu, progression, villes, préfectures, traduction.
 - Ajoutés : `.gitignore` (Android/Kotlin, exclusion de `local.properties`, `*.jks` et `*.keystore`), `README.md` (ouverture, build, installation), `docs/build.md`, `docs/data-sources.md` (registre des sources et licences, vide au départ)
 - `git init` + premier commit (sur ta demande)
 
+## Inspirations à exploiter (captures dans `Inspirations/`, hors Git)
+
+- **Fleuves** (`fleuve.png`) : fond de carte uni et sobre, grands fleuves tracés en bleu soutenu et épais, cours d'eau secondaires en bleu pâle et fin, frontières discrètes. On touche le tracé du fleuve, ce qui demande une tolérance au toucher le long des lignes.
+- **Montagnes** (`montagne.png`) : fond en relief stylisé, avec des teintes d'altitude du vert au orange puis au rouge, et des petits triangles pour les sommets. Les chaînes y sont des **zones** de relief qu'on touche, pas de simples lignes. À rediscuter avant l'étape montagnes : nous avions prévu des lignes de crête (CLAUDE.md section 4), et une zone serait plus facile à toucher.
+- **Commun** : boutons + et − de zoom à droite de la carte, pratiques à une main, à envisager pour tous les modes.
+
 ## Décisions
 
 | Date | Sujet | Décision |
@@ -156,4 +162,11 @@ Exclu : modes de jeu, progression, villes, préfectures, traduction.
 | 2026-10-24 | Source de la carte | Natural Earth 1:10m v5.1.2 (domaine public) au lieu de geoBoundaries, jugé trop grossier. Voir `docs/data-sources.md`. |
 | 2026-10-24 | Noms de Hong Kong et Macao | Nom francophone en principal, pinyin (Xianggang, Aomen) en alias. Le champ `pinyin` devient `name`. |
 | 2026-10-24 | Îles Paracel | Affichées comme territoire disputé, sans rattachement, « revendiquées par » CN, TW, VN (champ `claimedBy`) |
+| 2026-10-24 | Mode Find : erreur | Une seule chance : en cas d'erreur, la bonne région est montrée et on passe à la question suivante |
+| 2026-10-24 | Mode Find : temps | Chronomètre visible pendant la partie, temps affiché sur l'écran de résultat |
+| 2026-10-24 | Niveaux | Pas de notoriété. Zones Nord (15) / Sud (16) selon la ligne Qinling–Huaihe, plus Toute la Chine ; variantes continent (31) / complet (35, avec Hong Kong, Macao, Taïwan et les Paracel). Détail dans CLAUDE.md section 7. |
+| 2026-10-24 | Modes au menu | Trouver, Éliminer, Saisir, Contours (les autres modes des applications de référence sont écartés) |
+| 2026-10-24 | Validation dans Trouver | Toucher pour sélectionner, puis bouton Confirmer ou second toucher sur la même région |
+| 2026-10-24 | Résultats | Liste des erreurs en fin de partie et option « rejouer les erreurs » ; le moteur garde le détail pour une révision plus riche plus tard |
+| 2026-10-24 | Inspirations | Captures d'applications commerciales dans `Inspirations/`, exclues de Git |
 | 2026-10-24 | Appareil cible | Pixel 8 Pro ; minSdk 26 conservé (le Pixel 8 Pro est bien au-dessus) |

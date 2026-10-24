@@ -37,6 +37,17 @@ class MapShape(val id: String, val rings: List<FloatArray>) {
         MapBounds(minX, minY, maxX, maxY)
     }
 
+    /** Surface approximative (somme des anneaux, trous compris), en unités de carte au carré. */
+    val area: Float = rings.sumOf { ring ->
+        var twice = 0.0
+        val n = ring.size / 2
+        for (i in 0 until n) {
+            val j = (i + 1) % n
+            twice += ring[2 * i].toDouble() * ring[2 * j + 1] - ring[2 * j].toDouble() * ring[2 * i + 1]
+        }
+        kotlin.math.abs(twice) / 2
+    }.toFloat()
+
     /** Test pair-impair : un rayon horizontal partant du point coupe un nombre impair d'arêtes. */
     fun contains(x: Float, y: Float): Boolean {
         if (!bounds.contains(x, y)) return false

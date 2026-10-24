@@ -1,0 +1,124 @@
+package io.github.saksa84.chinamapquiz.game
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import kotlin.random.Random
+
+class QuizSessionTest {
+
+    /** Horloge contrôlée par le test. */
+    private var now = 1_000L
+    private val clock = { now }
+
+    private fun session(vararg ids: String) = QuizSession(ids.toList(), clock)
+
+    @Test
+    fun correctAnswer_scoresAndShowsFeedback() {
+        val s = session("CN-SC", "CN-BJ")
+        assertEquals("CN-SC", s.currentTarget)
+        val record = s.answer("CN-SC")!!
+        assertTrue(record.correct)
+        assertEquals(1, s.score)
+        assertEquals(QuizSession.Phase.FEEDBACK, s.phase)
+    }
+
+    @Test
+    fun wrongAnswer_recordsWhatWasTouched() {
+        val s = session("CN-SC")
+        val record = s.answer("CN-CQ")!!
+        assertFalse(record.correct)
+        assertEquals("CN-CQ", record.selectedId)
+        assertEquals(0, s.score)
+    }
+
+    @Test
+    fun onlyOneAnswerPerQuestion() {
+        val s = session("CN-SC", "CN-BJ")
+        s.answer("CN-CQ")
+        assertNull("Une seule chance", s.answer("CN-SC"))
+        assertEquals(0, s.score)
+        assertEquals(1, s.answers.size)
+    }
+
+    @Test
+    fun next_goesThroughAllQuestionsThenFinishes() {
+        val s = session("A", "B", "C")
+        listOf("A", "X", "C").forEach { answer ->
+            s.answer(answer)
+            s.next()
+        }
+        assertEquals(QuizSession.Phase.FINISHED, s.phase)
+        assertNull(s.currentTarget)
+        assertEquals(2, s.score)
+    }
+
+    @Test
+    fun next_isIgnoredBeforeAnswering() {
+        val s = session("A", "B")
+        s.next()
+        assertEquals("A", s.currentTarget)
+    }
+
+    @Test
+    fun emptySession_isImmediatelyFinished() {
+        val s = session()
+        assertEquals(QuizSession.Phase.FINISHED, s.phase)
+        assertNull(s.answer("A"))
+        assertEquals(0.0, s.summary().percent, 0.0)
+    }
+
+    @Test
+    fun timer_runsDuringTheGameAndStopsAtTheLastAnswer() {
+        val s = session("A", "B")
+        now += 2_500
+        assertEquals(2_500, s.elapsedMs())
+        s.answer("A"); s.next()
+        now += 1_000
+        s.answer("B")
+        now += 60_000 // temps passé sur l'écran de résultat : ne compte pas
+        assertEquals(3_500, s.elapsedMs())
+        assertEquals(3_500, s.summary().durationMs)
+    }
+
+    @Test
+    fun summary_listsMistakesInOrder() {
+        val s = session("A", "B", "C")
+        s.answer("A"); s.next()
+        s.answer("X"); s.next()
+        s.answer(null); s.next()
+        val summary = s.summary()
+        assertEquals(3, summary.total)
+        assertEquals(1, summary.correct)
+        assertEquals(listOf("B", "C"), summary.mistakes.map { it.targetId })
+        assertEquals(listOf("X", null), summary.mistakes.map { it.selectedId })
+        assertEquals(100.0 / 3, summary.percent, 1e-9)
+    }
+
+    @Test
+    fun replayingMistakes_asksOnlyTheMissedPlaces() {
+        val first = session("A", "B", "C")
+        first.answer("A"); first.next()
+        first.answer("X"); first.next()
+        first.answer("Y"); first.next()
+        val replay = QuizSession.shuffled(first.summary().mistakes.map { it.targetId }, clock, Random(1))
+        assertEquals(setOf("B", "C"), replay.targetIds.toSet())
+    }
+
+    @Test
+    fun shuffled_isReproducibleWithASeedAndAsksEachPlaceOnce() {
+        val ids = (1..34).map { "P$it" }
+        val a = QuizSession.shuffled(ids, clock, Random(42)).targetIds
+        val b = QuizSession.shuffled(ids, clock, Random(42)).targetIds
+        assertEquals(a, b)
+        assertEquals(ids.toSet(), a.toSet())
+        assertEquals(34, a.size)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun duplicateTargets_areRejected() {
+        session("A", "A")
+    }
+}

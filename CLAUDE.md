@@ -212,6 +212,22 @@ La carte doit permettre d'identifier chaque région par un identifiant unique, e
 
 Conçois le moteur de jeu indépendamment des écrans. Les différents modes doivent réutiliser les mêmes données et services de validation.
 
+### Modes retenus et parcours
+
+Menu des modes : **Trouver** (Find), **Éliminer** (Eliminate), **Saisir** (Type) et **Contours** (reconnaître une région d'après sa silhouette). Aucun autre mode n'est prévu pour l'instant. Les modes pas encore développés apparaissent comme « bientôt disponibles ».
+
+Parcours : mode → niveau (zone × variante) → partie → résultat. Le style s'inspire librement des applications de quiz géographique, sans copie : tuiles sombres, chrono en haut, consigne et bouton en bas.
+
+### Niveaux (configuration `assets/game/levels.json`)
+
+- Pas de classement par notoriété.
+- **Zones équilibrées** : Nord (15 unités) et Sud (16 unités), séparées selon la ligne Qinling–Huaihe, limite traditionnelle entre Chine du Nord et du Sud. Qinghai est rattaché au Nord et Xizang au Sud pour équilibrer. S'y ajoute « Toute la Chine ».
+- **Variantes** : « continent » (les 31 unités de Chine continentale) et « complet » (avec Hong Kong, Macao, Taïwan et les îles Paracel, soit 35).
+
+### Résultats et erreurs
+
+L'écran de résultat affiche le score, le pourcentage de bonnes réponses, le temps et **la liste des erreurs** (lieu cherché, lieu touché), avec la possibilité de rejouer uniquement les erreurs. Le moteur conserve le détail de chaque réponse pour permettre plus tard une révision plus riche (voir chaque erreur sur la carte, statistiques par région).
+
 ### Mode Learn
 
 - Afficher la carte.
@@ -227,6 +243,9 @@ Conçois le moteur de jeu indépendamment des écrans. Les différents modes doi
 - Fournir un retour visuel immédiat.
 - Passer à la question suivante.
 - Afficher la progression de la session.
+- **Une seule chance par question** : un toucher sélectionne la région ; on valide avec le bouton Confirmer ou en touchant une seconde fois la région sélectionnée. En cas d'erreur, la bonne région est montrée et l'on passe à la suite.
+- Chronomètre visible pendant la partie, points et numéro de la question affichés.
+- Seules les régions du niveau choisi sont sélectionnables ; les autres sont grisées.
 
 ### Mode Type
 

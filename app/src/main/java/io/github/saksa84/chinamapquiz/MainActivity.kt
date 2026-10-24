@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import io.github.saksa84.chinamapquiz.ui.learn.LearnScreen
+import io.github.saksa84.chinamapquiz.ui.ChinaMapQuizApp
 import io.github.saksa84.chinamapquiz.ui.theme.ChinaMapQuizTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ChinaMapQuizTheme {
-                LearnScreen()
+                ChinaMapQuizApp()
             }
         }
     }

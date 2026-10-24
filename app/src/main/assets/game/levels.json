@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "comment": "Niveaux des modes de quiz. Zones équilibrées de part et d'autre de la ligne Qinling–Huaihe ; Qinghai au Nord, Xizang au Sud. Voir CLAUDE.md section 7.",
+  "specialIds": ["CN-HK", "CN-MO", "CN-TW", "IS-PARACEL"],
+  "allZone": { "id": "all", "name": "Toute la Chine" },
+  "zones": [
+    {
+      "id": "north",
+      "name": "Nord",
+      "memberIds": [
+        "CN-HL", "CN-JL", "CN-LN", "CN-BJ", "CN-TJ", "CN-HE", "CN-SX", "CN-NM",
+        "CN-SD", "CN-HA", "CN-SN", "CN-GS", "CN-NX", "CN-QH", "CN-XJ"
+      ]
+    },
+    {
+      "id": "south",
+      "name": "Sud",
+      "memberIds": [
+        "CN-SH", "CN-JS", "CN-ZJ", "CN-AH", "CN-FJ", "CN-JX", "CN-HB", "CN-HN",
+        "CN-GD", "CN-GX", "CN-HI", "CN-CQ", "CN-SC", "CN-GZ", "CN-YN", "CN-XZ",
+        "CN-HK", "CN-MO", "CN-TW", "IS-PARACEL"
+      ]
+    }
+  ]
+}

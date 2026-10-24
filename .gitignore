@@ -19,6 +19,9 @@ local.properties
 *.keystore
 keystore.properties
 
+# Captures d'applications commerciales servant d'inspiration : jamais publiées
+/Inspirations/
+
 # Données sources téléchargées (lourdes, régénérables avec tools/download_natural_earth.py)
 /tools/raw/
 

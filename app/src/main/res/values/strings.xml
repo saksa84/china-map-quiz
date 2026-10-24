@@ -13,6 +13,48 @@
     <string name="info_also_known_as">Aussi : %1$s</string>
     <string name="info_disputed">Territoire disputé, revendiqué par : %1$s</string>
 
+    <string name="home_title">China Map Quiz</string>
+    <string name="mode_learn">Apprendre</string>
+    <string name="mode_learn_sub">Explorer la carte</string>
+    <string name="mode_find">Trouver</string>
+    <string name="mode_find_sub">Provinces</string>
+    <string name="mode_eliminate">Éliminer</string>
+    <string name="mode_type">Saisir</string>
+    <string name="mode_outlines">Contours</string>
+    <string name="mode_soon">Bientôt</string>
+
+    <string name="levels_title">Trouver : niveau</string>
+    <string name="variant_mainland">Continent</string>
+    <string name="variant_complete">Complet</string>
+    <plurals name="question_count">
+        <item quantity="one">%1$d lieu</item>
+        <item quantity="other">%1$d lieux</item>
+    </plurals>
+
+    <string name="find_prompt">Trouver : %1$s</string>
+    <string name="find_points">Points : %1$d</string>
+    <string name="find_round">Tour : %1$d / %2$d</string>
+    <string name="find_correct">Correct !</string>
+    <string name="find_wrong">Faux ! Vous avez sélectionné : %1$s</string>
+    <string name="find_confirm">CONFIRMER</string>
+    <string name="find_next">SUIVANT</string>
+    <string name="find_results">RÉSULTATS</string>
+
+    <string name="quit_title">Quitter la partie ?</string>
+    <string name="quit_message">La partie en cours sera perdue.</string>
+    <string name="quit_confirm">Quitter</string>
+    <string name="quit_stay">Continuer la partie</string>
+
+    <string name="result_title">Partie terminée</string>
+    <string name="result_score">Score : %1$d / %2$d</string>
+    <string name="result_percent">Bonnes réponses : %1$.1f %%</string>
+    <string name="result_time">Temps : %1$s</string>
+    <string name="result_no_mistakes">Aucune erreur, bravo !</string>
+    <string name="result_mistakes_title">Vos erreurs</string>
+    <string name="result_you_selected">Vous avez sélectionné : %1$s</string>
+    <string name="result_replay_mistakes">Rejouer les erreurs (%1$d)</string>
+    <string name="result_replay">Rejouer</string>
+
     <string name="type_country">Pays</string>
     <string name="type_province">Province</string>
     <string name="type_autonomous_region">Région autonome</string>

@@ -13,10 +13,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathFillType
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
@@ -29,8 +31,17 @@ import io.github.saksa84.chinamapquiz.map.MapGeometry
 import io.github.saksa84.chinamapquiz.map.MapShape
 import io.github.saksa84.chinamapquiz.map.MapViewport
 
-/** Apparence d'un lieu sur la carte, décidée par l'écran appelant (mode Learn, Find…). */
-data class ShapeStyle(val fill: Color, val dashedBorder: Boolean = false)
+/**
+ * Apparence d'un lieu sur la carte, décidée par l'écran appelant (mode Learn, Find…).
+ * @param smallMarker quand le lieu est trop petit pour être vu, le dessiner comme un point grossi
+ * @param emphasized lieu sélectionné ou montré en réponse : s'il est minuscule, un réticule l'entoure
+ */
+data class ShapeStyle(
+    val fill: Color,
+    val dashedBorder: Boolean = false,
+    val smallMarker: Boolean = true,
+    val emphasized: Boolean = false,
+)
 
 /**
  * Carte interactive : dessin des contours, zoom à deux doigts, déplacement, toucher.
@@ -78,6 +89,14 @@ fun ChinaMap(
     val touchTolerancePx = with(LocalDensity.current) { 16.dp.toPx() }
     val borderPx = with(LocalDensity.current) { 0.8.dp.toPx() }
     val selectedBorderPx = with(LocalDensity.current) { 2.5.dp.toPx() }
+    // Lieux dont la surface à l'écran est inférieure à un carré de ce côté (Macao, Hong Kong,
+    // Paracel en vue d'ensemble) : dessinés comme un point grossi. La surface compte, pas
+    // l'étendue : les Paracel s'étalent sur 160 km mais ne font que quelques km².
+    val tinyThresholdPx = with(LocalDensity.current) { 6.dp.toPx() }
+    val dotRadiusPx = with(LocalDensity.current) { 3.dp.toPx() }
+    val dotBorderPx = with(LocalDensity.current) { 1.dp.toPx() }
+    val reticleRadiusPx = with(LocalDensity.current) { 46.dp.toPx() }
+    val reticleStrokePx = with(LocalDensity.current) { 1.5.dp.toPx() }
     // Les gestionnaires de gestes sont créés une fois : ils lisent toujours la dernière valeur via ces références.
     val currentViewport by rememberUpdatedState(viewport)
     val currentOnTap by rememberUpdatedState(onShapeTap)
@@ -126,6 +145,42 @@ fun ChinaMap(
                 drawPath(path, selectedBorderColor, style = Stroke(width = selectedBorderPx / vp.scale))
             }
         }
+
+        // Lieux minuscules à ce zoom, dessinés en coordonnées écran pour garder une taille fixe.
+        val tiny = geometry.shapes.mapNotNull { shape ->
+            val style = styleOf(shape.id)
+            if (!style.smallMarker || shape.area * vp.scale * vp.scale >= tinyThresholdPx * tinyThresholdPx) return@mapNotNull null
+            val b = shape.bounds
+            Triple(shape.id, style, Offset((b.minX + b.maxX) / 2 * vp.scale + vp.offsetX, (b.minY + b.maxY) / 2 * vp.scale + vp.offsetY))
+        }
+        // D'abord les réticules (sélection, réponse), puis les points par-dessus.
+        for ((_, style, center) in tiny) {
+            if (style.emphasized) drawReticle(center, reticleRadiusPx, reticleStrokePx)
+        }
+        for ((id, style, center) in tiny) {
+            drawCircle(style.fill, radius = dotRadiusPx, center = center)
+            val (ringColor, ringWidth) = if (id == selectedId) selectedBorderColor to dotBorderPx * 2 else borderColor to dotBorderPx
+            drawCircle(ringColor, radius = dotRadiusPx, center = center, style = Stroke(ringWidth))
+        }
+    }
+}
+
+/**
+ * Réticule autour d'un lieu minuscule sélectionné : disque sombre translucide, repères de visée
+ * aux quatre points cardinaux et croix pointillée, pour voir clairement ce qui est choisi.
+ */
+private fun DrawScope.drawReticle(center: Offset, radius: Float, stroke: Float) {
+    drawCircle(
+        Brush.radialGradient(listOf(Color.Black.copy(alpha = 0.08f), Color.Black.copy(alpha = 0.30f)), center, radius),
+        radius = radius,
+        center = center,
+    )
+    drawCircle(Color.White.copy(alpha = 0.35f), radius = radius, center = center, style = Stroke(stroke))
+    val dashed = PathEffect.dashPathEffect(floatArrayOf(stroke * 2, stroke * 3))
+    val tick = radius * 0.2f
+    for (direction in listOf(Offset(1f, 0f), Offset(-1f, 0f), Offset(0f, 1f), Offset(0f, -1f))) {
+        drawLine(Color.White.copy(alpha = 0.7f), center + direction * (radius - tick), center + direction * radius, stroke)
+        drawLine(Color.White.copy(alpha = 0.25f), center + direction * (radius * 0.25f), center + direction * (radius - tick), stroke * 0.7f, pathEffect = dashed)
     }
 }
 

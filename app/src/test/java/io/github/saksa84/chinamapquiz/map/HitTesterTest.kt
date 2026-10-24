@@ -57,6 +57,13 @@ class HitTesterTest {
     }
 
     @Test
+    fun areaSumsAllRings() {
+        // 100 (carré) + 4 (trou, compté positivement) + 1 (île)
+        assertEquals(105f, withHole.area, 1e-3f)
+        assertEquals(25f, neighbour.area, 1e-3f)
+    }
+
+    @Test
     fun boundsCoverAllRings() {
         assertEquals(MapBounds(0f, 0f, 21f, 10f), withHole.bounds)
         assertTrue(withHole.distanceToEdge(2f, 5f) == 2f)
