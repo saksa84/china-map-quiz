@@ -77,6 +77,7 @@
     <string name="reset_cancel">Annuler</string>
     <string name="about_title">À propos</string>
     <string name="about_text">China Map Quiz, version %1$s. Application personnelle d\'apprentissage de la géographie chinoise : hors ligne, sans compte, sans publicité ni collecte de données.</string>
+    <string name="about_credits">Réalisée entièrement avec une IA générative, Claude Code (Anthropic) : code, données, fiches et tests. Les fiches « En savoir plus » peuvent contenir des erreurs. Inspirée des applications de quiz géographique de Qbis Studio (World Map Quiz) : projet indépendant, sans aucun élément copié, ni affilié à Qbis Studio.</string>
     <string name="about_sources">Cartes : Made with Natural Earth (domaine public), version 5.1.2. Codes des provinces : ISO 3166-2:CN. Territoires disputés présentés de façon neutre (« revendiqué par »).</string>
 
     <string name="quit_title">Quitter la partie ?</string>

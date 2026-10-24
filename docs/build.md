@@ -41,7 +41,18 @@ Le téléphone doit apparaître avec l'état `device`. Les autres états :
 - `unauthorized` : la fenêtre d'autorisation de l'étape 2 n'a pas été acceptée.
 - Liste vide : le câble ou le mode USB est en cause.
 
-## Sans câble : installer l'APK
+## Sans câble : télécharger l'APK depuis GitHub
+
+Chaque version publiée a une page **Release** sur GitHub, avec le fichier `app-debug.apk` en pièce jointe.
+
+1. Sur le téléphone, ouvrez dans Chrome la page **Releases** du dépôt, puis la dernière version.
+2. Touchez `app-debug.apk` dans la section « Assets ».
+3. Ouvrez le fichier téléchargé. La première fois, Android demande d'autoriser Chrome à installer des applications inconnues : acceptez pour cette source uniquement.
+4. Installez. Une nouvelle version remplace l'ancienne et conserve la progression, à condition d'être signée avec la même clé : c'est le cas des APK debug compilés sur le même PC.
+
+Publier une version : sur la page du dépôt, **Releases → Draft a new release**, créez le tag (`v1.1`), puis faites glisser `app\build\outputs\apk\debug\app-debug.apk` dans « Attach binaries ».
+
+## Sans câble : copier l'APK soi-même
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
@@ -52,12 +63,13 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 2. Sur le téléphone, ouvrez le fichier. Android demande d'autoriser l'installation d'applications inconnues depuis l'application utilisée (Drive, Fichiers…) : acceptez pour cette source uniquement.
 3. Installez.
 
-Cet APK est une version **debug** : signée avec une clé de développement, pas destinée à être distribuée. La version **release** signée viendra à l'étape 11.
+Cet APK est une version **debug** : signée avec une clé de développement, pas destinée à être distribuée. Une version **release** signée demandera une clé de signature personnelle, à ne jamais versionner dans Git (voir `.gitignore`).
 
 ## Tests et données
 
 ```powershell
-.\gradlew.bat testDebugUnitTest            # tests unitaires (sur le PC, sans émulateur)
+.\gradlew.bat testDebugUnitTest            # 138 tests unitaires (sur le PC, sans émulateur), décrits dans docs/tests-unitaires.md
+python tools/build_tests_pdf.py            # régénérer docs/tests-unitaires.pdf après modification du .md
 python tools/download_natural_earth.py     # sources cartographiques (une fois)
 python tools/build_map_geometry.py         # régénérer la carte après modification du script
 ```

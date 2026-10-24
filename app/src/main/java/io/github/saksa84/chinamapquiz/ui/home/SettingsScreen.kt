@@ -62,6 +62,7 @@ fun SettingsScreen(
 
                 Text(stringResource(R.string.about_title), color = QuizColors.Accent, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                 Text(stringResource(R.string.about_text, version), color = QuizColors.OnDark)
+                Text(stringResource(R.string.about_credits), color = QuizColors.OnDark)
                 Text(stringResource(R.string.about_sources), color = QuizColors.Muted)
             }
         }

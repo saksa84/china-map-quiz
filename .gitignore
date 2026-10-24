@@ -30,3 +30,6 @@ keystore.properties
 # APK/AAB générés hors du dossier build
 *.apk
 *.aab
+
+# Réglages locaux d'Android Studio (appareil choisi, avec son numéro de série)
+/.idea/deploymentTargetSelector.xml
