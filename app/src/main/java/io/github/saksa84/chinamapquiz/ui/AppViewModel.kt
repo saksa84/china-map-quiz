@@ -9,7 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.data.AssetGeoRepository
-import io.github.saksa84.chinamapquiz.data.Category
+import io.github.saksa84.chinamapquiz.game.GeoCategory
 import io.github.saksa84.chinamapquiz.data.MapData
 import io.github.saksa84.chinamapquiz.game.AnswerChecker
 import io.github.saksa84.chinamapquiz.game.AnswerRecord
@@ -27,14 +27,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-enum class Screen { HOME, LEARN, LEVELS, GAME, RESULT, PROGRESS, SETTINGS }
+/** Écrans. Parcours : accueil (catégories) → catégorie (modes) → niveau → partie → résultat. */
+enum class Screen { HOME, CATEGORY, LEARN, LEVELS, GAME, RESULT, PROGRESS, SETTINGS }
 
 /** Modes de quiz jouables. */
 enum class GameMode { FIND, TYPE, ELIMINATE }
 
 sealed interface LoadState {
     data object Loading : LoadState
-    data class Ready(val data: MapData, val levels: List<QuizLevel>) : LoadState
+    data class Ready(val data: MapData, val levels: Map<GeoCategory, List<QuizLevel>>) : LoadState {
+        /** Tous les lieux jouables, toutes catégories confondues. */
+        val playableIds: Set<String> get() = levels.values.flatten().flatMap { it.targetIds }.toSet()
+    }
     data class Failed(val message: String) : LoadState
 }
 
@@ -70,6 +74,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var loadState by mutableStateOf<LoadState>(LoadState.Loading)
         private set
     var screen by mutableStateOf(Screen.HOME)
+        private set
+    var category by mutableStateOf(GeoCategory.REGIONS)
         private set
     var mode by mutableStateOf(GameMode.FIND)
         private set
@@ -111,12 +117,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                     val assets = getApplication<Application>().assets
                     val data = AssetGeoRepository(assets).load()
                     val config = LevelsConfig.parse(assets.open("game/levels.json").bufferedReader().use { it.readText() })
-                    val mapIds = (data.catalog.inCategory(Category.PROVINCIAL) + data.catalog.inCategory(Category.ISLAND))
-                        .map { it.id }
-                        .filter { data.geometry[it] != null }
-                        .toSet()
+                    // Jouable : présent dans les données ET dessiné sur la carte.
+                    val playable = data.catalog.entities.map { it.id }.filter { data.geometry[it] != null }.toSet()
                     checker = AnswerChecker(data.catalog)
-                    LoadState.Ready(data, QuizLevels.build(config, mapIds))
+                    LoadState.Ready(data, QuizLevels.buildAll(config, playable))
                 }.getOrElse { LoadState.Failed(it.message ?: it.toString()) }
             }
         }
@@ -134,10 +138,18 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch { store.setShowHanzi(show) }
     }
 
+    fun chooseCategory(newCategory: GeoCategory) {
+        category = newCategory
+        screen = Screen.CATEGORY
+    }
+
     fun chooseMode(newMode: GameMode) {
         mode = newMode
         screen = Screen.LEVELS
     }
+
+    /** Clé de progression du mode en cours dans la catégorie en cours. */
+    val progressKey: String get() = category.progressKey(mode.name)
 
     private val isPlaying: Boolean
         get() = screen == Screen.GAME && when (mode) {
@@ -156,8 +168,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
         screen = when (screen) {
             Screen.HOME -> return false
-            Screen.LEARN, Screen.LEVELS, Screen.PROGRESS, Screen.SETTINGS -> Screen.HOME
-            Screen.GAME, Screen.RESULT -> Screen.LEVELS
+            Screen.CATEGORY, Screen.PROGRESS, Screen.SETTINGS -> Screen.HOME
+            Screen.LEARN, Screen.LEVELS -> Screen.CATEGORY
+            // Une révision lancée depuis l'écran Progression y ramène.
+            Screen.GAME, Screen.RESULT -> if (level?.id?.startsWith(REVIEW_PREFIX) == true) Screen.PROGRESS else Screen.LEVELS
         }
         return true
     }
@@ -166,7 +180,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         confirmingQuit = false
         quiz = null
         eliminate = null
-        screen = Screen.LEVELS
+        screen = if (level?.id?.startsWith(REVIEW_PREFIX) == true) Screen.PROGRESS else Screen.LEVELS
     }
 
     fun keepPlaying() {
@@ -263,7 +277,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         if (lvl != null) {
             // « Rejouer les erreurs » ne porte que sur une partie du niveau : pas de record, mais les erreurs comptent.
             val isReplay = lvl.id.endsWith(MISTAKES_SUFFIX)
-            val outcome = progress.record(mode.name, lvl.id.removeSuffix(MISTAKES_SUFFIX), result, countsForBest = !isReplay)
+            val outcome = progress.record(progressKey, lvl.id.removeSuffix(MISTAKES_SUFFIX), result, countsForBest = !isReplay)
             progress = outcome.progress
             newRecord = outcome.newRecord
             viewModelScope.launch { store.save(outcome.progress) }
@@ -276,15 +290,18 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         level?.let(::startLevel)
     }
 
-    /** Révision (mode Trouver) des lieux le plus souvent manqués, toutes parties confondues. */
+    /**
+     * Révision (mode Trouver) des lieux le plus souvent manqués, toutes catégories confondues :
+     * provinces, villes, cours d'eau et montagnes peuvent se mêler dans la même partie.
+     */
     fun reviewMissed(count: Int) {
         val ready = loadState as? LoadState.Ready ?: return
-        val playable = ready.levels.flatMap { it.targetIds }.toSet()
+        val playable = ready.playableIds
         val ids = progress.mostMissed(count).map { it.first }.filter { it in playable }
         if (ids.isEmpty()) return
         mode = GameMode.FIND
         val name = getApplication<Application>().getString(R.string.review_level)
-        startLevel(QuizLevel("review$MISTAKES_SUFFIX", name, includesSpecial = true, targetIds = ids))
+        startLevel(QuizLevel("$REVIEW_PREFIX$MISTAKES_SUFFIX", name, includesSpecial = true, targetIds = ids))
     }
 
     /** Nouvelle partie limitée aux lieux manqués. */
@@ -298,6 +315,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     private companion object {
         const val MISTAKES_SUFFIX = "-mistakes"
+        const val REVIEW_PREFIX = "review"
     }
 
     private fun refresh() {

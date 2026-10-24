@@ -48,6 +48,11 @@ object QuizColors {
     val Highlight = Color.White
     val LandOutOfLevel = Color(0xFF6C8487)
     val Eliminated = Color(0xFF6FAE86) // mode Éliminer : région déjà trouvée
+
+    // Lieux posés sur le fond de carte (villes, cours d'eau, montagnes).
+    val River = Color(0xFF5FB4FF)
+    val Range = Color(0xFFB07A4F)
+    val Point = Color.White
     val Border = Color.White
 }
 

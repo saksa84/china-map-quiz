@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "census-2020-urban",
+      "name": "Population urbaine des villes, recensement chinois de 2020 (liste Wikipédia « List of cities in China by population ») ; coordonnées Natural Earth 1:10m v5.1.2",
+      "license": "Faits non protégeables ; coordonnées Natural Earth (domaine public)",
+      "url": "https://en.wikipedia.org/wiki/List_of_cities_in_China_by_population",
+      "version": "2020"
+    },
+    {
+      "id": "manual-special-cities",
+      "name": "Villes principales des unités spéciales (hors recensement de Chine continentale) ; coordonnées Natural Earth 1:10m v5.1.2",
+      "license": "Faits non protégeables ; coordonnées Natural Earth (domaine public)"
+    }
+  ],
+  "entities": [
+    { "id": "CT-SHANGHAI", "type": "city", "name": "Shanghai", "hanzi": "上海", "parentId": "CN-SH", "population": 21909814, "sourceId": "census-2020-urban" },
+    { "id": "CT-BEIJING", "type": "city", "name": "Beijing", "aliases": ["Pekin", "Peking"], "hanzi": "北京", "parentId": "CN-BJ", "population": 18960744, "sourceId": "census-2020-urban" },
+    { "id": "CT-SHENZHEN", "type": "city", "name": "Shenzhen", "hanzi": "深圳", "parentId": "CN-GD", "population": 17444609, "sourceId": "census-2020-urban" },
+    { "id": "CT-GUANGZHOU", "type": "city", "name": "Guangzhou", "aliases": ["Canton"], "hanzi": "广州", "parentId": "CN-GD", "population": 16096724, "sourceId": "census-2020-urban" },
+    { "id": "CT-CHENGDU", "type": "city", "name": "Chengdu", "hanzi": "成都", "parentId": "CN-SC", "population": 13568357, "sourceId": "census-2020-urban" },
+    { "id": "CT-TIANJIN", "type": "city", "name": "Tianjin", "aliases": ["Tientsin"], "hanzi": "天津", "parentId": "CN-TJ", "population": 11052404, "sourceId": "census-2020-urban" },
+    { "id": "CT-WUHAN", "type": "city", "name": "Wuhan", "hanzi": "武汉", "parentId": "CN-HB", "population": 10494879, "sourceId": "census-2020-urban" },
+    { "id": "CT-DONGGUAN", "type": "city", "name": "Dongguan", "hanzi": "东莞", "parentId": "CN-GD", "population": 9644871, "sourceId": "census-2020-urban" },
+    { "id": "CT-CHONGQING", "type": "city", "name": "Chongqing", "aliases": ["Chungking", "Tchongking"], "hanzi": "重庆", "parentId": "CN-CQ", "population": 9580819, "sourceId": "census-2020-urban" },
+    { "id": "CT-XIAN", "type": "city", "name": "Xi'an", "aliases": ["Xian", "Sian"], "hanzi": "西安", "parentId": "CN-SN", "population": 9392938, "sourceId": "census-2020-urban" },
+    { "id": "CT-HANGZHOU", "type": "city", "name": "Hangzhou", "hanzi": "杭州", "parentId": "CN-ZJ", "population": 9236032, "sourceId": "census-2020-urban" },
+    { "id": "CT-FOSHAN", "type": "city", "name": "Foshan", "hanzi": "佛山", "parentId": "CN-GD", "population": 9042509, "sourceId": "census-2020-urban" },
+    { "id": "CT-NANJING", "type": "city", "name": "Nanjing", "aliases": ["Nankin", "Nanking"], "hanzi": "南京", "parentId": "CN-JS", "population": 7519814, "sourceId": "census-2020-urban" },
+    { "id": "CT-SHENYANG", "type": "city", "name": "Shenyang", "aliases": ["Moukden", "Mukden"], "hanzi": "沈阳", "parentId": "CN-LN", "population": 7026358, "sourceId": "census-2020-urban" },
+    { "id": "CT-ZHENGZHOU", "type": "city", "name": "Zhengzhou", "hanzi": "郑州", "parentId": "CN-HA", "population": 6461013, "sourceId": "census-2020-urban" },
+    { "id": "CT-QINGDAO", "type": "city", "name": "Qingdao", "aliases": ["Tsingtao"], "hanzi": "青岛", "parentId": "CN-SD", "population": 6165279, "sourceId": "census-2020-urban" },
+    { "id": "CT-SUZHOU", "type": "city", "name": "Suzhou", "hanzi": "苏州", "parentId": "CN-JS", "population": 5892892, "sourceId": "census-2020-urban" },
+    { "id": "CT-JINAN", "type": "city", "name": "Jinan", "hanzi": "济南", "parentId": "CN-SD", "population": 5648162, "sourceId": "census-2020-urban" },
+    { "id": "CT-CHANGSHA", "type": "city", "name": "Changsha", "hanzi": "长沙", "parentId": "CN-HN", "population": 5630256, "sourceId": "census-2020-urban" },
+    { "id": "CT-KUNMING", "type": "city", "name": "Kunming", "hanzi": "昆明", "parentId": "CN-YN", "population": 5273144, "sourceId": "census-2020-urban" },
+    { "id": "CT-HARBIN", "type": "city", "name": "Harbin", "aliases": ["Haerbin"], "hanzi": "哈尔滨", "parentId": "CN-HL", "population": 5242897, "sourceId": "census-2020-urban" },
+    { "id": "CT-SHIJIAZHUANG", "type": "city", "name": "Shijiazhuang", "hanzi": "石家庄", "parentId": "CN-HE", "population": 5090440, "sourceId": "census-2020-urban" },
+    { "id": "CT-HEFEI", "type": "city", "name": "Hefei", "hanzi": "合肥", "parentId": "CN-AH", "population": 5055978, "sourceId": "census-2020-urban" },
+    { "id": "CT-DALIAN", "type": "city", "name": "Dalian", "hanzi": "大连", "parentId": "CN-LN", "population": 4913879, "sourceId": "census-2020-urban" },
+    { "id": "CT-XIAMEN", "type": "city", "name": "Xiamen", "aliases": ["Amoy"], "hanzi": "厦门", "parentId": "CN-FJ", "population": 4617251, "sourceId": "census-2020-urban" },
+    { "id": "CT-NANNING", "type": "city", "name": "Nanning", "hanzi": "南宁", "parentId": "CN-GX", "population": 4582703, "sourceId": "census-2020-urban" },
+    { "id": "CT-CHANGCHUN", "type": "city", "name": "Changchun", "hanzi": "长春", "parentId": "CN-JL", "population": 4557356, "sourceId": "census-2020-urban" },
+    { "id": "CT-TAIYUAN", "type": "city", "name": "Taiyuan", "hanzi": "太原", "parentId": "CN-SX", "population": 4303673, "sourceId": "census-2020-urban" },
+    { "id": "CT-GUIYANG", "type": "city", "name": "Guiyang", "hanzi": "贵阳", "parentId": "CN-GZ", "population": 4021275, "sourceId": "census-2020-urban" },
+    { "id": "CT-WUXI", "type": "city", "name": "Wuxi", "hanzi": "无锡", "parentId": "CN-JS", "population": 3956985, "sourceId": "census-2020-urban" },
+    { "id": "CT-URUMQI", "type": "city", "name": "Urumqi", "aliases": ["Wulumuqi", "Urumchi"], "hanzi": "乌鲁木齐", "parentId": "CN-XJ", "population": 3842560, "sourceId": "census-2020-urban" },
+    { "id": "CT-ZHONGSHAN", "type": "city", "name": "Zhongshan", "hanzi": "中山", "parentId": "CN-GD", "population": 3841873, "sourceId": "census-2020-urban" },
+    { "id": "CT-SHANTOU", "type": "city", "name": "Shantou", "aliases": ["Swatow"], "hanzi": "汕头", "parentId": "CN-GD", "population": 3838900, "sourceId": "census-2020-urban" },
+    { "id": "CT-NINGBO", "type": "city", "name": "Ningbo", "hanzi": "宁波", "parentId": "CN-ZJ", "population": 3731203, "sourceId": "census-2020-urban" },
+    { "id": "CT-FUZHOU", "type": "city", "name": "Fuzhou", "hanzi": "福州", "parentId": "CN-FJ", "population": 3723454, "sourceId": "census-2020-urban" },
+    { "id": "CT-NANCHANG", "type": "city", "name": "Nanchang", "hanzi": "南昌", "parentId": "CN-JX", "population": 3518975, "sourceId": "census-2020-urban" },
+    { "id": "CT-CHANGZHOU", "type": "city", "name": "Changzhou", "hanzi": "常州", "parentId": "CN-JS", "population": 3187315, "sourceId": "census-2020-urban" },
+    { "id": "CT-LANZHOU", "type": "city", "name": "Lanzhou", "hanzi": "兰州", "parentId": "CN-GS", "population": 3012577, "sourceId": "census-2020-urban" },
+
+    { "id": "CT-HONGKONG", "type": "city", "name": "Hong Kong", "aliases": ["Xianggang", "Hongkong"], "hanzi": "香港", "parentId": "CN-HK", "sourceId": "manual-special-cities" },
+    { "id": "CT-TAIPEI", "type": "city", "name": "Taipei", "aliases": ["Taibei"], "hanzi": "台北", "parentId": "CN-TW", "sourceId": "manual-special-cities" }
+  ]
+}

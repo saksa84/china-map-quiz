@@ -21,5 +21,92 @@
         "CN-HK", "CN-MO", "CN-TW", "IS-PARACEL"
       ]
     }
-  ]
+  ],
+  "groups": {
+    "cities": [
+      {
+        "id": "cities-top15", "name": "Les 15 plus grandes", "subtitle": "Plus de 6 millions",
+        "memberIds": [
+          "CT-SHANGHAI", "CT-BEIJING", "CT-SHENZHEN", "CT-GUANGZHOU", "CT-CHENGDU", "CT-TIANJIN", "CT-WUHAN", "CT-DONGGUAN",
+          "CT-CHONGQING", "CT-XIAN", "CT-HANGZHOU", "CT-FOSHAN", "CT-NANJING", "CT-SHENYANG", "CT-ZHENGZHOU"
+        ]
+      },
+      {
+        "id": "cities-mainland", "name": "Grandes villes", "subtitle": "Plus de 3 millions",
+        "memberIds": [
+          "CT-SHANGHAI", "CT-BEIJING", "CT-SHENZHEN", "CT-GUANGZHOU", "CT-CHENGDU", "CT-TIANJIN", "CT-WUHAN", "CT-DONGGUAN",
+          "CT-CHONGQING", "CT-XIAN", "CT-HANGZHOU", "CT-FOSHAN", "CT-NANJING", "CT-SHENYANG", "CT-ZHENGZHOU", "CT-QINGDAO",
+          "CT-SUZHOU", "CT-JINAN", "CT-CHANGSHA", "CT-KUNMING", "CT-HARBIN", "CT-SHIJIAZHUANG", "CT-HEFEI", "CT-DALIAN",
+          "CT-XIAMEN", "CT-NANNING", "CT-CHANGCHUN", "CT-TAIYUAN", "CT-GUIYANG", "CT-WUXI", "CT-URUMQI", "CT-ZHONGSHAN",
+          "CT-SHANTOU", "CT-NINGBO", "CT-FUZHOU", "CT-NANCHANG", "CT-CHANGZHOU", "CT-LANZHOU"
+        ]
+      },
+      {
+        "id": "cities-complete", "name": "Grandes villes", "subtitle": "Avec Hong Kong et Taipei",
+        "memberIds": [
+          "CT-SHANGHAI", "CT-BEIJING", "CT-SHENZHEN", "CT-GUANGZHOU", "CT-CHENGDU", "CT-TIANJIN", "CT-WUHAN", "CT-DONGGUAN",
+          "CT-CHONGQING", "CT-XIAN", "CT-HANGZHOU", "CT-FOSHAN", "CT-NANJING", "CT-SHENYANG", "CT-ZHENGZHOU", "CT-QINGDAO",
+          "CT-SUZHOU", "CT-JINAN", "CT-CHANGSHA", "CT-KUNMING", "CT-HARBIN", "CT-SHIJIAZHUANG", "CT-HEFEI", "CT-DALIAN",
+          "CT-XIAMEN", "CT-NANNING", "CT-CHANGCHUN", "CT-TAIYUAN", "CT-GUIYANG", "CT-WUXI", "CT-URUMQI", "CT-ZHONGSHAN",
+          "CT-SHANTOU", "CT-NINGBO", "CT-FUZHOU", "CT-NANCHANG", "CT-CHANGZHOU", "CT-LANZHOU", "CT-HONGKONG", "CT-TAIPEI"
+        ]
+      }
+    ],
+    "rivers": [
+      {
+        "id": "rivers-major", "name": "Grands fleuves",
+        "memberIds": [
+          "RV-CHANGJIANG", "RV-HUANGHE", "RV-HEILONGJIANG", "RV-ZHUJIANG", "RV-LANCANGJIANG", "RV-NUJIANG",
+          "RV-YARLUNGZANGBO", "RV-HUAIHE", "RV-LIAOHE", "RV-HAIHE", "RV-TARIMHE", "RV-EERQISIHE"
+        ]
+      },
+      {
+        "id": "rivers-tributaries", "name": "Affluents",
+        "memberIds": [
+          "RV-HANJIANG", "RV-JIALINGJIANG", "RV-MINJIANG", "RV-DADUHE", "RV-YALONGJIANG", "RV-WUJIANG", "RV-XIANGJIANG",
+          "RV-YUANJIANG", "RV-GANJIANG", "RV-WEIHE", "RV-SONGHUAJIANG", "RV-WUSULIJIANG", "RV-DONGJIANG", "RV-BEIJIANG",
+          "RV-YONGDINGHE"
+        ]
+      },
+      {
+        "id": "rivers-all", "name": "Tous les cours d'eau",
+        "memberIds": [
+          "RV-CHANGJIANG", "RV-HUANGHE", "RV-HEILONGJIANG", "RV-ZHUJIANG", "RV-LANCANGJIANG", "RV-NUJIANG",
+          "RV-YARLUNGZANGBO", "RV-HUAIHE", "RV-LIAOHE", "RV-HAIHE", "RV-TARIMHE", "RV-EERQISIHE",
+          "RV-HANJIANG", "RV-JIALINGJIANG", "RV-MINJIANG", "RV-DADUHE", "RV-YALONGJIANG", "RV-WUJIANG", "RV-XIANGJIANG",
+          "RV-YUANJIANG", "RV-GANJIANG", "RV-WEIHE", "RV-SONGHUAJIANG", "RV-WUSULIJIANG", "RV-DONGJIANG", "RV-BEIJIANG",
+          "RV-YONGDINGHE"
+        ]
+      }
+    ],
+    "mountains": [
+      {
+        "id": "mountains-ranges", "name": "Chaînes",
+        "memberIds": [
+          "MT-HIMALAYA", "MT-KARAKORAM", "MT-KUNLUN", "MT-TIANSHAN", "MT-ALTAI", "MT-ALTUN", "MT-QILIAN", "MT-QINLING",
+          "MT-DAXINGANLING", "MT-XIAOXINGANLING", "MT-TAIHANG", "MT-LULIANG", "MT-YINSHAN", "MT-DABIE", "MT-DALOU",
+          "MT-NANLING", "MT-WUYI"
+        ]
+      },
+      {
+        "id": "mountains-peaks", "name": "Sommets",
+        "memberIds": [
+          "PK-QOMOLANGMA", "PK-K2", "PK-NAMCHABARWA", "PK-KONGUR", "PK-GONGGA", "PK-TOMUR", "PK-NYAINQENTANGLHA", "PK-KAILASH",
+          "PK-GELADANDONG", "PK-ANYEMAQEN", "PK-BOGDA", "PK-YUSHAN", "PK-TAIBAI", "PK-EMEI", "PK-WUTAI", "PK-CHANGBAI",
+          "PK-HUASHAN", "PK-HUANGSHAN", "PK-WUZHI", "PK-TAISHAN"
+        ]
+      },
+      {
+        "id": "mountains-all", "name": "Chaînes et sommets",
+        "memberIds": [
+          "MT-HIMALAYA", "MT-KARAKORAM", "MT-KUNLUN", "MT-TIANSHAN", "MT-ALTAI", "MT-ALTUN", "MT-QILIAN", "MT-QINLING",
+          "MT-DAXINGANLING", "MT-XIAOXINGANLING", "MT-TAIHANG", "MT-LULIANG", "MT-YINSHAN", "MT-DABIE", "MT-DALOU",
+          "MT-NANLING", "MT-WUYI",
+          "PK-QOMOLANGMA", "PK-K2", "PK-NAMCHABARWA", "PK-KONGUR", "PK-GONGGA", "PK-TOMUR", "PK-NYAINQENTANGLHA", "PK-KAILASH",
+          "PK-GELADANDONG", "PK-ANYEMAQEN", "PK-BOGDA", "PK-YUSHAN", "PK-TAIBAI", "PK-EMEI", "PK-WUTAI", "PK-CHANGBAI",
+          "PK-HUASHAN", "PK-HUANGSHAN", "PK-WUZHI", "PK-TAISHAN"
+        ]
+      }
+    ]
+  }
 }

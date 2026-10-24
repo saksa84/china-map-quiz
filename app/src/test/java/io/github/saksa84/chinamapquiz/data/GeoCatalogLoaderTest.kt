@@ -91,7 +91,7 @@ class GeoCatalogLoaderTest {
         assertEquals(GeometryKind.COMPOSITE, catalog["RG-XINAN"]!!.type.geometry)
         assertEquals(GeometryKind.POINT, catalog["CT-CHENGDU"]!!.type.geometry)
         assertEquals(GeometryKind.LINE, catalog["RV-CHANGJIANG"]!!.type.geometry)
-        assertEquals(GeometryKind.LINE, catalog["MT-HIMALAYA"]!!.type.geometry)
+        assertEquals(GeometryKind.POLYGON, catalog["MT-HIMALAYA"]!!.type.geometry)
         assertEquals(GeometryKind.POINT, catalog["PK-QOMOLANGMA"]!!.type.geometry)
     }
 

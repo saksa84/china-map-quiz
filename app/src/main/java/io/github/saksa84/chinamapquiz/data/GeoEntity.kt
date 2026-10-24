@@ -69,7 +69,8 @@ enum class FeatureType(
     /** Parent : le cours d'eau dans lequel il se jette. */
     @SerialName("tributary") TRIBUTARY(Category.RIVER, GeometryKind.LINE, setOf(Category.RIVER)),
 
-    @SerialName("mountain_range") MOUNTAIN_RANGE(Category.MOUNTAIN, GeometryKind.LINE),
+    /** Zone de la chaîne (touchable), coupée à la frontière au dessin. */
+    @SerialName("mountain_range") MOUNTAIN_RANGE(Category.MOUNTAIN, GeometryKind.POLYGON),
 
     /** Parent facultatif : la chaîne à laquelle il appartient. */
     @SerialName("peak") PEAK(Category.MOUNTAIN, GeometryKind.POINT, setOf(Category.MOUNTAIN), parentRequired = false),
@@ -122,6 +123,10 @@ data class GeoEntity(
      * Vide pour un territoire non disputé. L'application affiche « revendiqué par … » sans trancher.
      */
     val claimedBy: List<String> = emptyList(),
+    /** Villes : population urbaine (voir la source pour l'année et la définition). */
+    val population: Long? = null,
+    /** Sommets : altitude en mètres. */
+    val elevation: Int? = null,
     val sourceId: String,
 ) {
     val category: Category get() = type.category

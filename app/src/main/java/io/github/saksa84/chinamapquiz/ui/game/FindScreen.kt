@@ -85,19 +85,18 @@ fun FindScreen(
  * Couleurs de la carte en jeu : terres neutres (aucun indice), hors niveau grisées,
  * sélection en attente en jaune ; pendant le retour, bonne réponse en vert et erreur en rouge.
  */
-private fun findStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle {
-    val disputed = data.catalog[id]?.claimedBy?.isNotEmpty() == true
+private fun findStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle? {
     val answer = state.lastAnswer.takeIf { state.phase == QuizSession.Phase.FEEDBACK }
-    val fill = when {
+    val stateColor = when {
         answer != null && id == answer.targetId -> QuizColors.Correct
         answer != null && id == answer.selectedId -> QuizColors.Wrong
         id == state.pendingId -> QuizColors.Accent
-        else -> baseLandColor(id, inLevel, disputed)
+        else -> null
     }
     // Réticule (si le lieu est minuscule) sur la sélection en attente et, pendant le retour,
-    // sur la bonne réponse et l'erreur. Pas de point grossi hors niveau : non sélectionnable.
+    // sur la bonne réponse et l'erreur.
     val emphasized = id == state.pendingId || (answer != null && (id == answer.targetId || id == answer.selectedId))
-    return ShapeStyle(fill, dashedBorder = disputed, smallMarker = id in inLevel, emphasized = emphasized)
+    return gameStyle(id, data, inLevel, stateColor, emphasized)
 }
 
 /** Couleur de repos : terre neutre dans le niveau (blanche pour les îlots disputés), grisée hors niveau. */

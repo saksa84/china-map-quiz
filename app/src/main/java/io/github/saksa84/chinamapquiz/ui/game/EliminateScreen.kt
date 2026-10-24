@@ -66,15 +66,14 @@ fun EliminateScreen(
 }
 
 /** Régions trouvées en vert sourd ; clignotement vif (vert ou rouge) sur le dernier toucher. */
-private fun eliminateStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle {
-    val disputed = data.catalog[id]?.claimedBy?.isNotEmpty() == true
+private fun eliminateStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle? {
     val flash = state.flash?.takeIf { it.id == id }
-    val fill = when {
+    val stateColor = when {
         flash != null -> if (flash.correct) QuizColors.Correct else QuizColors.Wrong
         id in state.eliminated -> QuizColors.Eliminated
-        else -> baseLandColor(id, inLevel, disputed)
+        else -> null
     }
-    // Les régions éliminées gardent leur point grossi (on voit qu'elles sont trouvées) ;
+    // Les lieux éliminés gardent leur point grossi (on voit qu'ils sont trouvés) ;
     // le réticule n'apparaît que sur le dernier toucher.
-    return ShapeStyle(fill, dashedBorder = disputed, smallMarker = id in inLevel, emphasized = flash != null)
+    return gameStyle(id, data, inLevel, stateColor, emphasized = flash != null)
 }

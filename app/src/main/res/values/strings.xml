@@ -17,7 +17,7 @@
     <string name="mode_learn">Apprendre</string>
     <string name="mode_learn_sub">Explorer la carte</string>
     <string name="mode_find">Trouver</string>
-    <string name="mode_find_sub">Provinces</string>
+    <string name="mode_find_sub">Sur la carte</string>
     <string name="mode_eliminate">Éliminer</string>
     <string name="mode_eliminate_sub">Jusqu\'à tout trouver</string>
     <string name="mode_type">Saisir</string>
@@ -42,7 +42,7 @@
     <string name="find_next">SUIVANT</string>
     <string name="find_results">RÉSULTATS</string>
 
-    <string name="type_prompt">Nommez cette région</string>
+    <string name="type_prompt">Nommez ce lieu</string>
     <string name="type_placeholder">Nom en pinyin…</string>
     <string name="type_validate">VALIDER</string>
     <string name="type_skip">Passer</string>
@@ -101,6 +101,32 @@
     <string name="type_municipality">Municipalité</string>
     <string name="type_special_administrative_region">Région administrative spéciale</string>
     <string name="type_island_group">Archipel</string>
+    <string name="type_city">Ville</string>
+    <string name="type_major_river">Grand fleuve</string>
+    <string name="type_tributary">Affluent</string>
+    <string name="type_mountain_range">Chaîne de montagnes</string>
+    <string name="type_peak">Sommet</string>
+    <string name="info_province">Province : %1$s</string>
+    <string name="info_province_capital">Capitale de la province : %1$s</string>
+    <string name="info_population">Population urbaine : %1$s millions (2020)</string>
+    <string name="info_flows_into">Se jette dans : %1$s</string>
+    <string name="info_tributaries">Affluents : %1$s</string>
+    <string name="info_elevation">Altitude : %1$s m</string>
+    <string name="info_range">Chaîne : %1$s</string>
+    <string name="info_peaks">Sommets : %1$s</string>
+
+    <string name="category_regions">Régions</string>
+    <string name="category_regions_sub">Provinces et grandes régions</string>
+    <string name="category_cities">Villes</string>
+    <string name="category_cities_sub">Les plus grandes</string>
+    <string name="category_rivers">Fleuves</string>
+    <string name="category_rivers_sub">Fleuves et affluents</string>
+    <string name="category_mountains">Montagnes</string>
+    <string name="category_mountains_sub">Chaînes et sommets</string>
+    <string name="learn_title_category">Apprendre : %1$s</string>
+    <string name="learn_hint_cities">Touchez une ville pour afficher sa fiche.\nPincez pour zoomer : les villes proches se séparent.</string>
+    <string name="learn_hint_rivers">Touchez un cours d\'eau pour afficher sa fiche.\nLes grands fleuves sont plus épais que les affluents.</string>
+    <string name="learn_hint_mountains">Touchez une chaîne (zone) ou un sommet (point) pour afficher sa fiche.</string>
     <string name="type_region">Grande région</string>
     <string name="info_members">Provinces : %1$s</string>
     <string name="info_subregions">Sous-régions : %1$s</string>

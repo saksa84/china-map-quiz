@@ -21,6 +21,8 @@ keystore.properties
 
 # Captures d'applications commerciales servant d'inspiration : jamais publiées
 /Inspirations/
+# Captures d'écran personnelles (retours de test)
+/screenshot/
 
 # Données sources téléchargées (lourdes, régénérables avec tools/download_natural_earth.py)
 /tools/raw/

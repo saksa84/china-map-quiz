@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
+import io.github.saksa84.chinamapquiz.game.GeoCategory
 import io.github.saksa84.chinamapquiz.game.QuizLevel
 import io.github.saksa84.chinamapquiz.progress.Progress
 import io.github.saksa84.chinamapquiz.ui.GameMode
@@ -33,16 +34,18 @@ import io.github.saksa84.chinamapquiz.ui.game.modeName
 /** Combien de lieux « les plus manqués » afficher et proposer en révision. */
 const val REVIEW_SIZE = 10
 
-/** Progression : meilleurs résultats par mode et par niveau, lieux les plus souvent manqués. */
+/**
+ * Progression : pour chaque catégorie, pourcentage par mode et meilleurs résultats des niveaux
+ * déjà joués ; puis les lieux les plus souvent manqués, toutes catégories confondues.
+ */
 @Composable
 fun ProgressScreen(
     catalog: GeoCatalog,
-    levels: List<QuizLevel>,
+    levels: Map<GeoCategory, List<QuizLevel>>,
     progress: Progress,
     onReview: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val sizes = levels.map { it.id to it.targetIds.size }
     val missed = progress.mostMissed(REVIEW_SIZE).filter { catalog[it.first] != null }
 
     QuizBackground {
@@ -54,23 +57,31 @@ fun ProgressScreen(
             ) {
                 item { Text(stringResource(R.string.progress_games, progress.gamesPlayed), color = QuizColors.Muted) }
 
-                for (mode in listOf(GameMode.FIND, GameMode.ELIMINATE, GameMode.TYPE)) {
-                    item {
-                        val percent = (progress.completion(mode.name, sizes) * 100).toInt()
-                        SectionTitle("${stringResource(modeName(mode))} · $percent %")
-                    }
-                    items(levels, key = { "${mode.name}/${it.id}" }) { level ->
-                        val best = progress.bestFor(mode.name, level.id)
-                        val variant = stringResource(if (level.includesSpecial) R.string.variant_complete else R.string.variant_mainland)
-                        Row(
-                            Modifier.fillMaxWidth().background(QuizColors.Tile, RoundedCornerShape(4.dp)).padding(12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text("${level.zoneName} · $variant", color = QuizColors.OnDark, modifier = Modifier.weight(1f))
-                            Text(
-                                best?.let { "${if (it.perfect) "★ " else ""}${it.correct} / ${it.total} · ${formatDuration(it.timeMs)}" } ?: "—",
-                                color = if (best?.perfect == true) QuizColors.Accent else QuizColors.OnDark,
-                            )
+                for (category in GeoCategory.entries) {
+                    val categoryLevels = levels[category].orEmpty()
+                    val sizes = categoryLevels.map { it.id to it.targetIds.size }
+                    item(key = "title/${category.name}") { SectionTitle(stringResource(categoryName(category))) }
+                    for (mode in listOf(GameMode.FIND, GameMode.ELIMINATE, GameMode.TYPE)) {
+                        val key = category.progressKey(mode.name)
+                        item(key = "mode/$key") {
+                            val percent = (progress.completion(key, sizes) * 100).toInt()
+                            Text("${stringResource(modeName(mode))} · $percent %", color = QuizColors.OnDark, fontWeight = FontWeight.SemiBold)
+                        }
+                        // Seuls les niveaux déjà joués : la liste reste courte.
+                        val played = categoryLevels.mapNotNull { level -> progress.bestFor(key, level.id)?.let { level to it } }
+                        items(played, key = { (level, _) -> "$key/${level.id}" }) { (level, best) ->
+                            val variant = level.subtitle
+                                ?: stringResource(if (level.includesSpecial) R.string.variant_complete else R.string.variant_mainland)
+                            Row(
+                                Modifier.fillMaxWidth().background(QuizColors.Tile, RoundedCornerShape(4.dp)).padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text("${level.zoneName} · $variant", color = QuizColors.OnDark, modifier = Modifier.weight(1f))
+                                Text(
+                                    "${if (best.perfect) "★ " else ""}${best.correct} / ${best.total} · ${formatDuration(best.timeMs)}",
+                                    color = if (best.perfect) QuizColors.Accent else QuizColors.OnDark,
+                                )
+                            }
                         }
                     }
                 }

@@ -56,6 +56,41 @@ class HitTesterTest {
         assertEquals("A", tester.hit(MapPoint(9.9f, 2f), tolerance = 3f))
     }
 
+    // --- Lignes et points ---
+
+    /** Rivière horizontale de (0, 30) à (20, 30), ville en (5, 5) dans la surface A. */
+    private val river = MapShape("R", listOf(floatArrayOf(0f, 30f, 10f, 30f, 20f, 30f)), kind = ShapeKind.LINE)
+    private val city = MapShape("C", listOf(floatArrayOf(5f, 5f)), kind = ShapeKind.POINT)
+    private val all = HitTester(listOf(withHole, neighbour, river, city))
+
+    @Test
+    fun lineIsFoundNearItsTrace_butIsNotASurface() {
+        assertEquals("R", all.hit(MapPoint(12f, 31f), tolerance = 2f))
+        assertFalse(river.contains(12f, 30f))
+        assertEquals(0f, river.area)
+    }
+
+    @Test
+    fun openLineHasNoClosingSegment() {
+        // Le point (10, 30 - 1) est près du tracé ; le milieu du « segment de fermeture » imaginaire n'existe pas.
+        assertEquals(1f, river.distanceToEdge(10f, 29f), 1e-4f)
+        assertEquals(10f, river.distanceToEdge(-10f, 30f), 1e-4f)
+    }
+
+    @Test
+    fun pointBeatsTheSurfaceItSitsOn() {
+        // La ville est dans la surface A : un toucher proche de la ville la sélectionne, elle.
+        assertEquals("C", all.hit(MapPoint(5.5f, 5f), tolerance = 1f))
+        // Plus loin, c'est la surface qui l'emporte.
+        assertEquals("A", all.hit(MapPoint(2f, 2f), tolerance = 1f))
+    }
+
+    @Test
+    fun acceptFiltersOutShapesThatAreNotInPlay() {
+        assertEquals("A", all.hit(MapPoint(5.5f, 5f), tolerance = 1f) { it.id != "C" })
+        assertNull(all.hit(MapPoint(12f, 2f), tolerance = 1f) { it.id == "R" })
+    }
+
     @Test
     fun areaSumsAllRings() {
         // 100 (carré) + 4 (trou, compté positivement) + 1 (île)

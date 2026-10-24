@@ -37,7 +37,11 @@ import io.github.saksa84.chinamapquiz.data.Category
 import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
 import io.github.saksa84.chinamapquiz.data.MapData
+import io.github.saksa84.chinamapquiz.game.GeoCategory
 import io.github.saksa84.chinamapquiz.map.MapPoint
+import io.github.saksa84.chinamapquiz.map.ShapeKind
+import io.github.saksa84.chinamapquiz.ui.home.categoryName
+import androidx.annotation.StringRes
 import io.github.saksa84.chinamapquiz.ui.common.EntityInfo
 import io.github.saksa84.chinamapquiz.ui.map.ChinaMap
 import io.github.saksa84.chinamapquiz.ui.map.MapLabel
@@ -51,16 +55,22 @@ import kotlin.math.sqrt
  * a de plus en plus quand on zoome.
  */
 @Composable
-fun LearnScreen(data: MapData, onBack: () -> Unit) {
+fun LearnScreen(data: MapData, category: GeoCategory, onBack: () -> Unit) {
     // rememberSaveable : sélection et options survivent à la rotation de l'écran.
     var selectedId by rememberSaveable { mutableStateOf<String?>(null) }
     var regionView by rememberSaveable { mutableStateOf(false) }
     var showNames by rememberSaveable { mutableStateOf(true) }
     var recenterKey by rememberSaveable { mutableIntStateOf(0) }
     val catalog = data.catalog
+    val isRegions = category == GeoCategory.REGIONS
 
     val provinceLabels = remember(data) { provinceLabels(data) }
     val regionLabels = remember(data) { regionLabels(data) }
+    // Villes, cours d'eau ou montagnes de la catégorie : les seuls lieux affichés par-dessus les provinces.
+    val featureIds = remember(data, category) {
+        catalog.entities.filter { it.category in category.categories && data.geometry[it.id]?.overlay == true }.map { it.id }.toSet()
+    }
+    val featureLabels = remember(data, category) { featureLabels(data, featureIds) }
 
     // En vue régions, le lieu sélectionné est une grande région ; ses provinces sont mises en évidence.
     val highlighted: Set<String> = remember(selectedId, regionView) {
@@ -75,20 +85,26 @@ fun LearnScreen(data: MapData, onBack: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextButton(onClick = onBack) { Text("‹", style = MaterialTheme.typography.headlineMedium) }
-                Text(stringResource(R.string.learn_title), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                Text(
+                    stringResource(R.string.learn_title_category, stringResource(categoryName(category))),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f),
+                )
                 TextButton(onClick = { recenterKey++ }) { Text(stringResource(R.string.map_recenter)) }
             }
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = !regionView,
-                    onClick = { regionView = false; selectedId = null },
-                    label = { Text(stringResource(R.string.learn_view_provinces)) },
-                )
-                FilterChip(
-                    selected = regionView,
-                    onClick = { regionView = true; selectedId = null },
-                    label = { Text(stringResource(R.string.learn_view_regions)) },
-                )
+                if (isRegions) {
+                    FilterChip(
+                        selected = !regionView,
+                        onClick = { regionView = false; selectedId = null },
+                        label = { Text(stringResource(R.string.learn_view_provinces)) },
+                    )
+                    FilterChip(
+                        selected = regionView,
+                        onClick = { regionView = true; selectedId = null },
+                        label = { Text(stringResource(R.string.learn_view_regions)) },
+                    )
+                }
                 FilterChip(
                     selected = showNames,
                     onClick = { showNames = !showNames },
@@ -99,15 +115,18 @@ fun LearnScreen(data: MapData, onBack: () -> Unit) {
             val map = @Composable { modifier: Modifier ->
                 ChinaMap(
                     geometry = data.geometry,
-                    styleOf = { id -> styleFor(catalog, id, highlighted) },
+                    styleOf = { id ->
+                        if (isRegions) styleFor(catalog, id, highlighted, data) else featureStyle(data, id, featureIds, highlighted)
+                    },
                     selectedId = selectedId?.takeIf { catalog[it]?.type != FeatureType.REGION },
                     onShapeTap = { id ->
                         // Vue régions : une province touchée sélectionne sa grande région.
-                        selectedId = if (regionView && id != null) catalog.topRegionOf(id)?.id ?: id else id
+                        selectedId = if (isRegions && regionView && id != null) catalog.topRegionOf(id)?.id ?: id else id
                     },
                     recenterKey = recenterKey,
                     labels = when {
                         !showNames -> emptyList()
+                        !isRegions -> featureLabels
                         regionView -> regionLabels
                         else -> provinceLabels
                     },
@@ -120,12 +139,12 @@ fun LearnScreen(data: MapData, onBack: () -> Unit) {
                 if (maxWidth > maxHeight) {
                     Row(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxHeight())
-                        InfoPanel(catalog, selectedId, regionView, Modifier.width(340.dp).fillMaxHeight())
+                        InfoPanel(catalog, selectedId, hint(category, regionView), Modifier.width(340.dp).fillMaxHeight())
                     }
                 } else {
                     Column(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxWidth())
-                        InfoPanel(catalog, selectedId, regionView, Modifier.fillMaxWidth().height(200.dp))
+                        InfoPanel(catalog, selectedId, hint(category, regionView), Modifier.fillMaxWidth().height(200.dp))
                     }
                 }
             }
@@ -133,17 +152,22 @@ fun LearnScreen(data: MapData, onBack: () -> Unit) {
     }
 }
 
+@StringRes
+private fun hint(category: GeoCategory, regionView: Boolean): Int = when (category) {
+    GeoCategory.REGIONS -> if (regionView) R.string.learn_hint_regions else R.string.learn_hint
+    GeoCategory.CITIES -> R.string.learn_hint_cities
+    GeoCategory.RIVERS -> R.string.learn_hint_rivers
+    GeoCategory.MOUNTAINS -> R.string.learn_hint_mountains
+}
+
 @Composable
-private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, regionView: Boolean, modifier: Modifier) {
+private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, @StringRes hint: Int, modifier: Modifier) {
     Surface(tonalElevation = 3.dp, modifier = modifier) {
         val entity = selectedId?.let { catalog[it] }
         // Défilement : la fiche d'une grande région (liste des provinces) peut dépasser le panneau.
         Column(Modifier.verticalScroll(rememberScrollState())) {
             if (entity == null) {
-                Text(
-                    stringResource(if (regionView) R.string.learn_hint_regions else R.string.learn_hint),
-                    modifier = Modifier.padding(16.dp),
-                )
+                Text(stringResource(hint), modifier = Modifier.padding(16.dp))
             } else {
                 EntityInfo(catalog, entity, Modifier.padding(16.dp))
             }
@@ -152,7 +176,7 @@ private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, regionView: Bool
 }
 
 /** Noms des provinces, à leur point d'étiquette ; la place disponible vient de la distance au bord. */
-private fun provinceLabels(data: MapData): List<MapLabel> = data.geometry.shapes.mapNotNull { shape ->
+private fun provinceLabels(data: MapData): List<MapLabel> = data.geometry.shapes.filter { !it.overlay }.mapNotNull { shape ->
     val name = data.catalog[shape.id]?.name ?: return@mapNotNull null
     // Le nom peut déborder un peu du cercle inscrit : il est bien plus large que haut, et les
     // chevauchements entre noms sont de toute façon évités au dessin.
@@ -186,7 +210,55 @@ private val REGION_COLORS = mapOf(
 private val DISPUTED_COLOR = Color(0xFFC9C9C9)
 private val DEFAULT_COLOR = Color(0xFFE0E0E0)
 
-private fun styleFor(catalog: GeoCatalog, id: String, highlighted: Set<String>): ShapeStyle {
+/**
+ * Noms des villes (au-dessus de leur point), des cours d'eau (au milieu du plus long tronçon) et
+ * des chaînes (au cœur de la zone). Les sommets n'ont pas de nom permanent : trop nombreux près des chaînes.
+ */
+private fun featureLabels(data: MapData, ids: Set<String>): List<MapLabel> = ids.mapNotNull { id ->
+    val shape = data.geometry[id] ?: return@mapNotNull null
+    val entity = data.catalog[id] ?: return@mapNotNull null
+    when (shape.kind) {
+        // Une ville peut toujours écrire son nom ; les chevauchements sont évités au dessin, les plus grandes d'abord.
+        ShapeKind.POINT -> if (entity.type == FeatureType.CITY) {
+            MapLabel(entity.name, shape.label, fitWidth = 1e6f + (entity.population ?: 0L) / 1e3f, aboveDp = 10f)
+        } else {
+            null
+        }
+        ShapeKind.LINE, ShapeKind.POLYGON -> MapLabel(entity.name, shape.label, fitWidth = shape.labelRoom * 4.5f)
+    }
+}
+
+/** Couleurs du mode Apprendre pour les villes, cours d'eau et montagnes. */
+private val FEATURE_LAND = Color(0xFFEDE7DA)
+private val FEATURE_RIVER = Color(0xFF1E88E5)
+private val FEATURE_RANGE = Color(0xFFA0522D)
+private val FEATURE_CITY = Color(0xFFD32F2F)
+private val FEATURE_PEAK = Color(0xFF5D4037)
+
+/** Villes, cours d'eau, montagnes : provinces en fond neutre non touchable, lieux de la catégorie par-dessus. */
+private fun featureStyle(data: MapData, id: String, featureIds: Set<String>, highlighted: Set<String>): ShapeStyle? {
+    val shape = data.geometry[id] ?: return null
+    if (!shape.overlay) return ShapeStyle(FEATURE_LAND, smallMarker = false, tappable = false)
+    if (id !in featureIds) return null
+    val entity = data.catalog[id]
+    val selected = id in highlighted
+    val base = when {
+        shape.kind == ShapeKind.LINE -> FEATURE_RIVER
+        shape.kind == ShapeKind.POLYGON -> FEATURE_RANGE.copy(alpha = if (selected) 0.75f else 0.4f)
+        entity?.type == FeatureType.CITY -> FEATURE_CITY
+        else -> FEATURE_PEAK
+    }
+    val width = if (entity?.type == FeatureType.MAJOR_RIVER) 3.5f else 2.2f
+    return ShapeStyle(
+        fill = if (selected && shape.kind != ShapeKind.POLYGON) base.darken(0.3f) else base,
+        emphasized = selected,
+        lineWidthDp = if (selected) width * 1.6f else width,
+    )
+}
+
+private fun styleFor(catalog: GeoCatalog, id: String, highlighted: Set<String>, data: MapData): ShapeStyle? {
+    // Vue des régions : villes, cours d'eau et montagnes ne sont pas affichés.
+    if (data.geometry[id]?.overlay == true) return null
     val entity = catalog[id]
     val base = when {
         entity == null -> DEFAULT_COLOR

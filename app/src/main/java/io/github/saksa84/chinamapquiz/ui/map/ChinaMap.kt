@@ -26,8 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathFillType
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
+import io.github.saksa84.chinamapquiz.map.ShapeKind
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -41,26 +45,35 @@ import io.github.saksa84.chinamapquiz.map.MapViewport
 
 /**
  * Apparence d'un lieu sur la carte, décidée par l'écran appelant (mode Learn, Find…).
+ * @param fill couleur de remplissage (surface, point) ou du trait (cours d'eau)
  * @param smallMarker quand le lieu est trop petit pour être vu, le dessiner comme un point grossi
  * @param emphasized lieu sélectionné ou montré en réponse : s'il est minuscule, un réticule l'entoure
+ * @param tappable le lieu peut être touché (faux pour le fond de carte d'un quiz sur les fleuves, par exemple)
+ * @param lineWidthDp épaisseur du trait d'un cours d'eau, constante à l'écran
  */
 data class ShapeStyle(
     val fill: Color,
     val dashedBorder: Boolean = false,
     val smallMarker: Boolean = true,
     val emphasized: Boolean = false,
+    val tappable: Boolean = true,
+    val lineWidthDp: Float = 2f,
 )
 
 /**
  * Nom à écrire sur la carte.
  * @param fitWidth largeur disponible (unités de carte) : le nom n'est écrit que s'il y tient
+ * @param aboveDp décalage vers le haut à l'écran (nom d'une ville écrit au-dessus de son point)
  */
-data class MapLabel(val text: String, val at: MapPoint, val fitWidth: Float)
+data class MapLabel(val text: String, val at: MapPoint, val fitWidth: Float, val aboveDp: Float = 0f)
 
 /**
  * Carte interactive : dessin des contours, zoom à deux doigts, déplacement, toucher.
  *
- * @param styleOf couleur de chaque lieu selon son identifiant
+ * Ordre de dessin : provinces, zones de montagne (coupées à la frontière), cours d'eau, puis
+ * villes et sommets sous forme de points.
+ *
+ * @param styleOf apparence de chaque lieu selon son identifiant ; null : lieu masqué et non touchable
  * @param selectedId lieu à mettre en évidence (contour épais)
  * @param recenterKey changer cette valeur remet la carte en vue d'ensemble
  * @param onShapeTap appelé avec l'identifiant touché, ou null si on touche la mer
@@ -68,7 +81,7 @@ data class MapLabel(val text: String, val at: MapPoint, val fitWidth: Float)
 @Composable
 fun ChinaMap(
     geometry: MapGeometry,
-    styleOf: (String) -> ShapeStyle,
+    styleOf: (String) -> ShapeStyle?,
     selectedId: String?,
     onShapeTap: (String?) -> Unit,
     modifier: Modifier = Modifier,
@@ -79,8 +92,17 @@ fun ChinaMap(
     selectedBorderColor: Color = Color(0xFF1B1B1B),
 ) {
     // Les contours Compose sont construits une seule fois : ils sont ensuite seulement redimensionnés.
-    val paths = remember(geometry) { geometry.shapes.associate { it.id to it.toPath() } }
+    val paths = remember(geometry) { geometry.shapes.filter { it.kind != ShapeKind.POINT }.associate { it.id to it.toPath() } }
+    // Dessin par couches : fond des provinces, zones de montagne, cours d'eau (les points viennent à la fin).
+    val baseShapes = remember(geometry) { geometry.shapes.filter { !it.overlay } }
+    val overlayAreas = remember(geometry) { geometry.shapes.filter { it.overlay && it.kind == ShapeKind.POLYGON } }
+    val overlayLines = remember(geometry) { geometry.shapes.filter { it.kind == ShapeKind.LINE } }
+    // Silhouette de la Chine : les zones de montagne qui débordent sur les pays voisins y sont coupées.
+    val chinaOutline = remember(geometry) {
+        Path().apply { baseShapes.forEach { addPath(paths.getValue(it.id)) } }.also { it.fillType = PathFillType.NonZero }
+    }
     val hitTester = remember(geometry) { HitTester(geometry.shapes) }
+    val chinaTester = remember(geometry) { HitTester(baseShapes) }
 
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var viewport by remember { mutableStateOf<MapViewport?>(null) }
@@ -111,6 +133,7 @@ fun ChinaMap(
     // l'étendue : les Paracel s'étalent sur 160 km mais ne font que quelques km².
     val tinyThresholdPx = with(LocalDensity.current) { 6.dp.toPx() }
     val dotRadiusPx = with(LocalDensity.current) { 3.dp.toPx() }
+    val pointRadiusPx = with(LocalDensity.current) { 4.5.dp.toPx() } // villes et sommets
     val dotBorderPx = with(LocalDensity.current) { 1.dp.toPx() }
     val reticleRadiusPx = with(LocalDensity.current) { 46.dp.toPx() }
     val reticleStrokePx = with(LocalDensity.current) { 1.5.dp.toPx() }
@@ -130,6 +153,7 @@ fun ChinaMap(
     // Les gestionnaires de gestes sont créés une fois : ils lisent toujours la dernière valeur via ces références.
     val currentViewport by rememberUpdatedState(viewport)
     val currentOnTap by rememberUpdatedState(onShapeTap)
+    val currentStyleOf by rememberUpdatedState(styleOf)
 
     Canvas(
         modifier = modifier
@@ -148,7 +172,13 @@ fun ChinaMap(
                 detectTapGestures { tap ->
                     val current = currentViewport ?: return@detectTapGestures
                     val point = current.toMap(tap.x, tap.y)
-                    currentOnTap(hitTester.hit(point, tolerance = touchTolerancePx / current.scale))
+                    val tolerance = touchTolerancePx / current.scale
+                    val hit = hitTester.hit(point, tolerance) { currentStyleOf(it.id)?.tappable == true }
+                    // Une zone de montagne n'est visible qu'en Chine : un toucher sur sa partie coupée ne compte pas.
+                    val shape = hit?.let { geometry[it] }
+                    val outside = shape != null && shape.overlay && shape.kind == ShapeKind.POLYGON &&
+                        chinaTester.hit(point, tolerance) == null
+                    currentOnTap(if (outside) null else hit)
                 }
             },
     ) {
@@ -165,14 +195,36 @@ fun ChinaMap(
                 width = borderPx / vp.scale,
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(6f / vp.scale, 4f / vp.scale)),
             )
-            for ((id, path) in paths) {
-                val style = styleOf(id)
+            for (shape in baseShapes) {
+                val style = styleOf(shape.id) ?: continue
+                val path = paths.getValue(shape.id)
                 drawPath(path, style.fill)
                 drawPath(path, borderColor, style = if (style.dashedBorder) dashed else border)
             }
+            // Zones de montagne et cours d'eau : coupés à la frontière chinoise.
+            clipPath(chinaOutline) {
+                for (shape in overlayAreas) {
+                    val style = styleOf(shape.id) ?: continue
+                    val path = paths.getValue(shape.id)
+                    drawPath(path, style.fill)
+                    drawPath(path, style.fill.copy(alpha = 1f), style = border)
+                }
+                for (shape in overlayLines) {
+                    val style = styleOf(shape.id) ?: continue
+                    val width = style.lineWidthDp * density / vp.scale
+                    drawPath(paths.getValue(shape.id), style.fill, style = Stroke(width, cap = StrokeCap.Round, join = StrokeJoin.Round))
+                }
+            }
             // Le lieu sélectionné est redessiné en dernier pour que son contour passe au-dessus des voisins.
-            selectedId?.let { paths[it] }?.let { path ->
-                drawPath(path, selectedBorderColor, style = Stroke(width = selectedBorderPx / vp.scale))
+            selectedId?.let { id -> geometry[id]?.let { it to paths[id] } }?.let { (shape, path) ->
+                if (path == null) return@let
+                if (shape.kind == ShapeKind.LINE) {
+                    val width = ((styleOf(shape.id)?.lineWidthDp ?: 2f) * density + selectedBorderPx) / vp.scale
+                    drawPath(path, selectedBorderColor, style = Stroke(width, cap = StrokeCap.Round, join = StrokeJoin.Round))
+                    styleOf(shape.id)?.let { drawPath(path, it.fill, style = Stroke(it.lineWidthDp * density / vp.scale, cap = StrokeCap.Round)) }
+                } else {
+                    drawPath(path, selectedBorderColor, style = Stroke(width = selectedBorderPx / vp.scale))
+                }
             }
         }
 
@@ -184,16 +236,17 @@ fun ChinaMap(
             val height = layout.size.height.toFloat()
             if (width > label.fitWidth * vp.scale) continue
             val x = label.at.x * vp.scale + vp.offsetX - width / 2
-            val y = label.at.y * vp.scale + vp.offsetY - height / 2
+            val y = label.at.y * vp.scale + vp.offsetY - height / 2 - label.aboveDp * density
             val box = Rect(x - 2, y, x + width + 2, y + height)
             if (placed.any { it.overlaps(box) }) continue
             placed += box
             drawText(layout, topLeft = Offset(x, y))
         }
 
-        // Lieux minuscules à ce zoom, dessinés en coordonnées écran pour garder une taille fixe.
+        // Lieux minuscules à ce zoom (villes, sommets, Macao…), dessinés en coordonnées écran pour garder une taille fixe.
         val tiny = geometry.shapes.mapNotNull { shape ->
-            val style = styleOf(shape.id)
+            if (shape.kind == ShapeKind.LINE) return@mapNotNull null
+            val style = styleOf(shape.id) ?: return@mapNotNull null
             if (!style.smallMarker || shape.area * vp.scale * vp.scale >= tinyThresholdPx * tinyThresholdPx) return@mapNotNull null
             val b = shape.bounds
             Triple(shape.id, style, Offset((b.minX + b.maxX) / 2 * vp.scale + vp.offsetX, (b.minY + b.maxY) / 2 * vp.scale + vp.offsetY))
@@ -203,9 +256,10 @@ fun ChinaMap(
             if (style.emphasized) drawReticle(center, reticleRadiusPx, reticleStrokePx)
         }
         for ((id, style, center) in tiny) {
-            drawCircle(style.fill, radius = dotRadiusPx, center = center)
+            val radius = if (geometry[id]?.kind == ShapeKind.POINT) pointRadiusPx else dotRadiusPx
+            drawCircle(style.fill, radius = radius, center = center)
             val (ringColor, ringWidth) = if (id == selectedId) selectedBorderColor to dotBorderPx * 2 else borderColor to dotBorderPx
-            drawCircle(ringColor, radius = dotRadiusPx, center = center, style = Stroke(ringWidth))
+            drawCircle(ringColor, radius = radius, center = center, style = Stroke(ringWidth))
         }
     }
 }
@@ -234,6 +288,6 @@ private fun MapShape.toPath(): Path = Path().apply {
     for (ring in rings) {
         moveTo(ring[0], ring[1])
         for (i in 2 until ring.size step 2) lineTo(ring[i], ring[i + 1])
-        close()
+        if (kind == ShapeKind.POLYGON) close() // un cours d'eau reste ouvert
     }
 }

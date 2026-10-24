@@ -129,15 +129,15 @@ fun TypeScreen(
     )
 }
 
-/** La région à nommer est en jaune ; pendant le retour, verte si juste, rouge sinon. */
-private fun typeStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle {
-    val disputed = data.catalog[id]?.claimedBy?.isNotEmpty() == true
+/** Le lieu à nommer est en jaune ; pendant le retour, vert si juste, rouge sinon. */
+private fun typeStyle(id: String, state: GameUiState, inLevel: Set<String>, data: MapData): ShapeStyle? {
     val answer = state.lastAnswer.takeIf { state.phase == QuizSession.Phase.FEEDBACK }
     val isTarget = id == (answer?.targetId ?: state.targetId)
-    val fill = when {
+    val stateColor = when {
         isTarget && answer != null -> if (answer.correct) QuizColors.Correct else QuizColors.Wrong
         isTarget -> QuizColors.Accent
-        else -> baseLandColor(id, inLevel, disputed)
+        else -> null
     }
-    return ShapeStyle(fill, dashedBorder = disputed, smallMarker = id in inLevel, emphasized = isTarget)
+    // En mode Saisir, la carte sert seulement à montrer le lieu : rien n'y est touchable.
+    return gameStyle(id, data, inLevel, stateColor, emphasized = isTarget)?.copy(tappable = false)
 }

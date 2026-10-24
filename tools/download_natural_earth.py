@@ -19,6 +19,10 @@ BASE_URL = f"https://raw.githubusercontent.com/nvkelso/natural-earth-vector/{VER
 FILES = {
     "ne_10m_admin_0_countries.geojson": "239eec57ac17f100a11e2536cffc56752c318b50ae765b0918ff7aab4ce8f255",
     "ne_10m_admin_1_states_provinces.geojson": "22d0e3ad85eb3e27f17cabf8ba2d50e554fbc27a87796ff891d958185da62fb5",
+    "ne_10m_populated_places.geojson": "9b8e3de09048ef00dfc70357dbb9fa324493f214b5e0ae4daf1aa79a8d10116b",
+    "ne_10m_rivers_lake_centerlines.geojson": "bb854a900ecbd3b408df46d5e16e3e0f974ba55993f9d8b5c26e855273c0905a",
+    "ne_10m_geography_regions_polys.geojson": "b7b26e50ea917d3696aec87f932def2bf5f890f5770e441d59c162c6f4c92a77",
+    "ne_10m_geography_regions_elevation_points.geojson": "f98a16867867146ec4146d6d4b18c823eeedb2825947de666116cf9a4e3f43cb",
 }
 
 RAW_DIR = Path(__file__).resolve().parent / "raw"

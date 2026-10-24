@@ -32,7 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.MapData
+import io.github.saksa84.chinamapquiz.map.ShapeKind
+import io.github.saksa84.chinamapquiz.ui.map.ShapeStyle
 import io.github.saksa84.chinamapquiz.ui.common.BackButton
 import io.github.saksa84.chinamapquiz.ui.common.EntityInfo
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
@@ -83,6 +86,45 @@ fun GameLayout(
             }
         }
     }
+}
+
+/**
+ * Apparence d'un lieu pendant un quiz, commune aux modes Trouver, Saisir et Éliminer.
+ *
+ * - Quiz sur les régions : les provinces du niveau sont neutres (blanches pour les îlots disputés),
+ *   les autres grisées ; villes, cours d'eau et montagnes ne sont pas affichés.
+ * - Quiz sur les villes, cours d'eau ou montagnes : les provinces forment un fond neutre et non
+ *   touchable ; seuls les lieux du niveau sont affichés (les affluents disparaissent d'un quiz
+ *   sur les grands fleuves, par exemple).
+ *
+ * @param state couleur d'état (sélection, bonne ou mauvaise réponse, éliminé) ; null au repos
+ */
+fun gameStyle(id: String, data: MapData, inLevel: Set<String>, state: Color?, emphasized: Boolean): ShapeStyle? {
+    val shape = data.geometry[id] ?: return null
+    val entity = data.catalog[id]
+    val disputed = entity?.claimedBy?.isNotEmpty() == true
+    val regionQuiz = inLevel.any { data.geometry[it]?.overlay == false }
+
+    if (!shape.overlay) {
+        if (!regionQuiz) return ShapeStyle(QuizColors.Land, dashedBorder = disputed, smallMarker = false, tappable = false)
+        return ShapeStyle(
+            fill = state ?: baseLandColor(id, inLevel, disputed),
+            dashedBorder = disputed,
+            smallMarker = id in inLevel,
+            emphasized = emphasized,
+            tappable = id in inLevel,
+        )
+    }
+    if (id !in inLevel) return null
+    val color = state ?: when (shape.kind) {
+        ShapeKind.LINE -> QuizColors.River
+        ShapeKind.POLYGON -> QuizColors.Range
+        ShapeKind.POINT -> QuizColors.Point
+    }
+    // Zone de montagne translucide pour laisser voir les provinces dessous.
+    val fill = if (shape.kind == ShapeKind.POLYGON) color.copy(alpha = if (state != null) 0.8f else 0.5f) else color
+    val width = (if (entity?.type == FeatureType.MAJOR_RIVER) 3.5f else 2.2f) * (if (state != null) 1.5f else 1f)
+    return ShapeStyle(fill, emphasized = emphasized, lineWidthDp = width)
 }
 
 /** Temps écoulé relu dix fois par seconde (le moteur le fige lui-même en fin de partie). */

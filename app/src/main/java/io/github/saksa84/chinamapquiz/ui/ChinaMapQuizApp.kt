@@ -31,6 +31,7 @@ import io.github.saksa84.chinamapquiz.ui.game.LevelSelectScreen
 import io.github.saksa84.chinamapquiz.ui.game.ResultScreen
 import io.github.saksa84.chinamapquiz.ui.game.TypeScreen
 import io.github.saksa84.chinamapquiz.ui.common.LocalShowHanzi
+import io.github.saksa84.chinamapquiz.ui.home.CategoryScreen
 import io.github.saksa84.chinamapquiz.ui.home.HomeScreen
 import io.github.saksa84.chinamapquiz.ui.home.ProgressScreen
 import io.github.saksa84.chinamapquiz.ui.home.REVIEW_SIZE
@@ -79,13 +80,27 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
             Screen.HOME -> HomeScreen(
                 levels = load.levels,
                 progress = vm.progress,
-                onLearn = { vm.open(Screen.LEARN) },
-                onMode = vm::chooseMode,
+                onCategory = vm::chooseCategory,
                 onProgress = { vm.open(Screen.PROGRESS) },
                 onSettings = { vm.open(Screen.SETTINGS) },
             )
-            Screen.LEARN -> LearnScreen(load.data, onBack = { vm.back() })
-            Screen.LEVELS -> LevelSelectScreen(vm.mode, load.levels, vm.progress, onStart = vm::startLevel, onBack = { vm.back() })
+            Screen.CATEGORY -> CategoryScreen(
+                category = vm.category,
+                levels = load.levels[vm.category].orEmpty(),
+                progress = vm.progress,
+                onLearn = { vm.open(Screen.LEARN) },
+                onMode = vm::chooseMode,
+                onBack = { vm.back() },
+            )
+            Screen.LEARN -> LearnScreen(load.data, vm.category, onBack = { vm.back() })
+            Screen.LEVELS -> LevelSelectScreen(
+                mode = vm.mode,
+                progressKey = vm.progressKey,
+                levels = load.levels[vm.category].orEmpty(),
+                progress = vm.progress,
+                onStart = vm::startLevel,
+                onBack = { vm.back() },
+            )
             Screen.PROGRESS -> ProgressScreen(
                 catalog = load.data.catalog,
                 levels = load.levels,

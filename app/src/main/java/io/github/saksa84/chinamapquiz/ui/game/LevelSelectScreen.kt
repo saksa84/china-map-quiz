@@ -25,6 +25,8 @@ import io.github.saksa84.chinamapquiz.ui.common.formatDuration
 @Composable
 fun LevelSelectScreen(
     mode: GameMode,
+    /** Clé de progression du mode dans la catégorie (voir GeoCategory.progressKey). */
+    progressKey: String,
     levels: List<QuizLevel>,
     progress: Progress,
     onStart: (QuizLevel) -> Unit,
@@ -40,9 +42,10 @@ fun LevelSelectScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(levels, key = { it.id }) { level ->
-                    val variant = stringResource(if (level.includesSpecial) R.string.variant_complete else R.string.variant_mainland)
+                    val variant = level.subtitle
+                        ?: stringResource(if (level.includesSpecial) R.string.variant_complete else R.string.variant_mainland)
                     val count = pluralStringResource(R.plurals.question_count, level.targetIds.size, level.targetIds.size)
-                    val best = progress.bestFor(mode.name, level.id)
+                    val best = progress.bestFor(progressKey, level.id)
                     MenuTile(
                         title = level.zoneName,
                         subtitle = "$variant · $count",

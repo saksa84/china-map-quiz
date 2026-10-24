@@ -37,10 +37,11 @@ object GeoCatalogValidator {
     const val SUPPORTED_SCHEMA_VERSION = 1
 
     /**
-     * Pinyin sans tons : lettres ASCII, avec espaces, apostrophes (Xi'an) et traits d'union.
-     * Rejette les caractères chinois, les tons (ā, ǎ…) et les chaînes vides.
+     * Pinyin sans tons : lettres ASCII, avec espaces, apostrophes (Xi'an), traits d'union et
+     * chiffres après la première lettre (K2). Rejette les caractères chinois, les tons (ā, ǎ…)
+     * et les chaînes vides.
      */
-    private val LATIN_NAME = Regex("^[A-Za-z][A-Za-z '\\-]*$")
+    private val LATIN_NAME = Regex("^[A-Za-z][A-Za-z0-9 '\\-]*$")
     private val COUNTRY_CODE = Regex("^[A-Z]{2}$")
 
     fun validate(files: List<GeoCatalogFile>): List<ValidationError> {

@@ -56,6 +56,35 @@ fun EntityInfo(
                 Text(stringResource(R.string.info_subregions, text), color = color)
             }
         }
+        val parent = entity.parentId?.let { catalog[it] }
+        when (entity.type) {
+            FeatureType.CITY -> {
+                parent?.let { province ->
+                    val isCapital = province.capital == entity.name
+                    Text(
+                        stringResource(if (isCapital) R.string.info_province_capital else R.string.info_province, province.name),
+                        color = color,
+                    )
+                }
+                entity.population?.let {
+                    Text(stringResource(R.string.info_population, String.format(Locale.FRENCH, "%.1f", it / 1e6)), color = color)
+                }
+            }
+            FeatureType.TRIBUTARY -> parent?.let { Text(stringResource(R.string.info_flows_into, it.name), color = color) }
+            FeatureType.MAJOR_RIVER -> {
+                val tributaries = catalog.children(entity.id).map { it.name }
+                if (tributaries.isNotEmpty()) Text(stringResource(R.string.info_tributaries, tributaries.joinToString(", ")), color = color)
+            }
+            FeatureType.PEAK -> {
+                entity.elevation?.let { Text(stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)), color = color) }
+                parent?.let { Text(stringResource(R.string.info_range, it.name), color = color) }
+            }
+            FeatureType.MOUNTAIN_RANGE -> {
+                val peaks = catalog.children(entity.id).map { it.name }
+                if (peaks.isNotEmpty()) Text(stringResource(R.string.info_peaks, peaks.joinToString(", ")), color = color)
+            }
+            else -> Unit
+        }
         if (entity.claimedBy.isNotEmpty()) {
             // Noms des pays fournis par le système, à partir des codes ISO : aucune liste à maintenir.
             val claimants = entity.claimedBy.joinToString(", ") {
@@ -82,5 +111,10 @@ private fun typeLabel(type: FeatureType): Int = when (type) {
     FeatureType.SPECIAL_ADMINISTRATIVE_REGION -> R.string.type_special_administrative_region
     FeatureType.ISLAND_GROUP -> R.string.type_island_group
     FeatureType.REGION -> R.string.type_region
+    FeatureType.CITY -> R.string.type_city
+    FeatureType.MAJOR_RIVER -> R.string.type_major_river
+    FeatureType.TRIBUTARY -> R.string.type_tributary
+    FeatureType.MOUNTAIN_RANGE -> R.string.type_mountain_range
+    FeatureType.PEAK -> R.string.type_peak
     else -> R.string.type_other
 }

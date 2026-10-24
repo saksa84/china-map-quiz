@@ -16,13 +16,16 @@ class AssetGeoRepository(private val assets: AssetManager) {
             is LoadResult.Malformed -> error("Données géographiques illisibles : ${result.message}")
             is LoadResult.Invalid -> error("Données géographiques incohérentes : ${result.errors}")
         }
-        return MapData(catalog, MapGeometry.parse(read(GEOMETRY_FILE)))
+        val geometry = MapGeometry.parse(read(GEOMETRY_FILE)) + MapGeometry.parse(read(FEATURES_GEOMETRY_FILE), overlay = true)
+        return MapData(catalog, geometry)
     }
 
     private fun read(name: String): String = assets.open("geo/$name").bufferedReader().use { it.readText() }
 
-    private companion object {
-        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json")
+    companion object {
+        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json", "cities.json", "rivers.json", "mountains.json")
         const val GEOMETRY_FILE = "map.geometry.json"
+        /** Villes, cours d'eau et montagnes, dessinés par-dessus les provinces. */
+        const val FEATURES_GEOMETRY_FILE = "features.geometry.json"
     }
 }
