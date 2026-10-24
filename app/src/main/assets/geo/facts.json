@@ -8,7 +8,7 @@
       "populationYear": 2020,
       "areaKm2": 16400,
       "languages": "Mandarin : le parler de Pékin est la base de la langue standard (putonghua).",
-      "history": "Capitale sous les Yuan, les Ming et les Qing, puis de la République populaire depuis 1949. La Cité interdite fut le palais impérial de 1420 à 1912.",
+      "history": "Capitale sous les Yuan, les Ming (à partir de 1421) et les Qing, puis de la République populaire depuis 1949. La Cité interdite fut le palais impérial de 1420 à 1912.",
       "economy": "Administration, services, finance, haute technologie (quartier de Zhongguancun), sièges des grandes entreprises d'État.",
       "dish": "Canard laqué de Pékin.",
       "anecdotes": [
@@ -22,7 +22,7 @@
       "populationYear": 2020,
       "areaKm2": 11900,
       "languages": "Mandarin ; le dialecte de Tianjin est réputé pour ses comiques (xiangsheng).",
-      "history": "Port de Pékin au bout du Grand Canal. Ouverte aux étrangers en 1860, elle compta jusqu'à neuf concessions (britannique, française, italienne…).",
+      "history": "Port de Pékin, sur le Grand Canal. Ouverte aux étrangers en 1860, elle compta jusqu'à neuf concessions (britannique, française, italienne…).",
       "economy": "L'un des grands ports du nord de la Chine ; aéronautique, pétrochimie, automobile.",
       "dish": "Goubuli baozi, petits pains farcis cuits à la vapeur.",
       "anecdotes": [
@@ -145,7 +145,7 @@
       "populationYear": 2020,
       "areaKm2": 105500,
       "languages": "Wu ; min du Sud dans l'extrême sud.",
-      "history": "Hangzhou fut la capitale des Song du Sud (1127-1279) ; Marco Polo la décrit comme l'une des plus belles villes du monde.",
+      "history": "Hangzhou fut la capitale des Song du Sud (1138-1279) ; Marco Polo la décrit comme l'une des plus belles villes du monde.",
       "economy": "Entreprises privées et commerce en ligne (Alibaba à Hangzhou), petits objets de Yiwu, thé Longjing.",
       "dish": "Porc Dongpo, mijoté longuement dans le vin de Shaoxing.",
       "anecdotes": [
@@ -368,7 +368,7 @@
       "populationYear": 2020,
       "areaKm2": 205600,
       "languages": "Mandarin (plaine centrale) ; jin dans le nord.",
-      "history": "Xi'an (Chang'an) fut capitale de plus de dix dynasties, dont les Qin, les Han et les Tang, et le départ de la route de la soie. Yan'an fut la base communiste de 1936 à 1947.",
+      "history": "Xi'an (Chang'an) fut capitale de plus de dix dynasties, dont les Qin, les Han et les Tang, et le départ de la route de la soie. Yan'an fut la base communiste de 1937 à 1947.",
       "economy": "Charbon, pétrole et gaz au nord, aéronautique, universités et recherche.",
       "dish": "Roujiamo, pain fourré de viande, et nouilles biangbiang.",
       "anecdotes": [
@@ -442,7 +442,7 @@
       "economy": "Place financière internationale, port, commerce et services.",
       "dish": "Dim sum, tartelettes aux œufs et thé au lait hongkongais.",
       "anecdotes": [
-        "La ville compte plus de gratte-ciel que toute autre au monde.",
+        "C'est l'une des villes qui comptent le plus de gratte-ciel au monde.",
         "Environ 40 % de son territoire est classé en parcs naturels."
       ]
     },
@@ -453,7 +453,7 @@
       "areaKm2": 33,
       "languages": "Cantonais, portugais (langue officielle) et mandarin.",
       "history": "Établissement portugais à partir de 1557, le premier comptoir européen durable en Chine, rendu à la Chine en 1999. Région administrative spéciale.",
-      "economy": "Casinos (premier centre de jeux du monde par le chiffre d'affaires) et tourisme.",
+      "economy": "Casinos (l'un des premiers centres de jeux du monde par le chiffre d'affaires) et tourisme.",
       "dish": "Pastel de nata, la tartelette portugaise, et cuisine macanaise.",
       "anecdotes": [
         "L'un des territoires les plus densément peuplés du monde.",
@@ -559,7 +559,7 @@
       "id": "CT-XIAN",
       "languages": "Mandarin (dialecte du Guanzhong).",
       "role": "Capitale du Shaanxi, ancienne capitale impériale (Chang'an), départ de la route de la soie.",
-      "landmark": "L'armée de terre cuite, à une trentaine de kilomètres ; les remparts Ming, longs de près de 14 km.",
+      "landmark": "L'armée de terre cuite, à une quarantaine de kilomètres ; les remparts Ming, longs de près de 14 km.",
       "anecdotes": [
         "Sous les Tang, Chang'an était sans doute la plus grande ville du monde."
       ]
@@ -714,7 +714,7 @@
       "role": "Capitale du Jilin, berceau de l'automobile chinoise (usine FAW, 1953).",
       "landmark": "Le palais où résida Puyi, dernier empereur, à l'époque du Mandchoukouo.",
       "anecdotes": [
-        "Ses studios de cinéma ont produit les premiers films de la République populaire."
+        "Ses studios, fondés en 1945, furent les premiers studios de cinéma de la République populaire."
       ]
     },
     {
@@ -1160,7 +1160,7 @@
       "id": "PK-NAMCHABARWA",
       "overview": "Sommet le plus oriental de l'Himalaya, dans le grand coude du Yarlung Zangbo.",
       "anecdotes": [
-        "Il est longtemps resté l'un des plus hauts sommets jamais gravis, jusqu'en 1992."
+        "Il est resté invaincu jusqu'en 1992 : c'était alors l'un des plus hauts sommets encore jamais gravis."
       ]
     },
     {
