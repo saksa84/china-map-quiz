@@ -11,7 +11,7 @@
     {
       "id": "CN",
       "type": "country",
-      "pinyin": "Zhongguo",
+      "name": "Zhongguo",
       "aliases": ["China", "Chine"],
       "hanzi": "中国",
       "capital": "Beijing",
@@ -20,7 +20,7 @@
     {
       "id": "CN-BJ",
       "type": "municipality",
-      "pinyin": "Beijing",
+      "name": "Beijing",
       "aliases": ["Pekin", "Peking"],
       "hanzi": "北京",
       "parentId": "CN",
@@ -29,7 +29,7 @@
     {
       "id": "CN-SC",
       "type": "province",
-      "pinyin": "Sichuan",
+      "name": "Sichuan",
       "hanzi": "四川",
       "parentId": "CN",
       "capital": "Chengdu",
@@ -38,7 +38,7 @@
     {
       "id": "CN-XZ",
       "type": "autonomous_region",
-      "pinyin": "Xizang",
+      "name": "Xizang",
       "aliases": ["Tibet"],
       "hanzi": "西藏",
       "parentId": "CN",
@@ -48,7 +48,7 @@
     {
       "id": "CN-HB",
       "type": "province",
-      "pinyin": "Hubei",
+      "name": "Hubei",
       "hanzi": "湖北",
       "parentId": "CN",
       "capital": "Wuhan",

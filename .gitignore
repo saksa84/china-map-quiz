@@ -19,8 +19,8 @@ local.properties
 *.keystore
 keystore.properties
 
-# Notes personnelles, sans rapport avec l'application
-/liste_composant_pc.txt
+# Données sources téléchargées (lourdes, régénérables avec tools/download_natural_earth.py)
+/tools/raw/
 
 # APK/AAB générés hors du dossier build
 *.apk

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "manual-iso-3166-2-cn",
+      "name": "Saisie manuelle d'après ISO 3166-2:CN (codes, types, noms) et les noms officiels chinois",
+      "license": "Données factuelles saisies pour le projet, sans reprise d'une base protégée",
+      "url": "https://www.iso.org/obp/ui/#iso:code:3166:CN"
+    }
+  ],
+  "entities": [
+    { "id": "CN", "type": "country", "name": "Zhongguo", "aliases": ["China", "Chine"], "hanzi": "中国", "capital": "Beijing", "sourceId": "manual-iso-3166-2-cn" },
+
+    { "id": "CN-BJ", "type": "municipality", "name": "Beijing", "aliases": ["Pekin", "Peking"], "hanzi": "北京", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-TJ", "type": "municipality", "name": "Tianjin", "aliases": ["Tientsin"], "hanzi": "天津", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-SH", "type": "municipality", "name": "Shanghai", "hanzi": "上海", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-CQ", "type": "municipality", "name": "Chongqing", "aliases": ["Chungking", "Tchongking"], "hanzi": "重庆", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+
+    { "id": "CN-HE", "type": "province", "name": "Hebei", "hanzi": "河北", "parentId": "CN", "capital": "Shijiazhuang", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-SX", "type": "province", "name": "Shanxi", "hanzi": "山西", "parentId": "CN", "capital": "Taiyuan", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-LN", "type": "province", "name": "Liaoning", "hanzi": "辽宁", "parentId": "CN", "capital": "Shenyang", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-JL", "type": "province", "name": "Jilin", "hanzi": "吉林", "parentId": "CN", "capital": "Changchun", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-HL", "type": "province", "name": "Heilongjiang", "hanzi": "黑龙江", "parentId": "CN", "capital": "Harbin", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-JS", "type": "province", "name": "Jiangsu", "hanzi": "江苏", "parentId": "CN", "capital": "Nanjing", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-ZJ", "type": "province", "name": "Zhejiang", "hanzi": "浙江", "parentId": "CN", "capital": "Hangzhou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-AH", "type": "province", "name": "Anhui", "hanzi": "安徽", "parentId": "CN", "capital": "Hefei", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-FJ", "type": "province", "name": "Fujian", "aliases": ["Fukien"], "hanzi": "福建", "parentId": "CN", "capital": "Fuzhou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-JX", "type": "province", "name": "Jiangxi", "hanzi": "江西", "parentId": "CN", "capital": "Nanchang", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-SD", "type": "province", "name": "Shandong", "hanzi": "山东", "parentId": "CN", "capital": "Jinan", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-HA", "type": "province", "name": "Henan", "hanzi": "河南", "parentId": "CN", "capital": "Zhengzhou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-HB", "type": "province", "name": "Hubei", "hanzi": "湖北", "parentId": "CN", "capital": "Wuhan", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-HN", "type": "province", "name": "Hunan", "hanzi": "湖南", "parentId": "CN", "capital": "Changsha", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-GD", "type": "province", "name": "Guangdong", "aliases": ["Kwangtung"], "hanzi": "广东", "parentId": "CN", "capital": "Guangzhou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-HI", "type": "province", "name": "Hainan", "hanzi": "海南", "parentId": "CN", "capital": "Haikou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-SC", "type": "province", "name": "Sichuan", "aliases": ["Szechuan", "Setchouan"], "hanzi": "四川", "parentId": "CN", "capital": "Chengdu", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-GZ", "type": "province", "name": "Guizhou", "hanzi": "贵州", "parentId": "CN", "capital": "Guiyang", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-YN", "type": "province", "name": "Yunnan", "hanzi": "云南", "parentId": "CN", "capital": "Kunming", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-SN", "type": "province", "name": "Shaanxi", "hanzi": "陕西", "parentId": "CN", "capital": "Xi'an", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-GS", "type": "province", "name": "Gansu", "hanzi": "甘肃", "parentId": "CN", "capital": "Lanzhou", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-QH", "type": "province", "name": "Qinghai", "hanzi": "青海", "parentId": "CN", "capital": "Xining", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-TW", "type": "province", "name": "Taiwan", "aliases": ["Formose", "Formosa"], "hanzi": "台湾", "parentId": "CN", "capital": "Taipei", "sourceId": "manual-iso-3166-2-cn" },
+
+    { "id": "CN-NM", "type": "autonomous_region", "name": "Nei Mongol", "aliases": ["Nei Menggu", "Inner Mongolia", "Mongolie interieure"], "hanzi": "内蒙古", "parentId": "CN", "capital": "Hohhot", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-GX", "type": "autonomous_region", "name": "Guangxi", "hanzi": "广西", "parentId": "CN", "capital": "Nanning", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-XZ", "type": "autonomous_region", "name": "Xizang", "aliases": ["Tibet"], "hanzi": "西藏", "parentId": "CN", "capital": "Lhasa", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-NX", "type": "autonomous_region", "name": "Ningxia", "hanzi": "宁夏", "parentId": "CN", "capital": "Yinchuan", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-XJ", "type": "autonomous_region", "name": "Xinjiang", "aliases": ["Sinkiang"], "hanzi": "新疆", "parentId": "CN", "capital": "Urumqi", "sourceId": "manual-iso-3166-2-cn" },
+
+    { "id": "CN-HK", "type": "special_administrative_region", "name": "Hong Kong", "aliases": ["Xianggang", "Hongkong"], "hanzi": "香港", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-MO", "type": "special_administrative_region", "name": "Macao", "aliases": ["Aomen", "Macau"], "hanzi": "澳门", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" }
+  ]
+}

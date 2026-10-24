@@ -28,6 +28,9 @@ sealed interface ValidationError {
 
     /** Dès qu'il y a des grandes régions, chaque unité provinciale doit appartenir à exactement une. */
     data class RegionCoverage(val provincialId: String, val regionCount: Int) : ValidationError
+
+    /** Un pays revendicateur doit être un code ISO 3166-1 alpha-2 (ex. "VN"). */
+    data class InvalidClaimant(val entityId: String, val code: String) : ValidationError
 }
 
 object GeoCatalogValidator {
@@ -38,6 +41,7 @@ object GeoCatalogValidator {
      * Rejette les caractères chinois, les tons (ā, ǎ…) et les chaînes vides.
      */
     private val LATIN_NAME = Regex("^[A-Za-z][A-Za-z '\\-]*$")
+    private val COUNTRY_CODE = Regex("^[A-Z]{2}$")
 
     fun validate(files: List<GeoCatalogFile>): List<ValidationError> {
         val errors = mutableListOf<ValidationError>()
@@ -68,8 +72,11 @@ object GeoCatalogValidator {
             if (entity.sourceId !in sources) {
                 errors += ValidationError.UnknownSource(entity.id, entity.sourceId)
             }
-            for (name in listOf(entity.pinyin) + entity.aliases) {
+            for (name in listOf(entity.name) + entity.aliases) {
                 if (!LATIN_NAME.matches(name.trim())) errors += ValidationError.InvalidName(entity.id, name)
+            }
+            for (code in entity.claimedBy) {
+                if (!COUNTRY_CODE.matches(code)) errors += ValidationError.InvalidClaimant(entity.id, code)
             }
             errors += checkParent(entity, byId)
             errors += checkMembers(entity, byId)

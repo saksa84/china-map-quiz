@@ -24,19 +24,19 @@ class GeoCatalogLoaderTest {
     private fun entity(
         id: String,
         type: String = "province",
-        pinyin: String = "Sichuan",
+        name: String = "Sichuan",
         parentId: String? = "CN",
         memberIds: List<String> = emptyList(),
         sourceId: String = "s",
     ): String {
         val parent = parentId?.let { ""","parentId":"$it"""" } ?: ""
         val members = if (memberIds.isEmpty()) "" else ""","memberIds":[${memberIds.joinToString(",") { "\"$it\"" }}]"""
-        return """{"id":"$id","type":"$type","pinyin":"$pinyin","sourceId":"$sourceId"$parent$members}"""
+        return """{"id":"$id","type":"$type","name":"$name","sourceId":"$sourceId"$parent$members}"""
     }
 
     /** Un fichier contenant le pays "CN" suivi des entités données. */
     private fun fileWith(vararg entities: String, schemaVersion: Int = 1): String {
-        val all = listOf(entity("CN", type = "country", pinyin = "Zhongguo", parentId = null)) + entities
+        val all = listOf(entity("CN", type = "country", name = "Zhongguo", parentId = null)) + entities
         return """{"schemaVersion":$schemaVersion,
             "sources":[{"id":"s","name":"test","license":"test"}],
             "entities":[${all.joinToString(",")}]}"""
@@ -171,7 +171,7 @@ class GeoCatalogLoaderTest {
 
     @Test
     fun duplicateId_isRejected() {
-        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-SC", pinyin = "Sichuan bis")))
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-SC", name = "Sichuan bis")))
         assertEquals(listOf(ValidationError.DuplicateId("CN-SC")), errors)
     }
 
@@ -196,19 +196,19 @@ class GeoCatalogLoaderTest {
     @Test
     fun missingRequiredParent_isRejected() {
         assertEquals(listOf(ValidationError.MissingParent("CN-SC")), errorsOf(fileWith(entity("CN-SC", parentId = null))))
-        val tributary = entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = null)
+        val tributary = entity("RV-A", type = "tributary", name = "Min Jiang", parentId = null)
         assertEquals(listOf(ValidationError.MissingParent("RV-A")), errorsOf(fileWith(tributary)))
     }
 
     @Test
     fun provinceUnderProvince_isRejected() {
-        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", pinyin = "Yunnan", parentId = "CN-SC")))
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", name = "Yunnan", parentId = "CN-SC")))
         assertEquals(listOf(ValidationError.InvalidParent("CN-YN", "CN-SC")), errors)
     }
 
     @Test
     fun countryWithParent_isRejected() {
-        val errors = errorsOf(fileWith(entity("CN2", type = "country", pinyin = "Zhongguo", parentId = "CN")))
+        val errors = errorsOf(fileWith(entity("CN2", type = "country", name = "Zhongguo", parentId = "CN")))
         assertEquals(listOf(ValidationError.InvalidParent("CN2", "CN")), errors)
     }
 
@@ -217,8 +217,8 @@ class GeoCatalogLoaderTest {
         val errors = errorsOf(
             fileWith(
                 entity("CN-SC"),
-                entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN-SC"),
-                entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = "CT-A"),
+                entity("CT-A", type = "city", name = "Chengdu", parentId = "CN-SC"),
+                entity("RV-A", type = "tributary", name = "Min Jiang", parentId = "CT-A"),
             ),
         )
         assertEquals(listOf(ValidationError.InvalidParent("RV-A", "CT-A")), errors)
@@ -226,18 +226,18 @@ class GeoCatalogLoaderTest {
 
     @Test
     fun cityDirectlyUnderCountry_isRejected() {
-        val errors = errorsOf(fileWith(entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN")))
+        val errors = errorsOf(fileWith(entity("CT-A", type = "city", name = "Chengdu", parentId = "CN")))
         assertEquals(listOf(ValidationError.InvalidParent("CT-A", "CN")), errors)
     }
 
     @Test
     fun peakWithoutRange_isAccepted() {
-        assertValid(fileWith(entity("PK-A", type = "peak", pinyin = "Tai Shan", parentId = null)))
+        assertValid(fileWith(entity("PK-A", type = "peak", name = "Tai Shan", parentId = null)))
     }
 
     @Test
     fun selfParent_isRejected() {
-        val errors = errorsOf(fileWith(entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = "RV-A")))
+        val errors = errorsOf(fileWith(entity("RV-A", type = "tributary", name = "Min Jiang", parentId = "RV-A")))
         assertEquals(listOf(ValidationError.InvalidParent("RV-A", "RV-A")), errors)
     }
 
@@ -245,7 +245,7 @@ class GeoCatalogLoaderTest {
 
     @Test
     fun regionWithoutMembers_isRejected() {
-        val errors = errorsOf(fileWith(entity("CN-SC"), entity("RG-A", type = "region", pinyin = "Xinan")))
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("RG-A", type = "region", name = "Xinan")))
         assertTrue(ValidationError.EmptyRegion("RG-A") in errors)
     }
 
@@ -254,8 +254,8 @@ class GeoCatalogLoaderTest {
         val errors = errorsOf(
             fileWith(
                 entity("CN-SC"),
-                entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN-SC"),
-                entity("RG-A", type = "region", pinyin = "Xinan", memberIds = listOf("CN-SC", "CN-XX", "CT-A")),
+                entity("CT-A", type = "city", name = "Chengdu", parentId = "CN-SC"),
+                entity("RG-A", type = "region", name = "Xinan", memberIds = listOf("CN-SC", "CN-XX", "CT-A")),
             ),
         )
         assertEquals(
@@ -266,7 +266,7 @@ class GeoCatalogLoaderTest {
 
     @Test
     fun membersOnNonRegion_areRejected() {
-        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", pinyin = "Yunnan", memberIds = listOf("CN-SC"))))
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", name = "Yunnan", memberIds = listOf("CN-SC"))))
         assertEquals(listOf(ValidationError.UnexpectedMembers("CN-YN")), errors)
     }
 
@@ -274,10 +274,10 @@ class GeoCatalogLoaderTest {
     fun subRegionMemberOutsideParentRegion_isRejected() {
         val errors = errorsOf(
             fileWith(
-                entity("CN-HB", pinyin = "Hubei"),
-                entity("CN-GD", pinyin = "Guangdong"),
-                entity("RG-ZN", type = "region", pinyin = "Zhongnan", memberIds = listOf("CN-HB")),
-                entity("RG-HZ", type = "region", pinyin = "Huazhong", parentId = "RG-ZN", memberIds = listOf("CN-HB", "CN-GD")),
+                entity("CN-HB", name = "Hubei"),
+                entity("CN-GD", name = "Guangdong"),
+                entity("RG-ZN", type = "region", name = "Zhongnan", memberIds = listOf("CN-HB")),
+                entity("RG-HZ", type = "region", name = "Huazhong", parentId = "RG-ZN", memberIds = listOf("CN-HB", "CN-GD")),
             ),
         )
         assertTrue(ValidationError.MemberOutsideParentRegion("RG-HZ", "CN-GD") in errors)
@@ -288,10 +288,10 @@ class GeoCatalogLoaderTest {
         val errors = errorsOf(
             fileWith(
                 entity("CN-SC"),
-                entity("CN-YN", pinyin = "Yunnan"),
-                entity("CN-HB", pinyin = "Hubei"),
-                entity("RG-A", type = "region", pinyin = "Xinan", memberIds = listOf("CN-SC", "CN-YN")),
-                entity("RG-B", type = "region", pinyin = "Xibei", memberIds = listOf("CN-SC")),
+                entity("CN-YN", name = "Yunnan"),
+                entity("CN-HB", name = "Hubei"),
+                entity("RG-A", type = "region", name = "Xinan", memberIds = listOf("CN-SC", "CN-YN")),
+                entity("RG-B", type = "region", name = "Xibei", memberIds = listOf("CN-SC")),
             ),
         )
         assertEquals(
@@ -304,27 +304,47 @@ class GeoCatalogLoaderTest {
 
     @Test
     fun chineseCharactersAsPinyin_areRejected() {
-        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "四川")), errorsOf(fileWith(entity("CN-SC", pinyin = "四川"))))
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "四川")), errorsOf(fileWith(entity("CN-SC", name = "四川"))))
     }
 
     @Test
     fun toneMarks_areRejected() {
-        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "Sìchuān")), errorsOf(fileWith(entity("CN-SC", pinyin = "Sìchuān"))))
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "Sìchuān")), errorsOf(fileWith(entity("CN-SC", name = "Sìchuān"))))
     }
 
     @Test
     fun blankName_isRejected() {
-        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "  ")), errorsOf(fileWith(entity("CN-SC", pinyin = "  "))))
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "  ")), errorsOf(fileWith(entity("CN-SC", name = "  "))))
     }
 
     @Test
     fun apostrophesSpacesAndHyphens_areAccepted() {
         assertValid(
             fileWith(
-                entity("A", pinyin = "Xi'an"),
-                entity("B", pinyin = "Nei Mongol"),
-                entity("C", pinyin = "Hong-Kong"),
+                entity("A", name = "Xi'an"),
+                entity("B", name = "Nei Mongol"),
+                entity("C", name = "Hong-Kong"),
             ),
         )
+    }
+
+    // --- Territoires disputés ---
+
+    @Test
+    fun disputedIslandsWithIsoClaimants_areAccepted() {
+        val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","claimedBy":["CN","TW","VN"],"sourceId":"s"}"""
+        assertValid(fileWith(islands))
+    }
+
+    @Test
+    fun claimantThatIsNotAnIsoCode_isRejected() {
+        val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","claimedBy":["CN","Vietnam"],"sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidClaimant("IS-A", "Vietnam")), errorsOf(fileWith(islands)))
+    }
+
+    @Test
+    fun islandGroupAttachedToACountry_isRejected() {
+        val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","parentId":"CN","sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidParent("IS-A", "CN")), errorsOf(fileWith(islands)))
     }
 }

@@ -17,6 +17,7 @@ enum class Category {
     MOUNTAIN,
     LAKE,
     PARK,
+    ISLAND,
 }
 
 /** Forme de la géométrie à dessiner et à toucher sur la carte. */
@@ -75,6 +76,9 @@ enum class FeatureType(
 
     @SerialName("lake") LAKE(Category.LAKE, GeometryKind.POLYGON),
     @SerialName("park") PARK(Category.PARK, GeometryKind.POLYGON),
+
+    /** Archipel hors des unités provinciales, sans parent pour ne pas trancher une souveraineté disputée. */
+    @SerialName("island_group") ISLAND_GROUP(Category.ISLAND, GeometryKind.POLYGON),
 }
 
 /** Provenance d'un ensemble de données, référencée par [GeoEntity.sourceId]. */
@@ -98,8 +102,11 @@ data class GeoEntity(
     /** Identifiant stable, indépendant du nom affiché. Code ISO 3166-2 au niveau provincial (ex. "CN-SC"). */
     val id: String,
     val type: FeatureType,
-    /** Nom principal en pinyin sans tons, affiché dans les quiz. */
-    val pinyin: String,
+    /**
+     * Nom principal affiché dans les quiz : pinyin sans tons par défaut, nom francophone
+     * usuel pour les exceptions documentées dans CLAUDE.md (Hong Kong, Macao, îles Paracel).
+     */
+    val name: String,
     /** Autres graphies acceptées dans le mode Type (ex. "Tibet" pour Xizang, "Yangtze" pour Chang Jiang). */
     val aliases: List<String> = emptyList(),
     /** Nom en caractères chinois, facultatif, pour vérification et enrichissement. */
@@ -110,6 +117,11 @@ data class GeoEntity(
     val memberIds: List<String> = emptyList(),
     /** Capitale ou siège administratif, en pinyin. */
     val capital: String? = null,
+    /**
+     * Territoire disputé : codes ISO 3166-1 alpha-2 des pays qui le revendiquent (ex. ["CN", "TW", "VN"]).
+     * Vide pour un territoire non disputé. L'application affiche « revendiqué par … » sans trancher.
+     */
+    val claimedBy: List<String> = emptyList(),
     val sourceId: String,
 ) {
     val category: Category get() = type.category

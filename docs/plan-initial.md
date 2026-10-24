@@ -36,7 +36,7 @@ Un seul module Gradle `app`, découpé en packages. Plusieurs modules Gradle ser
 ```
 app/src/main/
   assets/geo/                  ← données, séparées du code
-    provinces.geometry.json    géométries simplifiées et déjà projetées
+    map.geometry.json          géométries simplifiées et déjà projetées (généré)
     provinces.meta.json        id, pinyin, alias, hanzi, type, capitale, source
   java/.../chinamapquiz/
     data/        modèles (GeoEntity, AdminLevel), chargement JSON, validation
@@ -153,4 +153,7 @@ Exclu : modes de jeu, progression, villes, préfectures, traduction.
 | 2026-10-24 | Grandes villes | Au moins 30, classées par population urbaine (millions d'habitants), avec une source citable. Seuil fixé à l'étape données. |
 | 2026-10-24 | Fleuves | Deux catégories : grands fleuves, puis affluents importants (rattachés à leur fleuve) |
 | 2026-10-24 | Montagnes | Deux catégories : chaînes (ligne de crête) et sommets (point) |
+| 2026-10-24 | Source de la carte | Natural Earth 1:10m v5.1.2 (domaine public) au lieu de geoBoundaries, jugé trop grossier. Voir `docs/data-sources.md`. |
+| 2026-10-24 | Noms de Hong Kong et Macao | Nom francophone en principal, pinyin (Xianggang, Aomen) en alias. Le champ `pinyin` devient `name`. |
+| 2026-10-24 | Îles Paracel | Affichées comme territoire disputé, sans rattachement, « revendiquées par » CN, TW, VN (champ `claimedBy`) |
 | 2026-10-24 | Appareil cible | Pixel 8 Pro ; minSdk 26 conservé (le Pixel 8 Pro est bien au-dessus) |

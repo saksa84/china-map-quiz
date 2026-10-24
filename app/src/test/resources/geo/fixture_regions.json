@@ -11,7 +11,7 @@
     {
       "id": "RG-HUABEI",
       "type": "region",
-      "pinyin": "Huabei",
+      "name": "Huabei",
       "aliases": ["North China"],
       "hanzi": "华北",
       "parentId": "CN",
@@ -21,7 +21,7 @@
     {
       "id": "RG-XINAN",
       "type": "region",
-      "pinyin": "Xinan",
+      "name": "Xinan",
       "aliases": ["Southwest China"],
       "hanzi": "西南",
       "parentId": "CN",
@@ -31,7 +31,7 @@
     {
       "id": "RG-ZHONGNAN",
       "type": "region",
-      "pinyin": "Zhongnan",
+      "name": "Zhongnan",
       "aliases": ["South Central China"],
       "hanzi": "中南",
       "parentId": "CN",
@@ -41,7 +41,7 @@
     {
       "id": "RG-HUAZHONG",
       "type": "region",
-      "pinyin": "Huazhong",
+      "name": "Huazhong",
       "aliases": ["Central China"],
       "hanzi": "华中",
       "parentId": "RG-ZHONGNAN",

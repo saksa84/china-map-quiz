@@ -144,6 +144,14 @@ Le pinyin sans tons sera la convention d'affichage par défaut.
 
 Exemples : Beijing, Shanghai, Guangdong, Sichuan, Chongqing, Urumqi.
 
+Exceptions : quand un nom francophone usuel est nettement plus connu que le pinyin, il devient le nom principal et le pinyin passe en alias. C'est le cas de Hong Kong (Xianggang), de Macao (Aomen) et des îles Paracel (Xisha Qundao). Toute nouvelle exception doit être ajoutée à cette liste.
+
+### Territoires disputés
+
+Rester neutre : ne pas rattacher un territoire disputé à un pays par la hiérarchie (pas de `parentId`). On renseigne `claimedBy` avec les codes ISO 3166-1 des pays qui le revendiquent, et l'application affiche « revendiqué par … » sans trancher, comme le font les applications de quiz pour les Malouines.
+
+- Îles Paracel : revendiquées par la Chine (CN), Taïwan (TW) et le Vietnam (VN).
+
 Les noms chinois en caractères peuvent être conservés comme métadonnées facultatives afin de vérifier les données et d'enrichir ultérieurement l'application.
 
 Chaque unité géographique doit avoir un identifiant stable, indépendant de son nom affiché.

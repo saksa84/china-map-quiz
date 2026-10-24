@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "manual-disputes",
+      "name": "Statut des territoires disputés, saisi d'après les sources encyclopédiques",
+      "license": "Données factuelles saisies pour le projet",
+      "url": "https://en.wikipedia.org/wiki/Paracel_Islands"
+    }
+  ],
+  "entities": [
+    {
+      "id": "IS-PARACEL",
+      "type": "island_group",
+      "name": "Iles Paracel",
+      "aliases": ["Paracel", "Paracel Islands", "Xisha Qundao", "Hoang Sa"],
+      "hanzi": "西沙群岛",
+      "claimedBy": ["CN", "TW", "VN"],
+      "sourceId": "manual-disputes"
+    }
+  ]
+}
