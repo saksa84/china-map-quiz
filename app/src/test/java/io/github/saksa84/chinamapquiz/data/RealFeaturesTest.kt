@@ -6,6 +6,7 @@ import io.github.saksa84.chinamapquiz.game.LevelsConfig
 import io.github.saksa84.chinamapquiz.game.QuizLevels
 import io.github.saksa84.chinamapquiz.map.HitTester
 import io.github.saksa84.chinamapquiz.map.MapGeometry
+import io.github.saksa84.chinamapquiz.map.MapShape
 import io.github.saksa84.chinamapquiz.map.ShapeKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -15,6 +16,10 @@ import java.io.File
 
 /** Villes, cours d'eau et montagnes : vraies données livrées, chargées comme dans l'application. */
 class RealFeaturesTest {
+
+    private companion object {
+        const val MAX_GAP_KM = 30.0
+    }
 
     private fun asset(path: String) = File("src/main/assets/$path").readText()
 
@@ -57,6 +62,55 @@ class RealFeaturesTest {
     fun tributariesFlowIntoAnotherRiver() {
         catalog.ofType(FeatureType.TRIBUTARY).forEach { assertEquals(it.id, Category.RIVER, catalog[it.parentId!!]!!.category) }
         assertEquals("RV-MINJIANG", catalog["RV-DADUHE"]!!.parentId)
+    }
+
+    @Test
+    fun riversHaveALength_andTheYangtzeIsTheLongest() {
+        val rivers = catalog.inCategory(Category.RIVER)
+        rivers.forEach { assertTrue("${it.id} sans longueur", (it.lengthKm ?: 0) > 0) }
+        assertEquals("RV-CHANGJIANG", rivers.maxByOrNull { it.lengthKm!! }!!.id)
+        // Un affluent est plus court que le fleuve dans lequel il se jette (le Hai He n'est compté que pour son cours principal).
+        catalog.ofType(FeatureType.TRIBUTARY).filter { it.parentId != "RV-HAIHE" }
+            .forEach { assertTrue(it.id, it.lengthKm!! < catalog[it.parentId!!]!!.lengthKm!!) }
+        listOf("RV-LANCANGJIANG", "RV-NUJIANG", "RV-YARLUNGZANGBO", "RV-EERQISIHE")
+            .forEach { assertTrue("$it : longueur en Chine", catalog[it]!!.lengthInChinaKm != null) }
+    }
+
+    /**
+     * Les tronçons d'un cours d'eau forment un seul tracé : en reliant les tronçons distants de moins
+     * de [MAX_GAP_KM], on doit pouvoir passer de l'un à l'autre. Détecte un tronçon manquant au milieu
+     * (comme le Qian Jiang dans le Zhu Jiang avant correction), pas une source ou une embouchure absentes.
+     */
+    @Test
+    fun riverSectionsLeaveNoGap() {
+        val maxGap = (MAX_GAP_KM / geometry.unitKm).toFloat()
+        for (river in catalog.inCategory(Category.RIVER)) {
+            val sections = geometry[river.id]!!.rings
+            val reached = mutableSetOf(0)
+            var grew = true
+            while (grew) {
+                grew = false
+                for (i in sections.indices) {
+                    if (i !in reached && reached.any { gap(sections[it], sections[i]) <= maxGap }) {
+                        reached += i
+                        grew = true
+                    }
+                }
+            }
+            assertEquals("${river.id} : tronçons isolés (écart > $MAX_GAP_KM km)", sections.size, reached.size)
+        }
+    }
+
+    /** Plus courte distance entre une extrémité de l'un des tronçons et l'autre tronçon. */
+    private fun gap(a: FloatArray, b: FloatArray): Float {
+        fun endsTo(ends: FloatArray, line: FloatArray): Float {
+            val shape = MapShape("gap", listOf(line), kind = ShapeKind.LINE)
+            return minOf(
+                shape.distanceToEdge(ends[0], ends[1]),
+                shape.distanceToEdge(ends[ends.size - 2], ends[ends.size - 1]),
+            )
+        }
+        return minOf(endsTo(a, b), endsTo(b, a))
     }
 
     @Test
@@ -110,5 +164,11 @@ class RealFeaturesTest {
         assertTrue(checker.isCorrect("CT-XIAN", "Xian"))
         assertTrue(checker.isCorrect("CT-GUANGZHOU", "Canton"))
         assertTrue(checker.isCorrect("MT-DAXINGANLING", "Grand Khingan"))
+        // Noms connus (étape B de la v1.1) : acceptés avec ou sans accents.
+        assertTrue(checker.isCorrect("RV-LANCANGJIANG", "Mékong"))
+        assertTrue(checker.isCorrect("RV-LANCANGJIANG", "mekong"))
+        assertTrue(checker.isCorrect("RV-CHANGJIANG", "Yangtse"))
+        assertEquals("Everest / Zhumulangma Feng", catalog["PK-QOMOLANGMA"]!!.displayName)
+        assertEquals("Canton / Guangzhou", catalog["CT-GUANGZHOU"]!!.displayName)
     }
 }

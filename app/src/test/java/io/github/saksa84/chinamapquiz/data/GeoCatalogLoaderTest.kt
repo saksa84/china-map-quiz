@@ -347,4 +347,37 @@ class GeoCatalogLoaderTest {
         val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","parentId":"CN","sourceId":"s"}"""
         assertEquals(listOf(ValidationError.InvalidParent("IS-A", "CN")), errorsOf(fileWith(islands)))
     }
+
+    @Test
+    fun riverLengths_areChecked() {
+        fun river(lengths: String) = """{"id":"RV-A","type":"major_river","name":"Huang He",$lengths"sourceId":"s"}"""
+        val valid = (GeoCatalogLoader.load(fileWith(river(""""lengthKm":4350,"lengthInChinaKm":2139,"""))) as LoadResult.Success).catalog["RV-A"]!!
+        assertEquals(4350 to 2139, valid.lengthKm to valid.lengthInChinaKm)
+        val invalid = listOf(""""lengthKm":0,""", """"lengthKm":100,"lengthInChinaKm":200,""", """"lengthInChinaKm":200,""")
+        invalid.forEach { assertEquals(it, listOf(ValidationError.InvalidLength("RV-A")), errorsOf(fileWith(river(it)))) }
+    }
+
+    @Test
+    fun knownAs_allowsAccents_butNameDoesNot() {
+        val river = """{"id":"RV-A","type":"major_river","name":"Lancang Jiang","knownAs":"Mékong","sourceId":"s"}"""
+        val entity = (GeoCatalogLoader.load(fileWith(river)) as LoadResult.Success).catalog["RV-A"]!!
+        assertEquals("Mékong / Lancang Jiang", entity.displayName)
+        assertEquals("Mékong", entity.shortName)
+        val accentedName = """{"id":"RV-A","type":"major_river","name":"Lancang Jiāng","sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidName("RV-A", "Lancang Jiāng")), errorsOf(fileWith(accentedName)))
+    }
+
+    @Test
+    fun knownAsThatRepeatsTheNameOrUsesHanzi_isRejected() {
+        fun river(known: String) = """{"id":"RV-A","type":"major_river","name":"Taiwan","knownAs":"$known","sourceId":"s"}"""
+        listOf("Taïwan", "澜沧江", "").forEach {
+            assertEquals(it, listOf(ValidationError.InvalidKnownAs("RV-A", it)), errorsOf(fileWith(river(it))))
+        }
+    }
+
+    @Test
+    fun lengthOnSomethingOtherThanARiver_isRejected() {
+        val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","lengthKm":10,"sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidLength("IS-A")), errorsOf(fileWith(islands)))
+    }
 }

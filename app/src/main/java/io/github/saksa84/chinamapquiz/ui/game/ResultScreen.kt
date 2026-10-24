@@ -90,7 +90,7 @@ fun ResultScreen(
 /** Un lieu manqué, et tout ce qui a été touché ou tapé à sa place. */
 @Composable
 private fun MistakeRow(tries: List<AnswerRecord>, catalog: GeoCatalog) {
-    fun name(id: String?) = id?.let { catalog[it]?.name } ?: "?"
+    fun name(id: String?) = id?.let { catalog[it]?.displayName } ?: "?"
     val first = tries.first()
     val selected = tries.mapNotNull { it.selectedId }.distinct()
     val detail = when {

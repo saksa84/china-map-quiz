@@ -73,10 +73,13 @@ RIVERS = {
     "RV-LANCANGJIANG": (["Lancang", "Mekong", "Za"], None),
     "RV-NUJIANG": (["Nu", "Salween"], None),
     "RV-YARLUNGZANGBO": (["Yarlung", "Maquan", "Dihang", "Brahmaputra"], None),
-    "RV-HUAIHE": (["Huai"], (110, 122, 30, 35)),
-    "RV-LIAOHE": (["Liao"], (118, 126, 38, 46)),
+    # « Hudi » : cours inférieur du Huai, du confluent du Ying au lac Hongze puis au Yangtsé (Sanjiangying).
+    "RV-HUAIHE": (["Huai", "Hudi"], (110, 122, 30, 35)),
+    # Le Xiliao (Liao occidental) fait partie du Liao dans la longueur conventionnelle de 1 345 km.
+    "RV-LIAOHE": (["Liao", "Xiliao"], (118, 126, 38, 46)),
     "RV-HAIHE": (["Hai"], (115, 119, 38, 41)),
-    "RV-TARIMHE": (["Tarim"], None),
+    # Le Yarkant est la source principale du Tarim dans la longueur retenue (2 327 km).
+    "RV-TARIMHE": (["Tarim", "Yarkant"], None),
     "RV-EERQISIHE": (["Ertix"], None),
     "RV-HANJIANG": (["Han"], (100, 120, 28, 36)),
     "RV-JIALINGJIANG": (["Jialing"], None),
@@ -92,7 +95,8 @@ RIVERS = {
     "RV-WUSULIJIANG": (["Ussuri"], None),
     "RV-DONGJIANG": (["Dong"], (112, 117, 22, 26)),
     "RV-BEIJIANG": (["Bei"], (111, 115, 22, 26)),
-    "RV-YONGDINGHE": (["Yongding"], None),
+    # Le Sanggan est le cours supérieur du Yongding (longueur retenue : 747 km).
+    "RV-YONGDINGHE": (["Yongding", "Sanggan"], None),
 }
 
 # Chaînes : nom Natural Earth (champ NAME) des zones « Range/mtn ».

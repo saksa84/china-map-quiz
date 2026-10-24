@@ -1,5 +1,8 @@
 package io.github.saksa84.chinamapquiz.data
 
+import java.text.Normalizer
+import java.util.Locale
+
 /** Problème détecté dans les données. Chaque cas est un type distinct pour être vérifiable dans les tests. */
 sealed interface ValidationError {
     data class UnsupportedSchema(val version: Int) : ValidationError
@@ -14,6 +17,9 @@ sealed interface ValidationError {
     /** Le parent existe mais n'est pas d'une catégorie autorisée (province sous une province, fleuve sous une ville…). */
     data class InvalidParent(val entityId: String, val parentId: String) : ValidationError
     data class InvalidName(val entityId: String, val name: String) : ValidationError
+
+    /** Nom connu en alphabet latin (accents permis), différent du pinyin même aux accents près. */
+    data class InvalidKnownAs(val entityId: String, val knownAs: String) : ValidationError
 
     /** Seules les grandes régions ont des membres. */
     data class UnexpectedMembers(val entityId: String) : ValidationError
@@ -31,6 +37,9 @@ sealed interface ValidationError {
 
     /** Un pays revendicateur doit être un code ISO 3166-1 alpha-2 (ex. "VN"). */
     data class InvalidClaimant(val entityId: String, val code: String) : ValidationError
+
+    /** Longueur réservée aux cours d'eau, strictement positive, et partie chinoise au plus égale au total. */
+    data class InvalidLength(val entityId: String) : ValidationError
 }
 
 object GeoCatalogValidator {
@@ -42,6 +51,9 @@ object GeoCatalogValidator {
      * et les chaînes vides.
      */
     private val LATIN_NAME = Regex("^[A-Za-z][A-Za-z0-9 '\\-]*$")
+    /** Nom connu : lettres latines, accents compris (Mékong, Pékin), espaces, apostrophes, traits d'union. */
+    private val KNOWN_NAME = Regex("^\\p{IsLatin}[\\p{IsLatin}0-9 '\\-]*$")
+    private val COMBINING_MARKS = Regex("\\p{M}+")
     private val COUNTRY_CODE = Regex("^[A-Z]{2}$")
 
     fun validate(files: List<GeoCatalogFile>): List<ValidationError> {
@@ -76,15 +88,31 @@ object GeoCatalogValidator {
             for (name in listOf(entity.name) + entity.aliases) {
                 if (!LATIN_NAME.matches(name.trim())) errors += ValidationError.InvalidName(entity.id, name)
             }
+            entity.knownAs?.let { known ->
+                if (!KNOWN_NAME.matches(known) || withoutAccents(known) == withoutAccents(entity.name)) {
+                    errors += ValidationError.InvalidKnownAs(entity.id, known)
+                }
+            }
             for (code in entity.claimedBy) {
                 if (!COUNTRY_CODE.matches(code)) errors += ValidationError.InvalidClaimant(entity.id, code)
             }
+            if (!hasValidLength(entity)) errors += ValidationError.InvalidLength(entity.id)
             errors += checkParent(entity, byId)
             errors += checkMembers(entity, byId)
         }
 
         errors += checkRegionCoverage(entities, byId)
         return errors
+    }
+
+    private fun withoutAccents(text: String): String =
+        Normalizer.normalize(text, Normalizer.Form.NFD).replace(COMBINING_MARKS, "").lowercase(Locale.ROOT)
+
+    private fun hasValidLength(entity: GeoEntity): Boolean {
+        val total = entity.lengthKm
+        val inChina = entity.lengthInChinaKm
+        if (total == null) return inChina == null
+        return entity.category == Category.RIVER && total > 0 && (inChina == null || inChina in 1..total)
     }
 
     private fun checkParent(entity: GeoEntity, byId: Map<String, GeoEntity>): List<ValidationError> {

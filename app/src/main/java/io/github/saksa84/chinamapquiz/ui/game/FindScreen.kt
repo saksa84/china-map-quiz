@@ -44,7 +44,7 @@ fun FindScreen(
                 answer == null -> FeedbackText(null, QuizColors.OnDark)
                 answer.correct -> FeedbackText(stringResource(R.string.find_correct), QuizColors.Correct)
                 else -> FeedbackText(
-                    stringResource(R.string.find_wrong, answer.selectedId?.let { data.catalog[it]?.name } ?: "?"),
+                    stringResource(R.string.find_wrong, answer.selectedId?.let { data.catalog[it]?.displayName } ?: "?"),
                     QuizColors.Wrong,
                 )
             }
@@ -63,7 +63,7 @@ fun FindScreen(
         },
         overlay = { if (answer != null) AnswerCard(data, answer.targetId) },
         bottom = {
-            PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.name } ?: ""))
+            PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.displayName } ?: ""))
             val isLast = state.questionNumber >= state.total
             GameButton(
                 stringResource(

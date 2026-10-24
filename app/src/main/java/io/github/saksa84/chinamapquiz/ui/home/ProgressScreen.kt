@@ -95,7 +95,7 @@ fun ProgressScreen(
                         Modifier.fillMaxWidth().background(QuizColors.Tile, RoundedCornerShape(4.dp)).padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(catalog[id]?.name ?: id, color = QuizColors.OnDark, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                        Text(catalog[id]?.displayName ?: id, color = QuizColors.OnDark, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
                         Text(stringResource(R.string.progress_missed_count, count), color = QuizColors.Wrong)
                     }
                 }

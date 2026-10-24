@@ -13,6 +13,7 @@ Registre de toutes les données intégrées à l'application : provenance, versi
 | `natural-earth-rivers` | Tracés de 12 grands fleuves et 15 affluents, coupés à la frontière avec une marge de 10 km | Natural Earth `rivers_lake_centerlines` v5.1.2 ; rattachements saisis pour le projet | Domaine public | — |
 | `natural-earth-mountains` | 17 zones de chaînes et 17 sommets avec altitude | Natural Earth `geography_regions_polys` et `geography_regions_elevation_points` v5.1.2 | Domaine public | — |
 | `manual-peaks` | Tai Shan, Huang Shan, Emei Shan (absents de Natural Earth) | Coordonnées et altitudes approximatives d'après les articles encyclopédiques | Faits | — |
+| `facts.json` (pas de `sourceId`) | Fiches « En savoir plus » : population, superficie, langues, histoire, économie, plat, anecdotes | Rédigées par Claude à partir de connaissances générales (2026-10-24), **à relire** ; population : recensement chinois 2020 (Hong Kong et Macao 2021, Taïwan estimation 2023) | Texte original du projet | — |
 | `manual-disputes` | Statut des territoires disputés (pays revendicateurs) | Saisie manuelle d'après les sources encyclopédiques ([Paracel Islands](https://en.wikipedia.org/wiki/Paracel_Islands)) | Faits non protégeables, saisis pour le projet | — |
 
 Fichiers produits (`app/src/main/assets/geo/`) :
@@ -23,7 +24,8 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 | `regions.json` | Écrit à la main |
 | `islands.json` | Écrit à la main |
 | `map.geometry.json` | **Généré** par `tools/build_map_geometry.py`. Ne pas modifier à la main. |
-| `cities.json`, `rivers.json`, `mountains.json` | Écrits à la main |
+| `cities.json`, `rivers.json`, `mountains.json` | Écrits à la main (dont les noms connus `knownAs`) |
+| `facts.json` | Écrit à la main ; chaque fiche porte `reviewed` (faux tant qu'elle n'est pas relue) |
 | `features.geometry.json` | **Généré** par `tools/build_features_geometry.py` : sélection des tronçons, villes et sommets, découpe à la frontière, vérification ville/province. Ne pas modifier à la main. |
 | `res/drawable/ic_launcher_foreground.xml` (icône) | **Généré** par `tools/build_icon.py` à partir de `map.geometry.json` |
 
@@ -60,6 +62,57 @@ Résultat le 2026-10-24 : 35 entités (34 unités et les îles Paracel), 54 214 
 
 - **Macao / Guangdong** : la frontière terrestre de la péninsule est recollée (étape 2). Le chenal entre Taipa-Coloane et l'île de Hengqin reste ouvert : il existe réellement, mais il paraît plus large qu'en réalité à cause de la résolution de Natural Earth.
 - Les contours de Natural Earth 1:10m sont adaptés à une carte nationale, pas à une carte locale détaillée.
+
+## Cours d'eau : tracés et longueurs
+
+### Tracés (`tools/build_features_geometry.py`)
+
+Chaque cours d'eau est l'assemblage de tronçons Natural Earth nommés (dictionnaire `RIVERS`). On ajoute le cours supérieur ou inférieur quand la longueur retenue l'inclut :
+
+| Cours d'eau | Tronçons Natural Earth ajoutés (2026-10-24) |
+|---|---|
+| Huai He | « Hudi » : cours inférieur, du confluent du Ying au lac Hongze puis au Yangtsé à Sanjiangying |
+| Liao He | « Xiliao » (Liao occidental) |
+| Tarim He | « Yarkant », source principale dans la convention chinoise |
+| Yongding He | « Sanggan », cours supérieur |
+
+Le test `riverSectionsLeaveNoGap` vérifie qu'aucun tronçon n'est isolé de plus de 30 km (il aurait détecté le trou du Qian Jiang dans le Zhu Jiang). Écart maximal mesuré le 2026-10-24 : 0,8 km.
+
+**Limite connue** : Natural Earth ne contient que le cours inférieur du **Min Jiang** (146 km, de Leshan à Yibin). Le cours supérieur (Dujiangyan, Wenchuan) manque ; le tracé reste partiel. La longueur des tracés est en général 10 à 20 % plus courte que la longueur réelle, à cause de la généralisation au 1:10m et de la simplification.
+
+### Longueurs (`lengthKm`, `lengthInChinaKm` dans `rivers.json`)
+
+Les longueurs de fleuves dépendent de la source retenue pour le cours principal. Règle : **valeur de l'infobox de la Wikipédia en chinois** (qui reprend en général les chiffres officiels chinois), révision consultée le 2026-10-24. Exceptions notées dans le tableau. `lengthInChinaKm` est renseigné pour les fleuves qui traversent la frontière ; pas pour l'Amour, qui la longe.
+
+| Identifiant | Longueur (km) | En Chine (km) | Article zh.wikipedia (révision) | Remarque |
+|---|---|---|---|---|
+| RV-CHANGJIANG | 6 300 | | 长江 (94386981) | |
+| RV-HUANGHE | 5 464 | | 黄河 (94788068) | |
+| RV-HEILONGJIANG | 2 824 | | 黑龙江 (河流) (93272292) | Cours principal ; 4 344 à 5 498 km selon la source retenue |
+| RV-ZHUJIANG | 2 214 | | 珠江 (94491231) | Cours principal du Xi Jiang |
+| RV-LANCANGJIANG | 4 350 | 2 139 | 湄公河 (93356851), 澜沧江 (94114875) | Les sources varient de 4 180 à 4 909 km |
+| RV-NUJIANG | 2 815 | 2 013 | 怒江 (94281866) | |
+| RV-YARLUNGZANGBO | 2 900 | 2 057 | 布拉马普特拉河 (88154453), 雅鲁藏布江 (92828114) | Texte de l'article (infobox : 2 070) |
+| RV-HUAIHE | 1 252 | | 淮河 (94005878) | Le même article donne aussi « environ 1 000 km » jusqu'au Yangtsé |
+| RV-LIAOHE | 1 345 | | — | Pas de longueur sur zh ; infobox de en.wikipedia « Liao River » |
+| RV-HAIHE | 73 | | 海河 (93198103) | **Cours principal** (Commission du Hai He), comme le tracé ; l'infobox (1 122 km) compte le bassin jusqu'à la source la plus lointaine |
+| RV-TARIMHE | 2 327 | | 塔里木河 (87541207) | Avec le Yarkant (cours principal seul : 1 321 km) |
+| RV-EERQISIHE | 4 248 | 593 | 额尔齐斯河 (93192547) | En Chine : texte de l'article |
+| RV-HANJIANG | 1 532 | | — | Pas de longueur sur zh ; infobox de en.wikipedia « Han River (Hubei and Shaanxi) » |
+| RV-JIALINGJIANG | 1 119 | | 嘉陵江 (94723143) | |
+| RV-MINJIANG | 1 279 | | 岷江 (93776648) | Mesure de l'Académie des sciences (2013) ; 735 km dans la convention ancienne |
+| RV-DADUHE | 1 062 | | 大渡河 (92660953) | |
+| RV-YALONGJIANG | 1 633 | | 雅砻江 (94369861) | |
+| RV-WUJIANG | 1 037 | | 乌江 (94659576) | |
+| RV-XIANGJIANG | 948 | | 湘江 (94984896) | Avec la source orientale |
+| RV-YUANJIANG | 1 033 | | 沅江 (89754771) | |
+| RV-GANJIANG | 991 | | 赣江 (85547540) | Cours principal seul : 751 km |
+| RV-WEIHE | 818 | | 渭河 (93668330) | |
+| RV-SONGHUAJIANG | 1 725 | | 松花江 (92233287) | Avec le Second Songhua ; 2 309 km avec le Nen |
+| RV-WUSULIJIANG | 890 | | 乌苏里江 (93905371) | |
+| RV-DONGJIANG | 523 | | 东江 (85546270) | Texte de l'article |
+| RV-BEIJIANG | 468 | | 北江 (85546379) | |
+| RV-YONGDINGHE | 747 | | 永定河 (94719486) | Texte de l'article, avec le Sanggan |
 
 ## Régénérer les données
 

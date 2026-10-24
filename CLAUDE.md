@@ -482,11 +482,11 @@ Repères dans le code :
 Commandes : voir `docs/build.md`. Avec PowerShell, définir d'abord `$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"`, puis `.\gradlew.bat testDebugUnitTest assembleDebug`. Pour essayer sur l'émulateur : `installDebug`, puis captures avec `adb exec-out screencap -p`.
 
 **Mission en cours : version 1.1, « mieux retenir »** (détail dans `docs/plan-v1.1.md`) :
-- A : vérification des cours d'eau et longueur des fleuves ;
-- B : noms connus en Europe affichés « Nom connu / pinyin » ;
+- A : vérification des cours d'eau et longueur des fleuves (fait) ;
+- B : noms connus en Europe affichés « Nom connu / pinyin » (fait) ;
 - C : pinyin avec tons et bouton de prononciation (synthèse vocale Android en mandarin, qui lit les hanzi) ;
-- D : fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
-- E : fiche compacte de 4 à 5 lignes pendant les quiz.
+- D : (provinces faites, à relire ; villes, cours d'eau et montagnes à faire) fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
+- E : fiche compacte de 4 à 5 lignes pendant les quiz (fait).
 
 Ensuite : version 2 (parcs, lacs, villes-préfectures) et mode Contours.
 

@@ -11,11 +11,15 @@ Chaque étape est petite. Elle se termine par la compilation, les tests, un essa
 
 ## Étape A — Vérifications et longueurs des cours d'eau
 
+**Faite le 2026-10-24** : aucun trou entre tronçons, cours supérieurs ou inférieurs ajoutés au Huai, au Liao, au Tarim et au Yongding, longueurs et sources dans `docs/data-sources.md`. Reste partiel : le Min Jiang (cours supérieur absent de Natural Earth).
+
 1. Vérifier visuellement les 27 cours d'eau (aperçu SVG ou mode Apprendre) à la recherche d'autres tronçons manquants. Ajouter un test qui signale un écart de plus de 30 km entre deux tronçons d'un même cours d'eau.
 2. Ajouter un champ `lengthKm` (longueur totale du cours d'eau) dans `rivers.json`, avec la source. Si utile, préciser aussi la longueur en Chine pour les fleuves frontaliers ou transfrontaliers : Mékong, Brahmapoutre, Amour, Irtych.
 3. Afficher « Longueur : 6 300 km » dans les fiches.
 
 ## Étape B — Noms connus en Europe affichés avec le pinyin
+
+**Faite le 2026-10-24** : champ `knownAs` pour 23 lieux (Mékong, Yangtsé, Everest, Pékin, Canton, Tibet…). Pas de nom connu quand il ne diffère du pinyin que par un accent (Taïwan) ni pour les anciennes transcriptions peu connues (Tientsin, Moukden), qui restent des alias.
 
 Règle : quand un lieu a un nom courant en français ou à l'international, on l'affiche **avec** le pinyin, sous la forme « Nom connu / pinyin ». Exemples :
 - Everest / Zhumulangma Feng
@@ -48,6 +52,8 @@ Le Guangzhou que tu as visité s'appelle « Canton » en français.
 
 ## Étape D — Fiches « mini-Wikipédia » (mode Apprendre)
 
+**En cours** : modèle, chargement, validation et section « En savoir plus » faits le 2026-10-24 ; fiches des 34 unités provinciales rédigées, **à relire**. Restent les villes, les cours d'eau et les montagnes.
+
 Contenu dans un **fichier séparé** `assets/geo/facts.json`, indexé par identifiant (même principe que les spécialités culinaires de la V3). Il est rédigé par Claude à partir de connaissances générales, marqué « à vérifier », et relu par toi.
 
 Rubriques pour une **province** : 5 ou 6 lignes courtes, pas plus.
@@ -69,6 +75,8 @@ Ton : factuel et neutre, en particulier pour Xizang, Xinjiang, Taïwan, Hong Kon
 3. Interface : section « En savoir plus » dépliable dans le panneau du mode Apprendre. Le panneau défile, ou s'agrandit en feuille glissante.
 
 ## Étape E — Fiche compacte pendant les quiz
+
+**Faite le 2026-10-24** : 4 lignes (nom connu / pinyin ; hanzi et type ; capitale ou province, population, longueur ou altitude ; langues). Le bouton 🔊 viendra avec l'étape C.
 
 Dans le retour de réponse (Trouver, Éliminer, Saisir) : **4 à 5 lignes au maximum**. Par exemple : nom connu / pinyin, hanzi, population, langue, capitale ou province, et le bouton 🔊.
 

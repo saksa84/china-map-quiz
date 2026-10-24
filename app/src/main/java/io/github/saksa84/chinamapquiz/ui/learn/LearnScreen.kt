@@ -37,6 +37,7 @@ import io.github.saksa84.chinamapquiz.data.Category
 import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
 import io.github.saksa84.chinamapquiz.data.MapData
+import io.github.saksa84.chinamapquiz.data.PlaceFacts
 import io.github.saksa84.chinamapquiz.game.GeoCategory
 import io.github.saksa84.chinamapquiz.map.MapPoint
 import io.github.saksa84.chinamapquiz.map.ShapeKind
@@ -139,12 +140,12 @@ fun LearnScreen(data: MapData, category: GeoCategory, onBack: () -> Unit) {
                 if (maxWidth > maxHeight) {
                     Row(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxHeight())
-                        InfoPanel(catalog, selectedId, hint(category, regionView), Modifier.width(340.dp).fillMaxHeight())
+                        InfoPanel(catalog, data.facts, selectedId, hint(category, regionView), Modifier.width(340.dp).fillMaxHeight())
                     }
                 } else {
                     Column(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxWidth())
-                        InfoPanel(catalog, selectedId, hint(category, regionView), Modifier.fillMaxWidth().height(200.dp))
+                        InfoPanel(catalog, data.facts, selectedId, hint(category, regionView), Modifier.fillMaxWidth().height(200.dp))
                     }
                 }
             }
@@ -161,7 +162,7 @@ private fun hint(category: GeoCategory, regionView: Boolean): Int = when (catego
 }
 
 @Composable
-private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, @StringRes hint: Int, modifier: Modifier) {
+private fun InfoPanel(catalog: GeoCatalog, facts: Map<String, PlaceFacts>, selectedId: String?, @StringRes hint: Int, modifier: Modifier) {
     Surface(tonalElevation = 3.dp, modifier = modifier) {
         val entity = selectedId?.let { catalog[it] }
         // Défilement : la fiche d'une grande région (liste des provinces) peut dépasser le panneau.
@@ -169,7 +170,7 @@ private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, @StringRes hint:
             if (entity == null) {
                 Text(stringResource(hint), modifier = Modifier.padding(16.dp))
             } else {
-                EntityInfo(catalog, entity, Modifier.padding(16.dp))
+                EntityInfo(catalog, entity, Modifier.padding(16.dp), facts = facts[entity.id])
             }
         }
     }
@@ -177,7 +178,7 @@ private fun InfoPanel(catalog: GeoCatalog, selectedId: String?, @StringRes hint:
 
 /** Noms des provinces, à leur point d'étiquette ; la place disponible vient de la distance au bord. */
 private fun provinceLabels(data: MapData): List<MapLabel> = data.geometry.shapes.filter { !it.overlay }.mapNotNull { shape ->
-    val name = data.catalog[shape.id]?.name ?: return@mapNotNull null
+    val name = data.catalog[shape.id]?.shortName ?: return@mapNotNull null
     // Le nom peut déborder un peu du cercle inscrit : il est bien plus large que haut, et les
     // chevauchements entre noms sont de toute façon évités au dessin.
     MapLabel(name, shape.label, fitWidth = shape.labelRoom * 4.5f)
@@ -220,11 +221,11 @@ private fun featureLabels(data: MapData, ids: Set<String>): List<MapLabel> = ids
     when (shape.kind) {
         // Une ville peut toujours écrire son nom ; les chevauchements sont évités au dessin, les plus grandes d'abord.
         ShapeKind.POINT -> if (entity.type == FeatureType.CITY) {
-            MapLabel(entity.name, shape.label, fitWidth = 1e6f + (entity.population ?: 0L) / 1e3f, aboveDp = 10f)
+            MapLabel(entity.shortName, shape.label, fitWidth = 1e6f + (entity.population ?: 0L) / 1e3f, aboveDp = 10f)
         } else {
             null
         }
-        ShapeKind.LINE, ShapeKind.POLYGON -> MapLabel(entity.name, shape.label, fitWidth = shape.labelRoom * 4.5f)
+        ShapeKind.LINE, ShapeKind.POLYGON -> MapLabel(entity.shortName, shape.label, fitWidth = shape.labelRoom * 4.5f)
     }
 }
 

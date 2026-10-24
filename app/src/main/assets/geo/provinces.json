@@ -11,7 +11,7 @@
   "entities": [
     { "id": "CN", "type": "country", "name": "Zhongguo", "aliases": ["China", "Chine"], "hanzi": "中国", "capital": "Beijing", "sourceId": "manual-iso-3166-2-cn" },
 
-    { "id": "CN-BJ", "type": "municipality", "name": "Beijing", "aliases": ["Pekin", "Peking"], "hanzi": "北京", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-BJ", "type": "municipality", "name": "Beijing", "knownAs": "Pékin", "aliases": ["Pekin", "Peking"], "hanzi": "北京", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-TJ", "type": "municipality", "name": "Tianjin", "aliases": ["Tientsin"], "hanzi": "天津", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-SH", "type": "municipality", "name": "Shanghai", "hanzi": "上海", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-CQ", "type": "municipality", "name": "Chongqing", "aliases": ["Chungking", "Tchongking"], "hanzi": "重庆", "parentId": "CN", "sourceId": "manual-iso-3166-2-cn" },
@@ -40,9 +40,9 @@
     { "id": "CN-QH", "type": "province", "name": "Qinghai", "hanzi": "青海", "parentId": "CN", "capital": "Xining", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-TW", "type": "province", "name": "Taiwan", "aliases": ["Formose", "Formosa"], "hanzi": "台湾", "parentId": "CN", "capital": "Taipei", "sourceId": "manual-iso-3166-2-cn" },
 
-    { "id": "CN-NM", "type": "autonomous_region", "name": "Nei Mongol", "aliases": ["Nei Menggu", "Inner Mongolia", "Mongolie interieure"], "hanzi": "内蒙古", "parentId": "CN", "capital": "Hohhot", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-NM", "type": "autonomous_region", "name": "Nei Mongol", "knownAs": "Mongolie-Intérieure", "aliases": ["Nei Menggu", "Inner Mongolia", "Mongolie interieure"], "hanzi": "内蒙古", "parentId": "CN", "capital": "Hohhot", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-GX", "type": "autonomous_region", "name": "Guangxi", "hanzi": "广西", "parentId": "CN", "capital": "Nanning", "sourceId": "manual-iso-3166-2-cn" },
-    { "id": "CN-XZ", "type": "autonomous_region", "name": "Xizang", "aliases": ["Tibet"], "hanzi": "西藏", "parentId": "CN", "capital": "Lhasa", "sourceId": "manual-iso-3166-2-cn" },
+    { "id": "CN-XZ", "type": "autonomous_region", "name": "Xizang", "knownAs": "Tibet", "aliases": ["Tibet"], "hanzi": "西藏", "parentId": "CN", "capital": "Lhasa", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-NX", "type": "autonomous_region", "name": "Ningxia", "hanzi": "宁夏", "parentId": "CN", "capital": "Yinchuan", "sourceId": "manual-iso-3166-2-cn" },
     { "id": "CN-XJ", "type": "autonomous_region", "name": "Xinjiang", "aliases": ["Sinkiang"], "hanzi": "新疆", "parentId": "CN", "capital": "Urumqi", "sourceId": "manual-iso-3166-2-cn" },
 

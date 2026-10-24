@@ -40,7 +40,7 @@ fun EliminateScreen(
                 flash == null -> FeedbackText(null, QuizColors.OnDark)
                 flash.correct -> FeedbackText(stringResource(R.string.find_correct), QuizColors.Correct)
                 else -> FeedbackText(
-                    stringResource(R.string.eliminate_wrong, data.catalog[flash.id]?.name ?: "?"),
+                    stringResource(R.string.eliminate_wrong, data.catalog[flash.id]?.displayName ?: "?"),
                     QuizColors.Wrong,
                 )
             }
@@ -59,7 +59,7 @@ fun EliminateScreen(
         },
         overlay = {},
         bottom = {
-            PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.name } ?: ""))
+            PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.displayName } ?: ""))
             GameProgress(state.score, state.total)
         },
     )

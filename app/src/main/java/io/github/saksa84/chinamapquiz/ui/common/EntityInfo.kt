@@ -2,21 +2,32 @@ package io.github.saksa84.chinamapquiz.ui.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
 import io.github.saksa84.chinamapquiz.data.GeoEntity
+import io.github.saksa84.chinamapquiz.data.PlaceFacts
+import io.github.saksa84.chinamapquiz.game.AnswerNormalizer
 import java.util.Locale
 
 /** Réglage « afficher les caractères chinois », fourni une fois à la racine de l'application. */
@@ -30,9 +41,11 @@ fun EntityInfo(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     showAliases: Boolean = true,
+    /** Fiche « En savoir plus » (mode Apprendre), dépliable sous les informations de base. */
+    facts: PlaceFacts? = null,
 ) {
     Column(modifier) {
-        Text(entity.name, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = color)
+        Text(entity.displayName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = color)
         val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
         val subtitle = listOfNotNull(hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
         Text(subtitle, style = MaterialTheme.typography.titleMedium, color = color)
@@ -42,17 +55,17 @@ fun EntityInfo(
         catalog.topRegionOf(entity.id)?.let { top ->
             val sub = catalog.children(top.id).firstOrNull { entity.id in it.memberIds }
             Text(
-                if (sub == null) stringResource(R.string.info_region, top.name)
-                else stringResource(R.string.info_region_with_sub, top.name, sub.name),
+                if (sub == null) stringResource(R.string.info_region, top.shortName)
+                else stringResource(R.string.info_region_with_sub, top.shortName, sub.shortName),
                 color = color,
             )
         }
         if (entity.type == FeatureType.REGION) {
-            val members = entity.memberIds.mapNotNull { catalog[it]?.name }
+            val members = entity.memberIds.mapNotNull { catalog[it]?.shortName }
             Text(stringResource(R.string.info_members, members.joinToString(", ")), color = color)
             val subRegions = catalog.children(entity.id).filter { it.type == FeatureType.REGION }
             if (subRegions.isNotEmpty()) {
-                val text = subRegions.joinToString(", ") { sub -> "${sub.name} (${sub.memberIds.mapNotNull { catalog[it]?.name }.joinToString(", ")})" }
+                val text = subRegions.joinToString(", ") { sub -> "${sub.shortName} (${sub.memberIds.mapNotNull { catalog[it]?.shortName }.joinToString(", ")})" }
                 Text(stringResource(R.string.info_subregions, text), color = color)
             }
         }
@@ -62,7 +75,7 @@ fun EntityInfo(
                 parent?.let { province ->
                     val isCapital = province.capital == entity.name
                     Text(
-                        stringResource(if (isCapital) R.string.info_province_capital else R.string.info_province, province.name),
+                        stringResource(if (isCapital) R.string.info_province_capital else R.string.info_province, province.shortName),
                         color = color,
                     )
                 }
@@ -70,17 +83,21 @@ fun EntityInfo(
                     Text(stringResource(R.string.info_population, String.format(Locale.FRENCH, "%.1f", it / 1e6)), color = color)
                 }
             }
-            FeatureType.TRIBUTARY -> parent?.let { Text(stringResource(R.string.info_flows_into, it.name), color = color) }
+            FeatureType.TRIBUTARY -> {
+                RiverLength(entity, color)
+                parent?.let { Text(stringResource(R.string.info_flows_into, it.shortName), color = color) }
+            }
             FeatureType.MAJOR_RIVER -> {
-                val tributaries = catalog.children(entity.id).map { it.name }
+                RiverLength(entity, color)
+                val tributaries = catalog.children(entity.id).map { it.shortName }
                 if (tributaries.isNotEmpty()) Text(stringResource(R.string.info_tributaries, tributaries.joinToString(", ")), color = color)
             }
             FeatureType.PEAK -> {
                 entity.elevation?.let { Text(stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)), color = color) }
-                parent?.let { Text(stringResource(R.string.info_range, it.name), color = color) }
+                parent?.let { Text(stringResource(R.string.info_range, it.shortName), color = color) }
             }
             FeatureType.MOUNTAIN_RANGE -> {
-                val peaks = catalog.children(entity.id).map { it.name }
+                val peaks = catalog.children(entity.id).map { it.shortName }
                 if (peaks.isNotEmpty()) Text(stringResource(R.string.info_peaks, peaks.joinToString(", ")), color = color)
             }
             else -> Unit
@@ -92,14 +109,115 @@ fun EntityInfo(
             }
             Text(stringResource(R.string.info_disputed, claimants), color = MaterialTheme.colorScheme.tertiary)
         }
-        if (showAliases && entity.aliases.isNotEmpty()) {
+        // Le nom connu est déjà dans le titre : on n'en répète pas la variante sans accents (Mekong pour Mékong).
+        val known = entity.knownAs?.let(AnswerNormalizer::normalize)
+        val aliases = entity.aliases.filter { AnswerNormalizer.normalize(it) != known }
+        if (showAliases && aliases.isNotEmpty()) {
             Text(
-                stringResource(R.string.info_also_known_as, entity.aliases.joinToString(", ")),
+                stringResource(R.string.info_also_known_as, aliases.joinToString(", ")),
                 style = MaterialTheme.typography.bodySmall,
                 color = color,
             )
         }
+        if (facts != null) FactsSection(facts, color)
     }
+}
+
+/** « En savoir plus » : rubriques de la fiche, repliées par défaut pour garder la carte visible. */
+@Composable
+private fun FactsSection(facts: PlaceFacts, color: Color) {
+    var expanded by rememberSaveable(facts.id) { mutableStateOf(false) }
+    TextButton(onClick = { expanded = !expanded }, contentPadding = PaddingValues(0.dp)) {
+        Text(stringResource(if (expanded) R.string.facts_less else R.string.facts_more))
+    }
+    if (!expanded) return
+    val lines = buildList {
+        populationText(facts)?.let { add(it) }
+        facts.areaKm2?.let { add(stringResource(R.string.facts_area, String.format(Locale.FRENCH, "%,d", it))) }
+        facts.languages?.let { add(stringResource(R.string.facts_languages, it)) }
+        facts.role?.let { add(stringResource(R.string.facts_role, it)) }
+        facts.history?.let { add(stringResource(R.string.facts_history, it)) }
+        facts.economy?.let { add(stringResource(R.string.facts_economy, it)) }
+        facts.dish?.let { add(stringResource(R.string.facts_dish, it)) }
+        facts.landmark?.let { add(stringResource(R.string.facts_landmark, it)) }
+        facts.anecdotes.forEach { add(stringResource(R.string.facts_anecdote, it)) }
+    }
+    lines.forEach { Text(it, color = color, modifier = Modifier.padding(bottom = 6.dp)) }
+    if (!facts.reviewed) {
+        Text(stringResource(R.string.facts_unreviewed), style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic, color = color)
+    }
+}
+
+@Composable
+private fun populationText(facts: PlaceFacts): String? {
+    val millions = facts.populationMillions ?: return null
+    val year = facts.populationYear ?: return null
+    return stringResource(R.string.facts_population, millionsText(millions), year)
+}
+
+/** 83,7 ; 0,68 pour Macao (moins d'un million). */
+private fun millionsText(millions: Double): String =
+    String.format(Locale.FRENCH, if (millions < 1) "%.2f" else "%.1f", millions)
+
+/**
+ * Fiche compacte du retour de réponse en jeu (étape E) : 4 lignes au plus, pour ne pas cacher
+ * la carte. Nom connu / pinyin, hanzi et type, un repère (capitale, province, longueur, altitude),
+ * la langue parlée.
+ */
+@Composable
+fun CompactEntityInfo(
+    catalog: GeoCatalog,
+    entity: GeoEntity,
+    facts: PlaceFacts?,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+) {
+    Column(modifier) {
+        Text(
+            entity.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold,
+            color = color, maxLines = 1, overflow = TextOverflow.Ellipsis,
+        )
+        val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
+        Text(listOfNotNull(hanzi, stringResource(typeLabel(entity.type))).joinToString(" · "), color = color, maxLines = 1)
+        val parent = entity.parentId?.let { catalog[it] }
+        val key = when (entity.type) {
+            FeatureType.CITY -> listOfNotNull(
+                parent?.let { stringResource(R.string.info_province, it.shortName) },
+                entity.population?.let { stringResource(R.string.compact_population, millionsText(it / 1e6)) },
+            )
+            FeatureType.MAJOR_RIVER, FeatureType.TRIBUTARY ->
+                listOfNotNull(entity.lengthKm?.let { stringResource(R.string.info_length, String.format(Locale.FRENCH, "%,d", it)) })
+            FeatureType.PEAK -> listOfNotNull(
+                entity.elevation?.let { stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)) },
+                parent?.shortName,
+            )
+            else -> listOfNotNull(
+                entity.capital?.let { stringResource(R.string.info_capital, it) },
+                facts?.populationMillions?.let { stringResource(R.string.compact_population, millionsText(it)) },
+            )
+        }
+        if (key.isNotEmpty()) Text(key.joinToString(" · "), color = color, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        facts?.languages?.let {
+            Text(
+                stringResource(R.string.facts_languages, it), color = color, style = MaterialTheme.typography.bodySmall,
+                maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+/** « Longueur : 6 300 km », avec la partie chinoise pour les fleuves transfrontaliers. */
+@Composable
+private fun RiverLength(entity: GeoEntity, color: Color) {
+    val total = entity.lengthKm ?: return
+    fun km(value: Int) = String.format(Locale.FRENCH, "%,d", value)
+    val inChina = entity.lengthInChinaKm
+    val text = if (inChina == null) {
+        stringResource(R.string.info_length, km(total))
+    } else {
+        stringResource(R.string.info_length_in_china, km(total), km(inChina))
+    }
+    Text(text, color = color)
 }
 
 @StringRes

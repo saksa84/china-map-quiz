@@ -68,7 +68,7 @@ fun TypeScreen(
             )
         },
         feedback = {
-            val targetName = answer?.targetId?.let { data.catalog[it]?.name }
+            val targetName = answer?.targetId?.let { data.catalog[it]?.displayName }
             when {
                 answer == null -> FeedbackText(null, QuizColors.OnDark)
                 answer.correct -> FeedbackText(stringResource(R.string.type_correct, targetName ?: ""), QuizColors.Correct)

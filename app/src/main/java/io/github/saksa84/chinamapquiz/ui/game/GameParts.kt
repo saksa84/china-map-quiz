@@ -37,7 +37,7 @@ import io.github.saksa84.chinamapquiz.data.MapData
 import io.github.saksa84.chinamapquiz.map.ShapeKind
 import io.github.saksa84.chinamapquiz.ui.map.ShapeStyle
 import io.github.saksa84.chinamapquiz.ui.common.BackButton
-import io.github.saksa84.chinamapquiz.ui.common.EntityInfo
+import io.github.saksa84.chinamapquiz.ui.common.CompactEntityInfo
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
 import io.github.saksa84.chinamapquiz.ui.common.QuizColors
 import io.github.saksa84.chinamapquiz.ui.common.formatDuration
@@ -168,15 +168,15 @@ fun FeedbackText(text: String?, color: Color) {
 @Composable
 fun AnswerCard(data: MapData, entityId: String?) {
     val entity = entityId?.let { data.catalog[it] } ?: return
-    EntityInfo(
+    CompactEntityInfo(
         data.catalog,
         entity,
+        data.facts[entity.id],
         Modifier
             .fillMaxWidth()
             .background(QuizColors.Tile.copy(alpha = 0.9f), RoundedCornerShape(6.dp))
             .padding(12.dp),
         color = QuizColors.OnDark,
-        showAliases = false,
     )
     Spacer(Modifier.height(8.dp))
 }

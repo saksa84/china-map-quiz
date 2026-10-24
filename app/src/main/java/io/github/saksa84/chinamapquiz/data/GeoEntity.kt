@@ -108,6 +108,11 @@ data class GeoEntity(
      * usuel pour les exceptions documentées dans CLAUDE.md (Hong Kong, Macao, îles Paracel).
      */
     val name: String,
+    /**
+     * Nom courant en français ou à l'international, quand il existe (« Everest », « Pékin », « Mékong ») :
+     * affiché avec le pinyin, sous la forme « Everest / Zhumulangma Feng ». Accents autorisés.
+     */
+    val knownAs: String? = null,
     /** Autres graphies acceptées dans le mode Type (ex. "Tibet" pour Xizang, "Yangtze" pour Chang Jiang). */
     val aliases: List<String> = emptyList(),
     /** Nom en caractères chinois, facultatif, pour vérification et enrichissement. */
@@ -127,7 +132,17 @@ data class GeoEntity(
     val population: Long? = null,
     /** Sommets : altitude en mètres. */
     val elevation: Int? = null,
+    /** Cours d'eau : longueur totale en km, de la source principale à l'embouchure (voir la source). */
+    val lengthKm: Int? = null,
+    /** Cours d'eau transfrontaliers : longueur du tronçon en Chine, en km. */
+    val lengthInChinaKm: Int? = null,
     val sourceId: String,
 ) {
     val category: Category get() = type.category
+
+    /** Nom complet des consignes et des fiches : « Everest / Zhumulangma Feng », ou le pinyin seul. */
+    val displayName: String get() = knownAs?.let { "$it / $name" } ?: name
+
+    /** Nom court pour la carte et les listes : le nom connu s'il existe. */
+    val shortName: String get() = knownAs ?: name
 }

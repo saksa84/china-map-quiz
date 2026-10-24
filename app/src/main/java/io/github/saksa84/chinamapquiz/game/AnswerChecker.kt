@@ -21,13 +21,13 @@ object AnswerNormalizer {
 }
 
 /**
- * Valide un nom tapé (mode Saisir) : accepte le nom principal et les alias déclarés dans les
+ * Valide un nom tapé (mode Saisir) : accepte le nom principal, le nom connu et les alias déclarés dans les
  * données, après normalisation. Aucune autre faute n'est tolérée (décision du 2026-10-24).
  */
 class AnswerChecker(private val catalog: GeoCatalog) {
 
     private val accepted: Map<String, Set<String>> = catalog.entities.associate { entity ->
-        entity.id to (listOf(entity.name) + entity.aliases).map(AnswerNormalizer::normalize).filter { it.isNotEmpty() }.toSet()
+        entity.id to (listOfNotNull(entity.name, entity.knownAs) + entity.aliases).map(AnswerNormalizer::normalize).filter { it.isNotEmpty() }.toSet()
     }
 
     fun isCorrect(targetId: String, typed: String): Boolean {

@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "origin": "Rédigé par Claude (Anthropic) à partir de connaissances générales, le 2026-10-24 ; à relire. Population : recensement chinois de 2020 (Hong Kong et Macao : recensements de 2021 ; Taïwan : estimation 2023). Superficies arrondies.",
+  "facts": [
+    {
+      "id": "CN-BJ", "populationMillions": 21.9, "populationYear": 2020, "areaKm2": 16400,
+      "languages": "Mandarin : le parler de Pékin est la base de la langue standard (putonghua).",
+      "history": "Capitale sous les Yuan, les Ming et les Qing, puis de la République populaire depuis 1949. La Cité interdite fut le palais impérial de 1420 à 1912.",
+      "economy": "Administration, services, finance, haute technologie (quartier de Zhongguancun), sièges des grandes entreprises d'État.",
+      "dish": "Canard laqué de Pékin.",
+      "anecdotes": [
+        "Seule ville à avoir accueilli les Jeux olympiques d'été (2008) et d'hiver (2022).",
+        "Plusieurs tronçons de la Grande Muraille, dont Badaling et Mutianyu, sont sur son territoire."
+      ]
+    },
+    {
+      "id": "CN-TJ", "populationMillions": 13.9, "populationYear": 2020, "areaKm2": 11900,
+      "languages": "Mandarin ; le dialecte de Tianjin est réputé pour ses comiques (xiangsheng).",
+      "history": "Port de Pékin au bout du Grand Canal. Ouverte aux étrangers en 1860, elle compta jusqu'à neuf concessions (britannique, française, italienne…).",
+      "economy": "L'un des grands ports du nord de la Chine ; aéronautique, pétrochimie, automobile.",
+      "dish": "Goubuli baozi, petits pains farcis cuits à la vapeur.",
+      "anecdotes": [
+        "Le quartier italien garde les villas de la seule concession que l'Italie ait obtenue en Chine."
+      ]
+    },
+    {
+      "id": "CN-HE", "populationMillions": 74.6, "populationYear": 2020, "areaKm2": 188800,
+      "languages": "Mandarin ; jin dans l'ouest de la province.",
+      "history": "Entoure Pékin et Tianjin ; ses passes de la Grande Muraille protégeaient la capitale. Chengde abritait la résidence d'été des empereurs Qing.",
+      "economy": "Sidérurgie (première province productrice d'acier), agriculture, logistique au service de Pékin.",
+      "dish": "Lürou huoshao, pain fourré à la viande d'âne (Baoding, Hejian).",
+      "anecdotes": [
+        "À Shanhaiguan, « première passe sous le ciel », la Grande Muraille rejoint la mer.",
+        "Xiong'an, ville nouvelle lancée en 2017, doit accueillir des administrations déplacées de Pékin."
+      ]
+    },
+    {
+      "id": "CN-SX", "populationMillions": 34.9, "populationYear": 2020, "areaKm2": 156700,
+      "languages": "Jin, proche du mandarin.",
+      "history": "Berceau des banques chinoises : les maisons de change de Pingyao dominèrent la finance sous les Qing. La province garde des temples en bois de l'époque Tang.",
+      "economy": "Charbon (l'une des deux premières régions productrices), énergie, métallurgie.",
+      "dish": "Daoxiao mian, nouilles coupées au couteau, avec le vinaigre vieilli du Shanxi.",
+      "anecdotes": [
+        "Pingyao a gardé intacts ses remparts de l'époque Ming.",
+        "À ne pas confondre avec le Shaanxi, son voisin à l'ouest : le « a » doublé distingue les deux noms."
+      ]
+    },
+    {
+      "id": "CN-NM", "populationMillions": 24.0, "populationYear": 2020, "areaKm2": 1183000,
+      "languages": "Mandarin et mongol, écrit avec l'alphabet mongol traditionnel, vertical.",
+      "history": "Steppes des peuples nomades, des Xiongnu aux Mongols. Région autonome depuis 1947, la première de Chine ; les Mongols y représentent environ 17 % de la population.",
+      "economy": "Charbon, terres rares (Bayan Obo, premier gisement mondial), élevage, énergie éolienne.",
+      "dish": "Mouton rôti et thé au lait salé.",
+      "anecdotes": [
+        "S'étire sur environ 2 400 km d'ouest en est et touche huit provinces chinoises.",
+        "Le centre spatial de Jiuquan, d'où partent les vols habités chinois, se trouve en Mongolie-Intérieure."
+      ]
+    },
+    {
+      "id": "CN-LN", "populationMillions": 42.6, "populationYear": 2020, "areaKm2": 148000,
+      "languages": "Mandarin du Nord-Est.",
+      "history": "Shenyang fut la capitale des Mandchous avant la conquête de la Chine en 1644. La péninsule du Liaodong fut disputée lors des guerres sino-japonaise (1894) et russo-japonaise (1904-1905).",
+      "economy": "Industrie lourde, construction navale et port de Dalian, pétrochimie.",
+      "dish": "Fruits de mer de Dalian et raviolis de Shenyang.",
+      "anecdotes": [
+        "Le palais impérial de Shenyang est, avec la Cité interdite, l'un des deux palais impériaux conservés en Chine."
+      ]
+    },
+    {
+      "id": "CN-JL", "populationMillions": 24.1, "populationYear": 2020, "areaKm2": 187400,
+      "languages": "Mandarin du Nord-Est ; coréen dans la préfecture autonome de Yanbian.",
+      "history": "Terre des Mandchous et de l'ancien royaume de Goguryeo. Changchun fut la capitale du Mandchoukouo, État créé par le Japon (1932-1945).",
+      "economy": "Automobile (FAW à Changchun), maïs et soja, exploitation forestière.",
+      "dish": "Lengmian, nouilles froides coréennes de Yanbian.",
+      "anecdotes": [
+        "Le lac de cratère du Changbai Shan, à la frontière nord-coréenne, reste gelé une grande partie de l'année."
+      ]
+    },
+    {
+      "id": "CN-HL", "populationMillions": 31.9, "populationYear": 2020, "areaKm2": 473000,
+      "languages": "Mandarin du Nord-Est.",
+      "history": "Frontière avec la Russie fixée au XIXe siècle sur l'Amour et l'Oussouri. Harbin s'est développée autour du chemin de fer russe de l'Est chinois.",
+      "economy": "Pétrole (Daqing), céréales et soja, industrie lourde.",
+      "dish": "Guobaorou, porc frit aigre-doux ; saucisses de Harbin d'inspiration russe.",
+      "anecdotes": [
+        "Mohe, à l'extrême nord, est la ville la plus froide de Chine : plus de 50 °C sous zéro ont été relevés en 1969.",
+        "La fête de la glace et de la neige de Harbin est l'une des plus grandes du monde."
+      ]
+    },
+    {
+      "id": "CN-SH", "populationMillions": 24.9, "populationYear": 2020, "areaKm2": 6340,
+      "languages": "Wu (dialecte de Shanghai) et mandarin.",
+      "history": "Port ouvert aux étrangers après la guerre de l'opium (1842), avec une concession internationale et une concession française jusqu'en 1943. Le Parti communiste chinois y fut fondé en 1921.",
+      "economy": "Finance, premier port à conteneurs du monde, automobile, semi-conducteurs.",
+      "dish": "Xiaolongbao, raviolis vapeur remplis de bouillon.",
+      "anecdotes": [
+        "La tour de Shanghai (632 m) est la plus haute de Chine.",
+        "Pudong, aujourd'hui couvert de gratte-ciel, était surtout agricole en 1990."
+      ]
+    },
+    {
+      "id": "CN-JS", "populationMillions": 84.7, "populationYear": 2020, "areaKm2": 107200,
+      "languages": "Wu au sud (Suzhou, Wuxi), mandarin au centre et au nord (Nankin).",
+      "history": "Nankin fut la capitale de plusieurs dynasties, des premiers Ming et de la République de Chine. Le Grand Canal traverse la province du nord au sud.",
+      "economy": "L'une des premières économies provinciales : électronique, chimie, textile, soie de Suzhou.",
+      "dish": "Canard salé de Nankin.",
+      "anecdotes": [
+        "Les jardins classiques de Suzhou sont inscrits au patrimoine mondial.",
+        "Province la plus plate de Chine : son point culminant dépasse à peine 600 m."
+      ]
+    },
+    {
+      "id": "CN-ZJ", "populationMillions": 64.6, "populationYear": 2020, "areaKm2": 105500,
+      "languages": "Wu ; min du Sud dans l'extrême sud.",
+      "history": "Hangzhou fut la capitale des Song du Sud (1127-1279) ; Marco Polo la décrit comme l'une des plus belles villes du monde.",
+      "economy": "Entreprises privées et commerce en ligne (Alibaba à Hangzhou), petits objets de Yiwu, thé Longjing.",
+      "dish": "Porc Dongpo, mijoté longuement dans le vin de Shaoxing.",
+      "anecdotes": [
+        "Yiwu abrite l'un des plus grands marchés de gros du monde.",
+        "Le thé vert Longjing (« puits du dragon ») pousse sur les collines du lac de l'Ouest."
+      ]
+    },
+    {
+      "id": "CN-AH", "populationMillions": 61.0, "populationYear": 2020, "areaKm2": 140100,
+      "languages": "Mandarin ; dialectes hui et gan dans le sud.",
+      "history": "Les marchands de Huizhou, au sud, dominèrent le commerce sous les Ming et les Qing. Hefei, la capitale, est devenue un pôle de recherche scientifique.",
+      "economy": "Agriculture, automobile et véhicules électriques, électroménager.",
+      "dish": "Maodoufu, tofu fermenté recouvert d'un duvet blanc.",
+      "anecdotes": [
+        "Le Huang Shan, avec ses pins tordus et ses mers de nuages, a inspiré des siècles de peinture chinoise.",
+        "Les villages de Xidi et Hongcun conservent l'architecture traditionnelle de Huizhou."
+      ]
+    },
+    {
+      "id": "CN-FJ", "populationMillions": 41.5, "populationYear": 2020, "areaKm2": 124000,
+      "languages": "Langues min (min du Sud, min de l'Est…) ; hakka à l'ouest.",
+      "history": "Province maritime, point de départ de nombreux émigrés vers l'Asie du Sud-Est et Taïwan. Quanzhou fut l'un des plus grands ports du monde aux XIIe-XIVe siècles.",
+      "economy": "Thé oolong (Tieguanyin), chaussures et industrie légère, commerce avec Taïwan.",
+      "dish": "Fotiaoqiang, « le Bouddha saute le mur », soupe aux nombreux ingrédients.",
+      "anecdotes": [
+        "Les tulou, grandes maisons rondes en terre des Hakka, sont inscrits au patrimoine mondial.",
+        "Les îles de Kinmen, juste en face de Xiamen, sont administrées par Taïwan."
+      ]
+    },
+    {
+      "id": "CN-JX", "populationMillions": 45.2, "populationYear": 2020, "areaKm2": 166900,
+      "languages": "Gan ; hakka dans le sud.",
+      "history": "Jingdezhen produit de la porcelaine depuis plus de mille ans. Les monts Jinggang furent la première base de Mao (1927) et la Longue Marche partit du Jiangxi en 1934.",
+      "economy": "Agriculture, porcelaine, cuivre, terres rares.",
+      "dish": "Nanchang banfen, nouilles de riz sautées.",
+      "anecdotes": [
+        "Le lac Poyang est le plus grand lac d'eau douce de Chine, mais sa surface change énormément selon la saison."
+      ]
+    },
+    {
+      "id": "CN-SD", "populationMillions": 101.5, "populationYear": 2020, "areaKm2": 157900,
+      "languages": "Mandarin (dialectes du Shandong).",
+      "history": "Patrie de Confucius (Qufu) et de Mencius. Qingdao fut une concession allemande de 1898 à 1914, d'où sa bière Tsingtao.",
+      "economy": "Légumes et fruits, industrie, pétrole, ports de Qingdao et de Yantai.",
+      "dish": "Carpe du fleuve Jaune aigre-douce, plat de la cuisine lu.",
+      "anecdotes": [
+        "Le Tai Shan est la plus vénérée des cinq montagnes sacrées : les empereurs y offraient des sacrifices au Ciel.",
+        "Le fleuve Jaune s'y jette dans la mer de Bohai."
+      ]
+    },
+    {
+      "id": "CN-HA", "populationMillions": 99.4, "populationYear": 2020, "areaKm2": 167000,
+      "languages": "Mandarin (dialectes de la plaine centrale).",
+      "history": "Berceau de la civilisation chinoise : Anyang fut une capitale des Shang ; Luoyang et Kaifeng furent capitales impériales.",
+      "economy": "Premier producteur de blé, agroalimentaire, électronique (usines d'assemblage de Zhengzhou).",
+      "dish": "Huimian, nouilles larges dans un bouillon de mouton.",
+      "anecdotes": [
+        "Le monastère de Shaolin, berceau du kung-fu, se trouve au pied du mont Song.",
+        "Les grottes de Longmen, près de Luoyang, comptent des dizaines de milliers de statues bouddhiques."
+      ]
+    },
+    {
+      "id": "CN-HB", "populationMillions": 57.8, "populationYear": 2020, "areaKm2": 185900,
+      "languages": "Mandarin du Sud-Ouest.",
+      "history": "Cœur de l'ancien royaume de Chu. Le soulèvement de Wuchang, en 1911, déclencha la révolution qui mit fin à l'Empire.",
+      "economy": "Automobile, sidérurgie, optoélectronique ; barrage des Trois-Gorges, plus grande centrale hydroélectrique du monde.",
+      "dish": "Reganmian, nouilles chaudes à la pâte de sésame, de Wuhan.",
+      "anecdotes": [
+        "Wuhan est au confluent du Yangtsé et du Han Jiang.",
+        "La forêt de Shennongjia est connue pour la légende d'un « homme sauvage »."
+      ]
+    },
+    {
+      "id": "CN-HN", "populationMillions": 66.4, "populationYear": 2020, "areaKm2": 211800,
+      "languages": "Xiang ; gan et mandarin du Sud-Ouest.",
+      "history": "Pays natal de Mao Zedong (Shaoshan). Les tombes de Mawangdui, du IIe siècle av. J.-C., ont livré un corps remarquablement conservé.",
+      "economy": "Riz, machines de chantier (Changsha), télévision et industrie culturelle.",
+      "dish": "Tête de poisson aux piments hachés, plat de la cuisine xiang, très pimentée.",
+      "anecdotes": [
+        "Les piliers de grès de Zhangjiajie ont inspiré les montagnes flottantes du film Avatar.",
+        "Son nom signifie « au sud du lac », le lac Dongting."
+      ]
+    },
+    {
+      "id": "CN-GD", "populationMillions": 126.0, "populationYear": 2020, "areaKm2": 179800,
+      "languages": "Cantonais ; hakka, et min (teochew) à l'est.",
+      "history": "Canton fut longtemps le seul port ouvert aux Européens (1757-1842). Shenzhen devint en 1980 la première zone économique spéciale.",
+      "economy": "Première économie provinciale : électronique, exportations, haute technologie de Shenzhen, delta de la rivière des Perles.",
+      "dish": "Dim sum et viandes rôties cantonaises (char siu).",
+      "anecdotes": [
+        "Province la plus peuplée de Chine.",
+        "Shenzhen est passée d'environ 300 000 habitants en 1980 à plus de 17 millions en 2020."
+      ]
+    },
+    {
+      "id": "CN-GX", "populationMillions": 50.1, "populationYear": 2020, "areaKm2": 237600,
+      "languages": "Zhuang, cantonais et mandarin du Sud-Ouest.",
+      "history": "Région autonome des Zhuang, la minorité la plus nombreuse de Chine. Le canal de Lingqu, du IIIe siècle av. J.-C., relie les bassins du Yangtsé et de la rivière des Perles.",
+      "economy": "Canne à sucre (premier producteur), fruits tropicaux, commerce avec le Vietnam.",
+      "dish": "Luosifen, nouilles de riz au bouillon d'escargots de rivière, de Liuzhou.",
+      "anecdotes": [
+        "Les pitons calcaires de la rivière Li, près de Guilin, figurent sur le billet de 20 yuans.",
+        "Le canal de Lingqu est l'un des plus anciens canaux du monde encore en service."
+      ]
+    },
+    {
+      "id": "CN-HI", "populationMillions": 10.1, "populationYear": 2020, "areaKm2": 35400,
+      "languages": "Min de Hainan, mandarin ; langue li.",
+      "history": "Longtemps terre d'exil des fonctionnaires disgraciés, comme le poète Su Dongpo. Province séparée du Guangdong et zone économique spéciale depuis 1988.",
+      "economy": "Tourisme (Sanya), agriculture tropicale, port franc en construction.",
+      "dish": "Poulet de Wenchang.",
+      "anecdotes": [
+        "Le centre spatial de Wenchang lance les plus grosses fusées chinoises.",
+        "Côté chinois, les îles revendiquées en mer de Chine méridionale sont rattachées administrativement à Hainan."
+      ]
+    },
+    {
+      "id": "CN-CQ", "populationMillions": 32.1, "populationYear": 2020, "areaKm2": 82400,
+      "languages": "Mandarin du Sud-Ouest.",
+      "history": "Capitale provisoire de la République de Chine pendant la guerre contre le Japon (1938-1946). Municipalité depuis 1997, au moment de la construction du barrage des Trois-Gorges.",
+      "economy": "Automobile, ordinateurs portables, transport fluvial sur le Yangtsé.",
+      "dish": "Fondue pimentée de Chongqing (huoguo).",
+      "anecdotes": [
+        "Ville très escarpée : une ligne de métro traverse un immeuble d'habitation (station Liziba).",
+        "Municipalité grande comme l'Autriche, en grande partie rurale."
+      ]
+    },
+    {
+      "id": "CN-SC", "populationMillions": 83.7, "populationYear": 2020, "areaKm2": 486000,
+      "languages": "Mandarin du Sud-Ouest (sichuanais) ; tibétain et yi à l'ouest.",
+      "history": "Ancien royaume de Shu ; les bronzes de Sanxingdui (vers 1200 av. J.-C.) restent énigmatiques. Le système d'irrigation de Dujiangyan fonctionne depuis le IIIe siècle av. J.-C.",
+      "economy": "Agriculture du bassin du Sichuan, électronique, hydroélectricité, gaz naturel.",
+      "dish": "Mapo tofu et poulet gongbao, au poivre du Sichuan.",
+      "anecdotes": [
+        "La plupart des pandas géants sauvages vivent dans ses montagnes.",
+        "Le Bouddha géant de Leshan (71 m) est la plus grande statue de Bouddha taillée dans la roche."
+      ]
+    },
+    {
+      "id": "CN-GZ", "populationMillions": 38.6, "populationYear": 2020, "areaKm2": 176200,
+      "languages": "Mandarin du Sud-Ouest ; miao, bouyei, dong.",
+      "history": "Province montagneuse longtemps isolée ; un dicton dit qu'on n'y trouve « ni trois jours de beau temps, ni trois pieds de terrain plat ». Plus d'un tiers des habitants appartiennent à des minorités.",
+      "economy": "Alcool Moutai, centres de données, tourisme, charbon.",
+      "dish": "Soupe de poisson aigre des Miao.",
+      "anecdotes": [
+        "Le radiotélescope FAST, de 500 m de diamètre, est le plus grand du monde à antenne unique.",
+        "La cascade de Huangguoshu est l'une des plus grandes d'Asie."
+      ]
+    },
+    {
+      "id": "CN-YN", "populationMillions": 47.2, "populationYear": 2020, "areaKm2": 394100,
+      "languages": "Mandarin du Sud-Ouest ; 25 minorités reconnues (yi, bai, hani, dai…).",
+      "history": "Le royaume de Dali y régna jusqu'à la conquête mongole (1253). Départ de l'ancienne route du thé et des chevaux vers le Tibet.",
+      "economy": "Tabac, thé pu-erh, fleurs coupées, tourisme, hydroélectricité.",
+      "dish": "Guoqiao mixian, nouilles « qui traversent le pont ».",
+      "anecdotes": [
+        "Province à la plus grande diversité de plantes et d'animaux de Chine.",
+        "Kunming est surnommée la « ville du printemps éternel » pour son climat doux."
+      ]
+    },
+    {
+      "id": "CN-XZ", "populationMillions": 3.6, "populationYear": 2020, "areaKm2": 1228400,
+      "languages": "Tibétain et mandarin.",
+      "history": "Centre de l'Empire tibétain (VIIe-IXe siècles), puis gouverné depuis Lhassa par les dalaï-lamas. Intégré à la République populaire en 1950-1951 ; son statut et son histoire font l'objet de controverses.",
+      "economy": "Élevage du yak, tourisme, mines, hydroélectricité ; budget largement financé par l'État central.",
+      "dish": "Tsampa, farine d'orge grillée, et thé au beurre.",
+      "anecdotes": [
+        "Altitude moyenne supérieure à 4 000 m.",
+        "Le palais du Potala, à Lhassa, s'élève à plus de 3 700 m d'altitude."
+      ]
+    },
+    {
+      "id": "CN-SN", "populationMillions": 39.5, "populationYear": 2020, "areaKm2": 205600,
+      "languages": "Mandarin (plaine centrale) ; jin dans le nord.",
+      "history": "Xi'an (Chang'an) fut capitale de plus de dix dynasties, dont les Qin, les Han et les Tang, et le départ de la route de la soie. Yan'an fut la base communiste de 1936 à 1947.",
+      "economy": "Charbon, pétrole et gaz au nord, aéronautique, universités et recherche.",
+      "dish": "Roujiamo, pain fourré de viande, et nouilles biangbiang.",
+      "anecdotes": [
+        "L'armée de terre cuite garde le tombeau du premier empereur, Qin Shi Huang.",
+        "Le caractère « biang » des nouilles compte plus de 50 traits."
+      ]
+    },
+    {
+      "id": "CN-GS", "populationMillions": 25.0, "populationYear": 2020, "areaKm2": 425800,
+      "languages": "Mandarin ; tibétain au sud-ouest.",
+      "history": "Le corridor du Hexi était le passage obligé de la route de la soie vers l'Asie centrale. La Grande Muraille des Ming se termine à Jiayuguan.",
+      "economy": "Pétrole (Yumen), nickel (Jinchang), énergie éolienne et solaire.",
+      "dish": "Nouilles au bœuf de Lanzhou (niurou lamian).",
+      "anecdotes": [
+        "Les grottes de Mogao, à Dunhuang, cachaient une bibliothèque de manuscrits murée pendant près de mille ans.",
+        "Province très allongée : plus de 1 600 km d'un bout à l'autre."
+      ]
+    },
+    {
+      "id": "CN-QH", "populationMillions": 5.9, "populationYear": 2020, "areaKm2": 722300,
+      "languages": "Mandarin, tibétain (amdo), mongol ; langues des Hui et des Salar.",
+      "history": "Plateau habité par des Tibétains, des Mongols et des Hui. Le monastère de Kumbum (Ta'er) est l'un des grands centres du bouddhisme tibétain.",
+      "economy": "Élevage, sel et potasse du lac Qarhan, hydroélectricité, énergie solaire.",
+      "dish": "Shouzhua rou, mouton bouilli mangé à la main, et yaourt de yak.",
+      "anecdotes": [
+        "Le Yangtsé, le fleuve Jaune et le Mékong y prennent leur source (région des Sanjiangyuan).",
+        "Le lac Qinghai est le plus grand lac salé de Chine."
+      ]
+    },
+    {
+      "id": "CN-NX", "populationMillions": 7.2, "populationYear": 2020, "areaKm2": 66400,
+      "languages": "Mandarin.",
+      "history": "Cœur du royaume tangoute des Xia occidentaux (1038-1227), détruit par les Mongols. Région autonome des Hui, musulmans de langue chinoise, depuis 1958.",
+      "economy": "Agriculture irriguée par le fleuve Jaune, vin du Helan Shan, baies de goji, charbon.",
+      "dish": "Mouton bouilli et baies de goji de Zhongning.",
+      "anecdotes": [
+        "La plus petite des cinq régions autonomes.",
+        "Les tombeaux impériaux des Xia occidentaux, au pied du Helan Shan, sont surnommés les « pyramides de Chine »."
+      ]
+    },
+    {
+      "id": "CN-XJ", "populationMillions": 25.9, "populationYear": 2020, "areaKm2": 1664900,
+      "languages": "Ouïghour et mandarin ; kazakh, kirghiz, mongol.",
+      "history": "Étape majeure de la route de la soie (Kachgar, Turpan). Conquis par les Qing au XVIIIe siècle, région autonome depuis 1955 ; la politique menée envers les Ouïghours fait l'objet de critiques internationales.",
+      "economy": "Pétrole et gaz, coton (plus de 80 % de la production chinoise), raisins de Turpan, melons de Hami.",
+      "dish": "Polo, riz pilaf au mouton, et brochettes d'agneau.",
+      "anecdotes": [
+        "La plus grande unité provinciale : un sixième du territoire chinois.",
+        "La dépression de Turpan descend à 154 m sous le niveau de la mer."
+      ]
+    },
+    {
+      "id": "CN-HK", "populationMillions": 7.4, "populationYear": 2021, "areaKm2": 1110,
+      "languages": "Cantonais, anglais et mandarin.",
+      "history": "Colonie britannique de 1842 à 1997, puis région administrative spéciale selon le principe « un pays, deux systèmes ». L'évolution de ses libertés depuis 2019-2020 fait débat.",
+      "economy": "Place financière internationale, port, commerce et services.",
+      "dish": "Dim sum, tartelettes aux œufs et thé au lait hongkongais.",
+      "anecdotes": [
+        "La ville compte plus de gratte-ciel que toute autre au monde.",
+        "Environ 40 % de son territoire est classé en parcs naturels."
+      ]
+    },
+    {
+      "id": "CN-MO", "populationMillions": 0.68, "populationYear": 2021, "areaKm2": 33,
+      "languages": "Cantonais, portugais (langue officielle) et mandarin.",
+      "history": "Établissement portugais à partir de 1557, le premier comptoir européen durable en Chine, rendu à la Chine en 1999. Région administrative spéciale.",
+      "economy": "Casinos (premier centre de jeux du monde par le chiffre d'affaires) et tourisme.",
+      "dish": "Pastel de nata, la tartelette portugaise, et cuisine macanaise.",
+      "anecdotes": [
+        "L'un des territoires les plus densément peuplés du monde.",
+        "Une grande partie de sa superficie a été gagnée sur la mer."
+      ]
+    },
+    {
+      "id": "CN-TW", "populationMillions": 23.4, "populationYear": 2023, "areaKm2": 36000,
+      "languages": "Mandarin, taïwanais (min du Sud), hakka et langues austronésiennes.",
+      "history": "Île des peuples austronésiens, en partie colonisée par les Hollandais, intégrée à l'Empire qing (1683) puis colonie japonaise (1895-1945). La République de Chine s'y est repliée en 1949 ; la République populaire la revendique.",
+      "economy": "Semi-conducteurs (TSMC, premier fondeur mondial), électronique, haute technologie.",
+      "dish": "Thé aux perles (bubble tea) et soupe de nouilles au bœuf.",
+      "anecdotes": [
+        "Le Yu Shan (3 952 m) est plus haut que le mont Fuji.",
+        "La tour Taipei 101 fut la plus haute du monde de 2004 à 2010."
+      ]
+    }
+  ]
+}
