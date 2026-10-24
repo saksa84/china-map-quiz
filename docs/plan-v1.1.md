@@ -52,7 +52,7 @@ Le Guangzhou que tu as visité s'appelle « Canton » en français.
 
 ## Étape D — Fiches « mini-Wikipédia » (mode Apprendre)
 
-**En cours** : modèle, chargement, validation et section « En savoir plus » faits le 2026-10-24 ; fiches des 34 unités provinciales rédigées, **à relire**. Restent les villes, les cours d'eau et les montagnes.
+**Faite le 2026-10-24** : modèle, chargement, validation, section « En savoir plus » (le panneau passe à 60 % de la hauteur quand elle est dépliée) ; 138 fiches rédigées (34 unités provinciales, 40 villes, 27 cours d'eau, 37 montagnes), **à relire**. Cours d'eau et montagnes : une présentation (`overview`) et une anecdote.
 
 Contenu dans un **fichier séparé** `assets/geo/facts.json`, indexé par identifiant (même principe que les spécialités culinaires de la V3). Il est rédigé par Claude à partir de connaissances générales, marqué « à vérifier », et relu par toi.
 

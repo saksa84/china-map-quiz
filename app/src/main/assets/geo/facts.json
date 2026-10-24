@@ -1,9 +1,12 @@
 {
   "schemaVersion": 1,
-  "origin": "Rédigé par Claude (Anthropic) à partir de connaissances générales, le 2026-10-24 ; à relire. Population : recensement chinois de 2020 (Hong Kong et Macao : recensements de 2021 ; Taïwan : estimation 2023). Superficies arrondies.",
+  "origin": "Rédigé par Claude (Anthropic) à partir de connaissances générales, le 2026-10-24 (provinces, puis villes, cours d'eau et montagnes) ; à relire. Population : recensement chinois de 2020 (Hong Kong et Macao : recensements de 2021 ; Taïwan : estimation 2023). Superficies arrondies.",
   "facts": [
     {
-      "id": "CN-BJ", "populationMillions": 21.9, "populationYear": 2020, "areaKm2": 16400,
+      "id": "CN-BJ",
+      "populationMillions": 21.9,
+      "populationYear": 2020,
+      "areaKm2": 16400,
       "languages": "Mandarin : le parler de Pékin est la base de la langue standard (putonghua).",
       "history": "Capitale sous les Yuan, les Ming et les Qing, puis de la République populaire depuis 1949. La Cité interdite fut le palais impérial de 1420 à 1912.",
       "economy": "Administration, services, finance, haute technologie (quartier de Zhongguancun), sièges des grandes entreprises d'État.",
@@ -14,7 +17,10 @@
       ]
     },
     {
-      "id": "CN-TJ", "populationMillions": 13.9, "populationYear": 2020, "areaKm2": 11900,
+      "id": "CN-TJ",
+      "populationMillions": 13.9,
+      "populationYear": 2020,
+      "areaKm2": 11900,
       "languages": "Mandarin ; le dialecte de Tianjin est réputé pour ses comiques (xiangsheng).",
       "history": "Port de Pékin au bout du Grand Canal. Ouverte aux étrangers en 1860, elle compta jusqu'à neuf concessions (britannique, française, italienne…).",
       "economy": "L'un des grands ports du nord de la Chine ; aéronautique, pétrochimie, automobile.",
@@ -24,7 +30,10 @@
       ]
     },
     {
-      "id": "CN-HE", "populationMillions": 74.6, "populationYear": 2020, "areaKm2": 188800,
+      "id": "CN-HE",
+      "populationMillions": 74.6,
+      "populationYear": 2020,
+      "areaKm2": 188800,
       "languages": "Mandarin ; jin dans l'ouest de la province.",
       "history": "Entoure Pékin et Tianjin ; ses passes de la Grande Muraille protégeaient la capitale. Chengde abritait la résidence d'été des empereurs Qing.",
       "economy": "Sidérurgie (première province productrice d'acier), agriculture, logistique au service de Pékin.",
@@ -35,7 +44,10 @@
       ]
     },
     {
-      "id": "CN-SX", "populationMillions": 34.9, "populationYear": 2020, "areaKm2": 156700,
+      "id": "CN-SX",
+      "populationMillions": 34.9,
+      "populationYear": 2020,
+      "areaKm2": 156700,
       "languages": "Jin, proche du mandarin.",
       "history": "Berceau des banques chinoises : les maisons de change de Pingyao dominèrent la finance sous les Qing. La province garde des temples en bois de l'époque Tang.",
       "economy": "Charbon (l'une des deux premières régions productrices), énergie, métallurgie.",
@@ -46,7 +58,10 @@
       ]
     },
     {
-      "id": "CN-NM", "populationMillions": 24.0, "populationYear": 2020, "areaKm2": 1183000,
+      "id": "CN-NM",
+      "populationMillions": 24.0,
+      "populationYear": 2020,
+      "areaKm2": 1183000,
       "languages": "Mandarin et mongol, écrit avec l'alphabet mongol traditionnel, vertical.",
       "history": "Steppes des peuples nomades, des Xiongnu aux Mongols. Région autonome depuis 1947, la première de Chine ; les Mongols y représentent environ 17 % de la population.",
       "economy": "Charbon, terres rares (Bayan Obo, premier gisement mondial), élevage, énergie éolienne.",
@@ -57,7 +72,10 @@
       ]
     },
     {
-      "id": "CN-LN", "populationMillions": 42.6, "populationYear": 2020, "areaKm2": 148000,
+      "id": "CN-LN",
+      "populationMillions": 42.6,
+      "populationYear": 2020,
+      "areaKm2": 148000,
       "languages": "Mandarin du Nord-Est.",
       "history": "Shenyang fut la capitale des Mandchous avant la conquête de la Chine en 1644. La péninsule du Liaodong fut disputée lors des guerres sino-japonaise (1894) et russo-japonaise (1904-1905).",
       "economy": "Industrie lourde, construction navale et port de Dalian, pétrochimie.",
@@ -67,7 +85,10 @@
       ]
     },
     {
-      "id": "CN-JL", "populationMillions": 24.1, "populationYear": 2020, "areaKm2": 187400,
+      "id": "CN-JL",
+      "populationMillions": 24.1,
+      "populationYear": 2020,
+      "areaKm2": 187400,
       "languages": "Mandarin du Nord-Est ; coréen dans la préfecture autonome de Yanbian.",
       "history": "Terre des Mandchous et de l'ancien royaume de Goguryeo. Changchun fut la capitale du Mandchoukouo, État créé par le Japon (1932-1945).",
       "economy": "Automobile (FAW à Changchun), maïs et soja, exploitation forestière.",
@@ -77,7 +98,10 @@
       ]
     },
     {
-      "id": "CN-HL", "populationMillions": 31.9, "populationYear": 2020, "areaKm2": 473000,
+      "id": "CN-HL",
+      "populationMillions": 31.9,
+      "populationYear": 2020,
+      "areaKm2": 473000,
       "languages": "Mandarin du Nord-Est.",
       "history": "Frontière avec la Russie fixée au XIXe siècle sur l'Amour et l'Oussouri. Harbin s'est développée autour du chemin de fer russe de l'Est chinois.",
       "economy": "Pétrole (Daqing), céréales et soja, industrie lourde.",
@@ -88,7 +112,10 @@
       ]
     },
     {
-      "id": "CN-SH", "populationMillions": 24.9, "populationYear": 2020, "areaKm2": 6340,
+      "id": "CN-SH",
+      "populationMillions": 24.9,
+      "populationYear": 2020,
+      "areaKm2": 6340,
       "languages": "Wu (dialecte de Shanghai) et mandarin.",
       "history": "Port ouvert aux étrangers après la guerre de l'opium (1842), avec une concession internationale et une concession française jusqu'en 1943. Le Parti communiste chinois y fut fondé en 1921.",
       "economy": "Finance, premier port à conteneurs du monde, automobile, semi-conducteurs.",
@@ -99,7 +126,10 @@
       ]
     },
     {
-      "id": "CN-JS", "populationMillions": 84.7, "populationYear": 2020, "areaKm2": 107200,
+      "id": "CN-JS",
+      "populationMillions": 84.7,
+      "populationYear": 2020,
+      "areaKm2": 107200,
       "languages": "Wu au sud (Suzhou, Wuxi), mandarin au centre et au nord (Nankin).",
       "history": "Nankin fut la capitale de plusieurs dynasties, des premiers Ming et de la République de Chine. Le Grand Canal traverse la province du nord au sud.",
       "economy": "L'une des premières économies provinciales : électronique, chimie, textile, soie de Suzhou.",
@@ -110,7 +140,10 @@
       ]
     },
     {
-      "id": "CN-ZJ", "populationMillions": 64.6, "populationYear": 2020, "areaKm2": 105500,
+      "id": "CN-ZJ",
+      "populationMillions": 64.6,
+      "populationYear": 2020,
+      "areaKm2": 105500,
       "languages": "Wu ; min du Sud dans l'extrême sud.",
       "history": "Hangzhou fut la capitale des Song du Sud (1127-1279) ; Marco Polo la décrit comme l'une des plus belles villes du monde.",
       "economy": "Entreprises privées et commerce en ligne (Alibaba à Hangzhou), petits objets de Yiwu, thé Longjing.",
@@ -121,7 +154,10 @@
       ]
     },
     {
-      "id": "CN-AH", "populationMillions": 61.0, "populationYear": 2020, "areaKm2": 140100,
+      "id": "CN-AH",
+      "populationMillions": 61.0,
+      "populationYear": 2020,
+      "areaKm2": 140100,
       "languages": "Mandarin ; dialectes hui et gan dans le sud.",
       "history": "Les marchands de Huizhou, au sud, dominèrent le commerce sous les Ming et les Qing. Hefei, la capitale, est devenue un pôle de recherche scientifique.",
       "economy": "Agriculture, automobile et véhicules électriques, électroménager.",
@@ -132,7 +168,10 @@
       ]
     },
     {
-      "id": "CN-FJ", "populationMillions": 41.5, "populationYear": 2020, "areaKm2": 124000,
+      "id": "CN-FJ",
+      "populationMillions": 41.5,
+      "populationYear": 2020,
+      "areaKm2": 124000,
       "languages": "Langues min (min du Sud, min de l'Est…) ; hakka à l'ouest.",
       "history": "Province maritime, point de départ de nombreux émigrés vers l'Asie du Sud-Est et Taïwan. Quanzhou fut l'un des plus grands ports du monde aux XIIe-XIVe siècles.",
       "economy": "Thé oolong (Tieguanyin), chaussures et industrie légère, commerce avec Taïwan.",
@@ -143,7 +182,10 @@
       ]
     },
     {
-      "id": "CN-JX", "populationMillions": 45.2, "populationYear": 2020, "areaKm2": 166900,
+      "id": "CN-JX",
+      "populationMillions": 45.2,
+      "populationYear": 2020,
+      "areaKm2": 166900,
       "languages": "Gan ; hakka dans le sud.",
       "history": "Jingdezhen produit de la porcelaine depuis plus de mille ans. Les monts Jinggang furent la première base de Mao (1927) et la Longue Marche partit du Jiangxi en 1934.",
       "economy": "Agriculture, porcelaine, cuivre, terres rares.",
@@ -153,7 +195,10 @@
       ]
     },
     {
-      "id": "CN-SD", "populationMillions": 101.5, "populationYear": 2020, "areaKm2": 157900,
+      "id": "CN-SD",
+      "populationMillions": 101.5,
+      "populationYear": 2020,
+      "areaKm2": 157900,
       "languages": "Mandarin (dialectes du Shandong).",
       "history": "Patrie de Confucius (Qufu) et de Mencius. Qingdao fut une concession allemande de 1898 à 1914, d'où sa bière Tsingtao.",
       "economy": "Légumes et fruits, industrie, pétrole, ports de Qingdao et de Yantai.",
@@ -164,7 +209,10 @@
       ]
     },
     {
-      "id": "CN-HA", "populationMillions": 99.4, "populationYear": 2020, "areaKm2": 167000,
+      "id": "CN-HA",
+      "populationMillions": 99.4,
+      "populationYear": 2020,
+      "areaKm2": 167000,
       "languages": "Mandarin (dialectes de la plaine centrale).",
       "history": "Berceau de la civilisation chinoise : Anyang fut une capitale des Shang ; Luoyang et Kaifeng furent capitales impériales.",
       "economy": "Premier producteur de blé, agroalimentaire, électronique (usines d'assemblage de Zhengzhou).",
@@ -175,7 +223,10 @@
       ]
     },
     {
-      "id": "CN-HB", "populationMillions": 57.8, "populationYear": 2020, "areaKm2": 185900,
+      "id": "CN-HB",
+      "populationMillions": 57.8,
+      "populationYear": 2020,
+      "areaKm2": 185900,
       "languages": "Mandarin du Sud-Ouest.",
       "history": "Cœur de l'ancien royaume de Chu. Le soulèvement de Wuchang, en 1911, déclencha la révolution qui mit fin à l'Empire.",
       "economy": "Automobile, sidérurgie, optoélectronique ; barrage des Trois-Gorges, plus grande centrale hydroélectrique du monde.",
@@ -186,7 +237,10 @@
       ]
     },
     {
-      "id": "CN-HN", "populationMillions": 66.4, "populationYear": 2020, "areaKm2": 211800,
+      "id": "CN-HN",
+      "populationMillions": 66.4,
+      "populationYear": 2020,
+      "areaKm2": 211800,
       "languages": "Xiang ; gan et mandarin du Sud-Ouest.",
       "history": "Pays natal de Mao Zedong (Shaoshan). Les tombes de Mawangdui, du IIe siècle av. J.-C., ont livré un corps remarquablement conservé.",
       "economy": "Riz, machines de chantier (Changsha), télévision et industrie culturelle.",
@@ -197,7 +251,10 @@
       ]
     },
     {
-      "id": "CN-GD", "populationMillions": 126.0, "populationYear": 2020, "areaKm2": 179800,
+      "id": "CN-GD",
+      "populationMillions": 126.0,
+      "populationYear": 2020,
+      "areaKm2": 179800,
       "languages": "Cantonais ; hakka, et min (teochew) à l'est.",
       "history": "Canton fut longtemps le seul port ouvert aux Européens (1757-1842). Shenzhen devint en 1980 la première zone économique spéciale.",
       "economy": "Première économie provinciale : électronique, exportations, haute technologie de Shenzhen, delta de la rivière des Perles.",
@@ -208,7 +265,10 @@
       ]
     },
     {
-      "id": "CN-GX", "populationMillions": 50.1, "populationYear": 2020, "areaKm2": 237600,
+      "id": "CN-GX",
+      "populationMillions": 50.1,
+      "populationYear": 2020,
+      "areaKm2": 237600,
       "languages": "Zhuang, cantonais et mandarin du Sud-Ouest.",
       "history": "Région autonome des Zhuang, la minorité la plus nombreuse de Chine. Le canal de Lingqu, du IIIe siècle av. J.-C., relie les bassins du Yangtsé et de la rivière des Perles.",
       "economy": "Canne à sucre (premier producteur), fruits tropicaux, commerce avec le Vietnam.",
@@ -219,7 +279,10 @@
       ]
     },
     {
-      "id": "CN-HI", "populationMillions": 10.1, "populationYear": 2020, "areaKm2": 35400,
+      "id": "CN-HI",
+      "populationMillions": 10.1,
+      "populationYear": 2020,
+      "areaKm2": 35400,
       "languages": "Min de Hainan, mandarin ; langue li.",
       "history": "Longtemps terre d'exil des fonctionnaires disgraciés, comme le poète Su Dongpo. Province séparée du Guangdong et zone économique spéciale depuis 1988.",
       "economy": "Tourisme (Sanya), agriculture tropicale, port franc en construction.",
@@ -230,7 +293,10 @@
       ]
     },
     {
-      "id": "CN-CQ", "populationMillions": 32.1, "populationYear": 2020, "areaKm2": 82400,
+      "id": "CN-CQ",
+      "populationMillions": 32.1,
+      "populationYear": 2020,
+      "areaKm2": 82400,
       "languages": "Mandarin du Sud-Ouest.",
       "history": "Capitale provisoire de la République de Chine pendant la guerre contre le Japon (1938-1946). Municipalité depuis 1997, au moment de la construction du barrage des Trois-Gorges.",
       "economy": "Automobile, ordinateurs portables, transport fluvial sur le Yangtsé.",
@@ -241,7 +307,10 @@
       ]
     },
     {
-      "id": "CN-SC", "populationMillions": 83.7, "populationYear": 2020, "areaKm2": 486000,
+      "id": "CN-SC",
+      "populationMillions": 83.7,
+      "populationYear": 2020,
+      "areaKm2": 486000,
       "languages": "Mandarin du Sud-Ouest (sichuanais) ; tibétain et yi à l'ouest.",
       "history": "Ancien royaume de Shu ; les bronzes de Sanxingdui (vers 1200 av. J.-C.) restent énigmatiques. Le système d'irrigation de Dujiangyan fonctionne depuis le IIIe siècle av. J.-C.",
       "economy": "Agriculture du bassin du Sichuan, électronique, hydroélectricité, gaz naturel.",
@@ -252,7 +321,10 @@
       ]
     },
     {
-      "id": "CN-GZ", "populationMillions": 38.6, "populationYear": 2020, "areaKm2": 176200,
+      "id": "CN-GZ",
+      "populationMillions": 38.6,
+      "populationYear": 2020,
+      "areaKm2": 176200,
       "languages": "Mandarin du Sud-Ouest ; miao, bouyei, dong.",
       "history": "Province montagneuse longtemps isolée ; un dicton dit qu'on n'y trouve « ni trois jours de beau temps, ni trois pieds de terrain plat ». Plus d'un tiers des habitants appartiennent à des minorités.",
       "economy": "Alcool Moutai, centres de données, tourisme, charbon.",
@@ -263,7 +335,10 @@
       ]
     },
     {
-      "id": "CN-YN", "populationMillions": 47.2, "populationYear": 2020, "areaKm2": 394100,
+      "id": "CN-YN",
+      "populationMillions": 47.2,
+      "populationYear": 2020,
+      "areaKm2": 394100,
       "languages": "Mandarin du Sud-Ouest ; 25 minorités reconnues (yi, bai, hani, dai…).",
       "history": "Le royaume de Dali y régna jusqu'à la conquête mongole (1253). Départ de l'ancienne route du thé et des chevaux vers le Tibet.",
       "economy": "Tabac, thé pu-erh, fleurs coupées, tourisme, hydroélectricité.",
@@ -274,7 +349,10 @@
       ]
     },
     {
-      "id": "CN-XZ", "populationMillions": 3.6, "populationYear": 2020, "areaKm2": 1228400,
+      "id": "CN-XZ",
+      "populationMillions": 3.6,
+      "populationYear": 2020,
+      "areaKm2": 1228400,
       "languages": "Tibétain et mandarin.",
       "history": "Centre de l'Empire tibétain (VIIe-IXe siècles), puis gouverné depuis Lhassa par les dalaï-lamas. Intégré à la République populaire en 1950-1951 ; son statut et son histoire font l'objet de controverses.",
       "economy": "Élevage du yak, tourisme, mines, hydroélectricité ; budget largement financé par l'État central.",
@@ -285,7 +363,10 @@
       ]
     },
     {
-      "id": "CN-SN", "populationMillions": 39.5, "populationYear": 2020, "areaKm2": 205600,
+      "id": "CN-SN",
+      "populationMillions": 39.5,
+      "populationYear": 2020,
+      "areaKm2": 205600,
       "languages": "Mandarin (plaine centrale) ; jin dans le nord.",
       "history": "Xi'an (Chang'an) fut capitale de plus de dix dynasties, dont les Qin, les Han et les Tang, et le départ de la route de la soie. Yan'an fut la base communiste de 1936 à 1947.",
       "economy": "Charbon, pétrole et gaz au nord, aéronautique, universités et recherche.",
@@ -296,7 +377,10 @@
       ]
     },
     {
-      "id": "CN-GS", "populationMillions": 25.0, "populationYear": 2020, "areaKm2": 425800,
+      "id": "CN-GS",
+      "populationMillions": 25.0,
+      "populationYear": 2020,
+      "areaKm2": 425800,
       "languages": "Mandarin ; tibétain au sud-ouest.",
       "history": "Le corridor du Hexi était le passage obligé de la route de la soie vers l'Asie centrale. La Grande Muraille des Ming se termine à Jiayuguan.",
       "economy": "Pétrole (Yumen), nickel (Jinchang), énergie éolienne et solaire.",
@@ -307,7 +391,10 @@
       ]
     },
     {
-      "id": "CN-QH", "populationMillions": 5.9, "populationYear": 2020, "areaKm2": 722300,
+      "id": "CN-QH",
+      "populationMillions": 5.9,
+      "populationYear": 2020,
+      "areaKm2": 722300,
       "languages": "Mandarin, tibétain (amdo), mongol ; langues des Hui et des Salar.",
       "history": "Plateau habité par des Tibétains, des Mongols et des Hui. Le monastère de Kumbum (Ta'er) est l'un des grands centres du bouddhisme tibétain.",
       "economy": "Élevage, sel et potasse du lac Qarhan, hydroélectricité, énergie solaire.",
@@ -318,7 +405,10 @@
       ]
     },
     {
-      "id": "CN-NX", "populationMillions": 7.2, "populationYear": 2020, "areaKm2": 66400,
+      "id": "CN-NX",
+      "populationMillions": 7.2,
+      "populationYear": 2020,
+      "areaKm2": 66400,
       "languages": "Mandarin.",
       "history": "Cœur du royaume tangoute des Xia occidentaux (1038-1227), détruit par les Mongols. Région autonome des Hui, musulmans de langue chinoise, depuis 1958.",
       "economy": "Agriculture irriguée par le fleuve Jaune, vin du Helan Shan, baies de goji, charbon.",
@@ -329,7 +419,10 @@
       ]
     },
     {
-      "id": "CN-XJ", "populationMillions": 25.9, "populationYear": 2020, "areaKm2": 1664900,
+      "id": "CN-XJ",
+      "populationMillions": 25.9,
+      "populationYear": 2020,
+      "areaKm2": 1664900,
       "languages": "Ouïghour et mandarin ; kazakh, kirghiz, mongol.",
       "history": "Étape majeure de la route de la soie (Kachgar, Turpan). Conquis par les Qing au XVIIIe siècle, région autonome depuis 1955 ; la politique menée envers les Ouïghours fait l'objet de critiques internationales.",
       "economy": "Pétrole et gaz, coton (plus de 80 % de la production chinoise), raisins de Turpan, melons de Hami.",
@@ -340,7 +433,10 @@
       ]
     },
     {
-      "id": "CN-HK", "populationMillions": 7.4, "populationYear": 2021, "areaKm2": 1110,
+      "id": "CN-HK",
+      "populationMillions": 7.4,
+      "populationYear": 2021,
+      "areaKm2": 1110,
       "languages": "Cantonais, anglais et mandarin.",
       "history": "Colonie britannique de 1842 à 1997, puis région administrative spéciale selon le principe « un pays, deux systèmes ». L'évolution de ses libertés depuis 2019-2020 fait débat.",
       "economy": "Place financière internationale, port, commerce et services.",
@@ -351,7 +447,10 @@
       ]
     },
     {
-      "id": "CN-MO", "populationMillions": 0.68, "populationYear": 2021, "areaKm2": 33,
+      "id": "CN-MO",
+      "populationMillions": 0.68,
+      "populationYear": 2021,
+      "areaKm2": 33,
       "languages": "Cantonais, portugais (langue officielle) et mandarin.",
       "history": "Établissement portugais à partir de 1557, le premier comptoir européen durable en Chine, rendu à la Chine en 1999. Région administrative spéciale.",
       "economy": "Casinos (premier centre de jeux du monde par le chiffre d'affaires) et tourisme.",
@@ -362,7 +461,10 @@
       ]
     },
     {
-      "id": "CN-TW", "populationMillions": 23.4, "populationYear": 2023, "areaKm2": 36000,
+      "id": "CN-TW",
+      "populationMillions": 23.4,
+      "populationYear": 2023,
+      "areaKm2": 36000,
       "languages": "Mandarin, taïwanais (min du Sud), hakka et langues austronésiennes.",
       "history": "Île des peuples austronésiens, en partie colonisée par les Hollandais, intégrée à l'Empire qing (1683) puis colonie japonaise (1895-1945). La République de Chine s'y est repliée en 1949 ; la République populaire la revendique.",
       "economy": "Semi-conducteurs (TSMC, premier fondeur mondial), électronique, haute technologie.",
@@ -370,6 +472,814 @@
       "anecdotes": [
         "Le Yu Shan (3 952 m) est plus haut que le mont Fuji.",
         "La tour Taipei 101 fut la plus haute du monde de 2004 à 2010."
+      ]
+    },
+    {
+      "id": "CT-SHANGHAI",
+      "languages": "Wu (shanghaïen) et mandarin.",
+      "role": "Première ville de Chine, capitale économique et financière, premier port à conteneurs du monde.",
+      "landmark": "Le Bund, quai bordé d'immeubles des années 1920-1930, face aux tours de Pudong.",
+      "anecdotes": [
+        "Son métro, ouvert en 1993, est devenu l'un des plus longs réseaux du monde."
+      ]
+    },
+    {
+      "id": "CT-BEIJING",
+      "languages": "Mandarin (parler pékinois).",
+      "role": "Capitale nationale, siège du gouvernement et grand centre universitaire.",
+      "landmark": "La Cité interdite, la place Tian'anmen et le temple du Ciel.",
+      "anecdotes": [
+        "Les hutong, ruelles bordées de maisons à cour carrée, structuraient la vieille ville."
+      ]
+    },
+    {
+      "id": "CT-SHENZHEN",
+      "languages": "Mandarin, langue commune d'habitants venus de toute la Chine ; cantonais.",
+      "role": "Ville de la haute technologie (Huawei, Tencent, BYD), à la frontière de Hong Kong.",
+      "landmark": "Le Ping An Finance Center (599 m).",
+      "anecdotes": [
+        "Première zone économique spéciale (1980), ce n'était auparavant qu'une petite ville frontalière."
+      ]
+    },
+    {
+      "id": "CT-GUANGZHOU",
+      "languages": "Cantonais et mandarin.",
+      "role": "Capitale du Guangdong, grand port et ville commerçante ; la foire de Canton s'y tient depuis 1957.",
+      "landmark": "La tour de télévision de Canton (600 m), surnommée la « taille fine ».",
+      "anecdotes": [
+        "De 1757 à 1842, ce fut le seul port chinois ouvert aux marchands européens."
+      ]
+    },
+    {
+      "id": "CT-CHENGDU",
+      "languages": "Mandarin du Sud-Ouest (sichuanais).",
+      "role": "Capitale du Sichuan, pôle économique de l'Ouest de la Chine.",
+      "landmark": "La base de recherche et d'élevage des pandas géants.",
+      "anecdotes": [
+        "Elle est réputée pour sa vie détendue, ses maisons de thé et sa cuisine épicée."
+      ]
+    },
+    {
+      "id": "CT-TIANJIN",
+      "languages": "Mandarin (dialecte de Tianjin).",
+      "role": "Grand port du Nord, porte maritime de Pékin.",
+      "landmark": "Le quartier des Cinq avenues, aux villas des anciennes concessions.",
+      "anecdotes": [
+        "Le train à grande vitesse la relie à Pékin en une trentaine de minutes."
+      ]
+    },
+    {
+      "id": "CT-WUHAN",
+      "languages": "Mandarin du Sud-Ouest (dialecte de Wuhan).",
+      "role": "Capitale du Hubei, carrefour ferroviaire et fluvial au centre de la Chine.",
+      "landmark": "La tour de la Grue jaune, célébrée par les poètes Tang.",
+      "anecdotes": [
+        "Elle réunit trois anciennes villes, Wuchang, Hankou et Hanyang, de part et d'autre du Yangtsé et du Han Jiang."
+      ]
+    },
+    {
+      "id": "CT-DONGGUAN",
+      "languages": "Cantonais et mandarin.",
+      "role": "Ville-usine du delta de la rivière des Perles : électronique, meubles, jouets.",
+      "landmark": "Le fort de Humen, où Lin Zexu fit détruire l'opium saisi en 1839.",
+      "anecdotes": [
+        "Elle n'a pas de districts : la ville administre directement ses bourgs, un cas rare en Chine."
+      ]
+    },
+    {
+      "id": "CT-CHONGQING",
+      "languages": "Mandarin du Sud-Ouest.",
+      "role": "Ville industrielle au confluent du Yangtsé et du Jialing Jiang.",
+      "landmark": "Hongyadong, maisons sur pilotis illuminées le long de la falaise.",
+      "anecdotes": [
+        "Surnommée la « ville des brumes », c'est aussi l'une des « fournaises » de Chine pour ses étés très chauds."
+      ]
+    },
+    {
+      "id": "CT-XIAN",
+      "languages": "Mandarin (dialecte du Guanzhong).",
+      "role": "Capitale du Shaanxi, ancienne capitale impériale (Chang'an), départ de la route de la soie.",
+      "landmark": "L'armée de terre cuite, à une trentaine de kilomètres ; les remparts Ming, longs de près de 14 km.",
+      "anecdotes": [
+        "Sous les Tang, Chang'an était sans doute la plus grande ville du monde."
+      ]
+    },
+    {
+      "id": "CT-HANGZHOU",
+      "languages": "Wu (dialecte de Hangzhou) et mandarin.",
+      "role": "Capitale du Zhejiang, ville du commerce en ligne (Alibaba).",
+      "landmark": "Le lac de l'Ouest, inscrit au patrimoine mondial.",
+      "anecdotes": [
+        "Un dicton dit : « En haut il y a le paradis, en bas il y a Suzhou et Hangzhou »."
+      ]
+    },
+    {
+      "id": "CT-FOSHAN",
+      "languages": "Cantonais.",
+      "role": "Ville industrielle du delta de la rivière des Perles : électroménager, céramique.",
+      "landmark": "Le temple ancestral de Foshan (Zumiao).",
+      "anecdotes": [
+        "Ville natale du maître de kung-fu Ip Man, et berceau de la danse du lion du Sud."
+      ]
+    },
+    {
+      "id": "CT-NANJING",
+      "languages": "Mandarin (dialecte de Nankin).",
+      "role": "Capitale du Jiangsu, ancienne capitale des premiers Ming et de la République de Chine.",
+      "landmark": "Le mausolée de Sun Yat-sen et les remparts Ming, parmi les plus longs du monde.",
+      "anecdotes": [
+        "Son nom signifie « capitale du Sud », par opposition à Beijing, la « capitale du Nord »."
+      ]
+    },
+    {
+      "id": "CT-SHENYANG",
+      "languages": "Mandarin du Nord-Est.",
+      "role": "Capitale du Liaoning, centre industriel du Nord-Est.",
+      "landmark": "Le palais impérial des premiers empereurs mandchous.",
+      "anecdotes": [
+        "Sous le nom de Moukden, elle fut la capitale des Mandchous de 1625 à 1644."
+      ]
+    },
+    {
+      "id": "CT-ZHENGZHOU",
+      "languages": "Mandarin (dialectes de la plaine centrale).",
+      "role": "Capitale du Henan, grand carrefour ferroviaire et pôle d'assemblage de smartphones.",
+      "landmark": "Le musée du Henan ; le monastère de Shaolin est à environ 80 km.",
+      "anecdotes": [
+        "Des vestiges de remparts de terre y remontent à la dynastie Shang, il y a environ 3 500 ans."
+      ]
+    },
+    {
+      "id": "CT-QINGDAO",
+      "languages": "Mandarin (dialecte du Jiaoliao).",
+      "role": "Port, base navale et station balnéaire du Shandong.",
+      "landmark": "Les maisons à toits rouges de l'ancienne concession allemande et la jetée de Zhanqiao.",
+      "anecdotes": [
+        "La brasserie Tsingtao y fut fondée en 1903, pendant la concession allemande."
+      ]
+    },
+    {
+      "id": "CT-SUZHOU",
+      "languages": "Wu (dialecte de Suzhou).",
+      "role": "Ville industrielle et touristique proche de Shanghai, célèbre pour la soie.",
+      "landmark": "Les jardins classiques, comme le jardin de l'Humble Administrateur.",
+      "anecdotes": [
+        "Ses canaux lui valent le surnom de « Venise de l'Orient »."
+      ]
+    },
+    {
+      "id": "CT-JINAN",
+      "languages": "Mandarin (dialecte du Jilu).",
+      "role": "Capitale du Shandong.",
+      "landmark": "La source de Baotu, la plus célèbre des sources de la ville.",
+      "anecdotes": [
+        "Surnommée la « ville des sources »."
+      ]
+    },
+    {
+      "id": "CT-CHANGSHA",
+      "languages": "Xiang (dialecte de Changsha).",
+      "role": "Capitale du Hunan : machines de chantier, télévision et médias.",
+      "landmark": "L'île des Oranges, sur le Xiang Jiang, avec une statue géante du jeune Mao.",
+      "anecdotes": [
+        "Le musée du Hunan expose le corps de la marquise de Dai, enterrée au IIe siècle av. J.-C."
+      ]
+    },
+    {
+      "id": "CT-KUNMING",
+      "languages": "Mandarin du Sud-Ouest.",
+      "role": "Capitale du Yunnan, porte de la Chine vers l'Asie du Sud-Est.",
+      "landmark": "La forêt de pierre de Shilin, à environ 80 km.",
+      "anecdotes": [
+        "À 1 900 m d'altitude, elle a un climat doux toute l'année : c'est la « ville du printemps éternel »."
+      ]
+    },
+    {
+      "id": "CT-HARBIN",
+      "languages": "Mandarin du Nord-Est.",
+      "role": "Capitale du Heilongjiang, née autour du chemin de fer russe de l'Est chinois.",
+      "landmark": "La cathédrale Sainte-Sophie, église orthodoxe russe du début du XXe siècle.",
+      "anecdotes": [
+        "Surnommée la « ville de glace » : les hivers y descendent souvent sous −30 °C."
+      ]
+    },
+    {
+      "id": "CT-SHIJIAZHUANG",
+      "languages": "Mandarin.",
+      "role": "Capitale du Hebei, ville industrielle et pharmaceutique.",
+      "landmark": "Le pont de Zhaozhou, à proximité : un pont en arc de pierre du VIIe siècle.",
+      "anecdotes": [
+        "Simple village au début du XXe siècle, elle a grandi au croisement de deux lignes de chemin de fer."
+      ]
+    },
+    {
+      "id": "CT-HEFEI",
+      "languages": "Mandarin (dialectes du Jianghuai).",
+      "role": "Capitale de l'Anhui, pôle de recherche scientifique et de véhicules électriques.",
+      "landmark": "Le temple du juge Bao, magistrat légendaire de la dynastie Song.",
+      "anecdotes": [
+        "L'Université des sciences et technologies de Chine (USTC) s'y est installée en 1970."
+      ]
+    },
+    {
+      "id": "CT-DALIAN",
+      "languages": "Mandarin du Nord-Est.",
+      "role": "Grand port et centre de construction navale du Liaoning.",
+      "landmark": "La place Xinghai, l'une des plus grandes places urbaines d'Asie.",
+      "anecdotes": [
+        "Lüshun (Port-Arthur), aujourd'hui un quartier de Dalian, fut une base russe puis japonaise."
+      ]
+    },
+    {
+      "id": "CT-XIAMEN",
+      "languages": "Min du Sud (hokkien).",
+      "role": "Port et zone économique spéciale du Fujian, face à Taïwan.",
+      "landmark": "L'île de Gulangyu, aux villas de style colonial, interdite aux voitures.",
+      "anecdotes": [
+        "Connue en Europe sous le nom d'Amoy, elle fut l'un des cinq ports ouverts aux étrangers en 1842."
+      ]
+    },
+    {
+      "id": "CT-NANNING",
+      "languages": "Mandarin, cantonais, pinghua et zhuang.",
+      "role": "Capitale du Guangxi, porte vers l'Asie du Sud-Est (exposition Chine-ASEAN).",
+      "landmark": "Le parc Qingxiu.",
+      "anecdotes": [
+        "Surnommée la « ville verte » pour sa végétation tropicale."
+      ]
+    },
+    {
+      "id": "CT-CHANGCHUN",
+      "languages": "Mandarin du Nord-Est.",
+      "role": "Capitale du Jilin, berceau de l'automobile chinoise (usine FAW, 1953).",
+      "landmark": "Le palais où résida Puyi, dernier empereur, à l'époque du Mandchoukouo.",
+      "anecdotes": [
+        "Ses studios de cinéma ont produit les premiers films de la République populaire."
+      ]
+    },
+    {
+      "id": "CT-TAIYUAN",
+      "languages": "Jin.",
+      "role": "Capitale du Shanxi, ville du charbon et de l'acier.",
+      "landmark": "Le temple des Jin (Jinci), aux statues de l'époque Song.",
+      "anecdotes": [
+        "La ville existe depuis plus de 2 500 ans."
+      ]
+    },
+    {
+      "id": "CT-GUIYANG",
+      "languages": "Mandarin du Sud-Ouest.",
+      "role": "Capitale du Guizhou, centre de données et de big data.",
+      "landmark": "Le pavillon Jiaxiu, sur la rivière Nanming.",
+      "anecdotes": [
+        "Son climat frais en été attire ceux qui fuient la chaleur."
+      ]
+    },
+    {
+      "id": "CT-WUXI",
+      "languages": "Wu.",
+      "role": "Ville industrielle du Jiangsu, au bord du lac Tai.",
+      "landmark": "Le Grand Bouddha de Lingshan (88 m).",
+      "anecdotes": [
+        "Le lac Tai est célèbre pour ses pierres creusées par l'eau, recherchées pour les jardins chinois."
+      ]
+    },
+    {
+      "id": "CT-URUMQI",
+      "languages": "Mandarin et ouïghour.",
+      "role": "Capitale du Xinjiang.",
+      "landmark": "Le grand bazar international.",
+      "anecdotes": [
+        "C'est la grande ville la plus éloignée de toute mer : environ 2 500 km de la côte la plus proche."
+      ]
+    },
+    {
+      "id": "CT-ZHONGSHAN",
+      "languages": "Cantonais.",
+      "role": "Ville industrielle du delta de la rivière des Perles.",
+      "landmark": "La maison natale de Sun Yat-sen, au village de Cuiheng.",
+      "anecdotes": [
+        "Elle porte le nom de Sun Yat-sen (Sun Zhongshan), fondateur de la République de Chine, né sur son territoire."
+      ]
+    },
+    {
+      "id": "CT-SHANTOU",
+      "languages": "Min du Sud (teochew).",
+      "role": "Port et zone économique spéciale de l'est du Guangdong.",
+      "landmark": "Le vieux quartier aux maisons à arcades (qilou).",
+      "anecdotes": [
+        "Beaucoup d'émigrés teochew installés en Thaïlande et en Asie du Sud-Est en sont originaires."
+      ]
+    },
+    {
+      "id": "CT-NINGBO",
+      "languages": "Wu.",
+      "role": "Grand port : Ningbo-Zhoushan est le premier port du monde en tonnage.",
+      "landmark": "Le pavillon Tianyi, plus ancienne bibliothèque privée de Chine (XVIe siècle).",
+      "anecdotes": [
+        "Port ouvert aux étrangers en 1842, connu des Européens sous le nom de Ningpo."
+      ]
+    },
+    {
+      "id": "CT-FUZHOU",
+      "languages": "Min de l'Est (fuzhounais).",
+      "role": "Capitale du Fujian.",
+      "landmark": "Le quartier historique des Trois ruelles et sept allées.",
+      "anecdotes": [
+        "Surnommée la « ville des banians »."
+      ]
+    },
+    {
+      "id": "CT-NANCHANG",
+      "languages": "Gan.",
+      "role": "Capitale du Jiangxi.",
+      "landmark": "Le pavillon du prince Teng, célébré par un poème de l'époque Tang.",
+      "anecdotes": [
+        "Le soulèvement de Nanchang (1er août 1927) est considéré comme la naissance de l'Armée populaire de libération."
+      ]
+    },
+    {
+      "id": "CT-CHANGZHOU",
+      "languages": "Wu.",
+      "role": "Ville industrielle du Jiangsu, entre Nankin et Shanghai, sur le Grand Canal.",
+      "landmark": "Le temple de Tianning et sa pagode de 154 m.",
+      "anecdotes": [
+        "Elle existe depuis plus de 2 500 ans."
+      ]
+    },
+    {
+      "id": "CT-LANZHOU",
+      "languages": "Mandarin.",
+      "role": "Capitale du Gansu, au bord du fleuve Jaune, étape de la route de la soie.",
+      "landmark": "Le pont Zhongshan, premier pont permanent sur le fleuve Jaune (1909).",
+      "anecdotes": [
+        "Ses nouilles au bœuf, étirées à la main, sont servies dans toute la Chine."
+      ]
+    },
+    {
+      "id": "CT-HONGKONG",
+      "languages": "Cantonais, anglais et mandarin.",
+      "role": "Place financière internationale et grand port, région administrative spéciale.",
+      "landmark": "Le pic Victoria et sa vue sur le port.",
+      "anecdotes": [
+        "L'escalator de Mid-Levels est le plus long système d'escaliers mécaniques couverts du monde."
+      ]
+    },
+    {
+      "id": "CT-TAIPEI",
+      "languages": "Mandarin et taïwanais (min du Sud).",
+      "role": "Principale ville de Taïwan, siège des institutions de la République de Chine.",
+      "landmark": "La tour Taipei 101 et le musée national du Palais.",
+      "anecdotes": [
+        "Le musée national du Palais conserve une grande partie des collections impériales emportées en 1949."
+      ]
+    },
+    {
+      "id": "RV-CHANGJIANG",
+      "overview": "Plus long fleuve d'Asie ; il traverse la Chine d'ouest en est et sépare traditionnellement le Nord du Sud.",
+      "anecdotes": [
+        "Le barrage des Trois-Gorges, achevé en 2006, a créé un lac de plus de 600 km de long."
+      ]
+    },
+    {
+      "id": "RV-HUANGHE",
+      "overview": "Berceau de la civilisation chinoise ; ses crues meurtrières lui ont valu le surnom de « chagrin de la Chine ».",
+      "anecdotes": [
+        "Il doit sa couleur au lœss, un limon jaune arraché aux plateaux du Nord, qu'il charrie en quantité record."
+      ]
+    },
+    {
+      "id": "RV-HEILONGJIANG",
+      "overview": "Le « fleuve du Dragon noir » marque la frontière entre la Chine et la Russie sur une grande partie de son cours.",
+      "anecdotes": [
+        "Il est gelé une grande partie de l'hiver."
+      ]
+    },
+    {
+      "id": "RV-ZHUJIANG",
+      "overview": "Le nom désigne le système du Xi Jiang, du Bei Jiang et du Dong Jiang, qui se rejoignent dans un vaste delta.",
+      "anecdotes": [
+        "Son delta forme l'une des plus grandes agglomérations du monde : Canton, Shenzhen, Hong Kong, Macao…"
+      ]
+    },
+    {
+      "id": "RV-LANCANGJIANG",
+      "overview": "Né au Qinghai, il longe la Birmanie puis traverse le Laos, la Thaïlande, le Cambodge et le Vietnam sous le nom de Mékong.",
+      "anecdotes": [
+        "Les barrages chinois en amont font l'objet de discussions avec les pays situés en aval."
+      ]
+    },
+    {
+      "id": "RV-NUJIANG",
+      "overview": "Le « fleuve en colère » coule dans des gorges profondes du Yunnan, puis en Birmanie sous le nom de Salouen.",
+      "anecdotes": [
+        "Avec le Yangtsé et le Mékong, il forme les « Trois fleuves parallèles » du Yunnan, inscrits au patrimoine mondial."
+      ]
+    },
+    {
+      "id": "RV-YARLUNGZANGBO",
+      "overview": "Le plus haut des grands fleuves du monde coule d'ouest en est au pied de l'Himalaya, puis tourne vers l'Inde, où il devient le Brahmapoutre.",
+      "anecdotes": [
+        "En contournant le Namcha Barwa, il creuse l'un des canyons les plus profonds du monde."
+      ]
+    },
+    {
+      "id": "RV-HUAIHE",
+      "overview": "Avec les monts Qinling, il marque la limite traditionnelle entre la Chine du Nord, du blé, et la Chine du Sud, du riz.",
+      "anecdotes": [
+        "De 1194 à 1855, le fleuve Jaune emprunta son cours inférieur, ce qui bouleversa son embouchure."
+      ]
+    },
+    {
+      "id": "RV-LIAOHE",
+      "overview": "Fleuve principal du Liaoning, auquel il a donné son nom (« le Liao apaisé »).",
+      "anecdotes": [
+        "Son delta abrite la « plage rouge » de Panjin, couverte d'une plante qui rougit à l'automne."
+      ]
+    },
+    {
+      "id": "RV-HAIHE",
+      "overview": "Court fleuve qui traverse Tianjin et réunit plusieurs grandes rivières du Nord, dont le Yongding.",
+      "anecdotes": [
+        "Il ne mesure qu'environ 73 km, mais son bassin couvre Pékin, Tianjin et une grande partie du Hebei."
+      ]
+    },
+    {
+      "id": "RV-TARIMHE",
+      "overview": "Plus long fleuve intérieur de Chine, il longe le désert du Taklamakan sans jamais atteindre la mer.",
+      "anecdotes": [
+        "Ses rives sont bordées de forêts de peupliers de l'Euphrate, des arbres qui résistent au désert."
+      ]
+    },
+    {
+      "id": "RV-EERQISIHE",
+      "overview": "Seul fleuve chinois du bassin de l'océan Arctique : il traverse le Kazakhstan puis rejoint l'Ob en Russie.",
+      "anecdotes": [
+        "Il naît dans l'Altaï, au nord du Xinjiang."
+      ]
+    },
+    {
+      "id": "RV-HANJIANG",
+      "overview": "Principal affluent du Yangtsé ; la dynastie Han tire son nom de la région qu'il arrose.",
+      "anecdotes": [
+        "Le réservoir de Danjiangkou, sur son cours, alimente Pékin par le canal du transfert d'eau Sud-Nord."
+      ]
+    },
+    {
+      "id": "RV-JIALINGJIANG",
+      "overview": "Affluent du Yangtsé qui le rejoint à Chongqing.",
+      "anecdotes": [
+        "À Chongqing, on voit les eaux vertes du Jialing se mêler aux eaux brunes du Yangtsé."
+      ]
+    },
+    {
+      "id": "RV-MINJIANG",
+      "overview": "Affluent du Yangtsé, il arrose la plaine de Chengdu grâce au système d'irrigation de Dujiangyan.",
+      "anecdotes": [
+        "Le Bouddha géant de Leshan fait face au confluent du Min et du Dadu."
+      ]
+    },
+    {
+      "id": "RV-DADUHE",
+      "overview": "Affluent du Min, il descend des montagnes de l'ouest du Sichuan.",
+      "anecdotes": [
+        "La traversée du pont de Luding, en 1935, est l'un des épisodes célèbres de la Longue Marche."
+      ]
+    },
+    {
+      "id": "RV-YALONGJIANG",
+      "overview": "Affluent du Yangtsé (Jinsha Jiang) qui coule du nord au sud dans les montagnes de l'ouest du Sichuan.",
+      "anecdotes": [
+        "Le barrage de Jinping I, sur son cours, est l'un des plus hauts du monde (305 m)."
+      ]
+    },
+    {
+      "id": "RV-WUJIANG",
+      "overview": "Principal fleuve du Guizhou, affluent du Yangtsé qu'il rejoint à Fuling.",
+      "anecdotes": [
+        "Pendant la Longue Marche, l'Armée rouge le franchit de force en 1935."
+      ]
+    },
+    {
+      "id": "RV-XIANGJIANG",
+      "overview": "Fleuve principal du Hunan, il traverse Changsha et se jette dans le lac Dongting.",
+      "anecdotes": [
+        "Le Hunan est souvent appelé simplement « Xiang », du nom de ce fleuve."
+      ]
+    },
+    {
+      "id": "RV-YUANJIANG",
+      "overview": "Affluent du Yangtsé par le lac Dongting, il coule du Guizhou au Hunan.",
+      "anecdotes": [
+        "Le bourg de Fenghuang, aux maisons sur pilotis, est bâti au bord de l'un de ses affluents."
+      ]
+    },
+    {
+      "id": "RV-GANJIANG",
+      "overview": "Fleuve principal du Jiangxi, il traverse Nanchang et se jette dans le lac Poyang.",
+      "anecdotes": [
+        "Le Jiangxi est abrégé en « Gan », du nom de ce fleuve."
+      ]
+    },
+    {
+      "id": "RV-WEIHE",
+      "overview": "Principal affluent du fleuve Jaune ; sa vallée, le Guanzhong, fut le cœur des dynasties Zhou, Qin, Han et Tang.",
+      "anecdotes": [
+        "Xi'an, l'ancienne Chang'an, est bâtie près de ses rives."
+      ]
+    },
+    {
+      "id": "RV-SONGHUAJIANG",
+      "overview": "Plus grand affluent de l'Amour, il traverse Jilin et Harbin.",
+      "anecdotes": [
+        "En aval d'un barrage, ses eaux restent liquides l'hiver et couvrent de givre les arbres de Jilin."
+      ]
+    },
+    {
+      "id": "RV-WUSULIJIANG",
+      "overview": "Affluent de l'Amour, il marque la frontière entre la Chine et la Russie.",
+      "anecdotes": [
+        "En 1969, des affrontements sino-soviétiques eurent lieu sur l'île de Zhenbao, au milieu de la rivière."
+      ]
+    },
+    {
+      "id": "RV-DONGJIANG",
+      "overview": "Affluent oriental de la rivière des Perles, dans l'est du Guangdong.",
+      "anecdotes": [
+        "Il fournit une grande partie de l'eau potable de Hong Kong et de Shenzhen."
+      ]
+    },
+    {
+      "id": "RV-BEIJIANG",
+      "overview": "Affluent nord de la rivière des Perles, il descend des monts Nanling.",
+      "anecdotes": [
+        "Sa vallée fut longtemps une grande route entre le Nord de la Chine et Canton."
+      ]
+    },
+    {
+      "id": "RV-YONGDINGHE",
+      "overview": "Affluent du Hai He qui passe à l'ouest de Pékin.",
+      "anecdotes": [
+        "Le pont Marco Polo (Lugou), qui le franchit, fut le théâtre de l'incident de 1937 qui déclencha la guerre sino-japonaise."
+      ]
+    },
+    {
+      "id": "MT-HIMALAYA",
+      "overview": "Plus haute chaîne du monde, née de la collision de l'Inde avec l'Asie ; elle sépare le plateau tibétain du sous-continent indien.",
+      "anecdotes": [
+        "Son nom vient du sanskrit et signifie « demeure des neiges »."
+      ]
+    },
+    {
+      "id": "MT-KARAKORAM",
+      "overview": "Chaîne très englacée aux confins de la Chine, du Pakistan et de l'Inde, au Cachemire.",
+      "anecdotes": [
+        "Elle compte quatre sommets de plus de 8 000 m, dont le K2."
+      ]
+    },
+    {
+      "id": "MT-KUNLUN",
+      "overview": "Longue chaîne qui borde le nord du plateau tibétain sur environ 2 500 km.",
+      "anecdotes": [
+        "Dans la mythologie chinoise, le Kunlun est la demeure de la Reine Mère de l'Ouest."
+      ]
+    },
+    {
+      "id": "MT-TIANSHAN",
+      "overview": "Les « Monts célestes » coupent le Xinjiang en deux, entre le bassin du Tarim au sud et la Dzoungarie au nord.",
+      "anecdotes": [
+        "Le Tian Shan du Xinjiang est inscrit au patrimoine mondial depuis 2013."
+      ]
+    },
+    {
+      "id": "MT-ALTAI",
+      "overview": "Chaîne aux confins de la Chine, de la Mongolie, de la Russie et du Kazakhstan.",
+      "anecdotes": [
+        "Son nom viendrait d'un mot turco-mongol signifiant « montagne d'or »."
+      ]
+    },
+    {
+      "id": "MT-ALTUN",
+      "overview": "Chaîne qui sépare le bassin du Tarim du plateau tibétain, entre le Kunlun et le Qilian Shan.",
+      "anecdotes": [
+        "Une réserve naturelle y protège yacks sauvages et ânes sauvages du Tibet."
+      ]
+    },
+    {
+      "id": "MT-QILIAN",
+      "overview": "Chaîne au nord-est du plateau tibétain, entre le Qinghai et le Gansu.",
+      "anecdotes": [
+        "Ses glaciers alimentent les oasis du corridor du Hexi, sur la route de la soie."
+      ]
+    },
+    {
+      "id": "MT-QINLING",
+      "overview": "Chaîne est-ouest du Shaanxi, limite climatique entre la Chine du Nord et la Chine du Sud.",
+      "anecdotes": [
+        "Elle abrite des pandas géants, dont une rare variété brune."
+      ]
+    },
+    {
+      "id": "MT-DAXINGANLING",
+      "overview": "Chaîne boisée du Nord-Est, entre la Mongolie-Intérieure et le Heilongjiang ; limite entre la steppe et la plaine du Nord-Est.",
+      "anecdotes": [
+        "Ses forêts sont parmi les plus vastes de Chine."
+      ]
+    },
+    {
+      "id": "MT-XIAOXINGANLING",
+      "overview": "Chaîne du Heilongjiang qui longe l'Amour.",
+      "anecdotes": [
+        "Ses forêts de pins de Corée comptent parmi les mieux conservées de Chine."
+      ]
+    },
+    {
+      "id": "MT-TAIHANG",
+      "overview": "Chaîne nord-sud qui sépare le plateau du Shanxi de la grande plaine du Nord.",
+      "anecdotes": [
+        "La route de Guoliang, creusée à la main dans la falaise par des villageois dans les années 1970, est célèbre."
+      ]
+    },
+    {
+      "id": "MT-LULIANG",
+      "overview": "Chaîne de l'ouest du Shanxi, parallèle au fleuve Jaune.",
+      "anecdotes": [
+        "Elle servit de base de guérilla pendant la guerre contre le Japon."
+      ]
+    },
+    {
+      "id": "MT-YINSHAN",
+      "overview": "Chaîne de Mongolie-Intérieure, au nord de la grande boucle du fleuve Jaune ; limite historique entre steppe et terres cultivées.",
+      "anecdotes": [
+        "Ses rochers portent des milliers de gravures rupestres anciennes."
+      ]
+    },
+    {
+      "id": "MT-DABIE",
+      "overview": "Chaîne aux confins du Hubei, du Henan et de l'Anhui, sur la limite entre Nord et Sud.",
+      "anecdotes": [
+        "Elle sépare les bassins du Huai He et du Yangtsé."
+      ]
+    },
+    {
+      "id": "MT-DALOU",
+      "overview": "Chaîne du nord du Guizhou, à la limite du Sichuan et de Chongqing.",
+      "anecdotes": [
+        "Le col de Loushan y fut le théâtre d'une bataille de la Longue Marche, en 1935."
+      ]
+    },
+    {
+      "id": "MT-NANLING",
+      "overview": "Ensemble de chaînes qui sépare le Hunan et le Jiangxi du Guangdong et du Guangxi.",
+      "anecdotes": [
+        "Elle marque la limite entre le bassin du Yangtsé et celui de la rivière des Perles."
+      ]
+    },
+    {
+      "id": "MT-WUYI",
+      "overview": "Chaîne entre le Fujian et le Jiangxi ; le mont Wuyi est inscrit au patrimoine mondial.",
+      "anecdotes": [
+        "Ses falaises produisent le Da Hong Pao, l'un des thés oolong les plus célèbres."
+      ]
+    },
+    {
+      "id": "PK-QOMOLANGMA",
+      "overview": "Plus haut sommet du monde, à la frontière entre la Chine et le Népal.",
+      "anecdotes": [
+        "Première ascension en 1953 par Edmund Hillary et Tenzing Norgay, par le versant népalais ; une expédition chinoise annonça l'avoir gravi par le nord en 1960."
+      ]
+    },
+    {
+      "id": "PK-K2",
+      "overview": "Deuxième sommet du monde, à la frontière entre la Chine et le Pakistan.",
+      "anecdotes": [
+        "Réputé plus difficile que l'Everest, il n'a été gravi en hiver qu'en 2021."
+      ]
+    },
+    {
+      "id": "PK-NAMCHABARWA",
+      "overview": "Sommet le plus oriental de l'Himalaya, dans le grand coude du Yarlung Zangbo.",
+      "anecdotes": [
+        "Il est longtemps resté l'un des plus hauts sommets jamais gravis, jusqu'en 1992."
+      ]
+    },
+    {
+      "id": "PK-KONGUR",
+      "overview": "Plus haut sommet du Pamir chinois, au Xinjiang.",
+      "anecdotes": [
+        "Il domine la route du Karakoram, près du lac Karakul."
+      ]
+    },
+    {
+      "id": "PK-GONGGA",
+      "overview": "Plus haut sommet du Sichuan, surnommé le « roi des montagnes du Sichuan ».",
+      "anecdotes": [
+        "Une petite expédition américaine l'a gravi dès 1932."
+      ]
+    },
+    {
+      "id": "PK-TOMUR",
+      "overview": "Plus haut sommet du Tian Shan, à la frontière avec le Kirghizistan.",
+      "anecdotes": [
+        "Côté soviétique, on l'appelait pic Pobeda, « pic de la Victoire »."
+      ]
+    },
+    {
+      "id": "PK-NYAINQENTANGLHA",
+      "overview": "Sommet principal de la chaîne du même nom, au nord de Lhassa.",
+      "anecdotes": [
+        "Il domine le lac Nam Co, l'un des lacs sacrés du Tibet."
+      ]
+    },
+    {
+      "id": "PK-KAILASH",
+      "overview": "Montagne sacrée pour les bouddhistes, les hindous, les jaïns et les fidèles du bön.",
+      "anecdotes": [
+        "Son ascension est interdite ; les pèlerins en font le tour à pied, environ 52 km."
+      ]
+    },
+    {
+      "id": "PK-GELADANDONG",
+      "overview": "Sommet principal des monts Tanggula, au Qinghai.",
+      "anecdotes": [
+        "Ses glaciers donnent naissance à la source officielle du Yangtsé."
+      ]
+    },
+    {
+      "id": "PK-ANYEMAQEN",
+      "overview": "Massif sacré du Qinghai, autour duquel le fleuve Jaune décrit une grande boucle.",
+      "anecdotes": [
+        "Les pèlerins tibétains en font le tour, comme pour le Kailash."
+      ]
+    },
+    {
+      "id": "PK-BOGDA",
+      "overview": "Sommet du Tian Shan oriental, visible depuis Urumqi par temps clair.",
+      "anecdotes": [
+        "Le lac du Ciel (Tianchi), à ses pieds, est un site touristique réputé."
+      ]
+    },
+    {
+      "id": "PK-YUSHAN",
+      "overview": "Plus haut sommet de Taïwan.",
+      "anecdotes": [
+        "Pendant la période japonaise, on l'appelait « Niitakayama », la « nouvelle haute montagne », car il dépassait le mont Fuji."
+      ]
+    },
+    {
+      "id": "PK-TAIBAI",
+      "overview": "Plus haut sommet des monts Qinling, au Shaanxi.",
+      "anecdotes": [
+        "Son nom, « grand blanc », viendrait de la neige qui couvre son sommet une grande partie de l'année."
+      ]
+    },
+    {
+      "id": "PK-EMEI",
+      "overview": "L'une des quatre montagnes sacrées du bouddhisme chinois, au Sichuan.",
+      "anecdotes": [
+        "Des macaques y guettent les randonneurs pour leur chiper de la nourriture."
+      ]
+    },
+    {
+      "id": "PK-WUTAI",
+      "overview": "L'une des quatre montagnes sacrées du bouddhisme chinois, au Shanxi, dédiée au bodhisattva Manjushri.",
+      "anecdotes": [
+        "Le temple de Nanchan, bâti en 782, est l'un des plus anciens bâtiments en bois de Chine."
+      ]
+    },
+    {
+      "id": "PK-CHANGBAI",
+      "overview": "Volcan à la frontière entre la Chine et la Corée du Nord, sacré pour les Coréens et les Mandchous.",
+      "anecdotes": [
+        "Son éruption du Xe siècle fut l'une des plus puissantes des deux derniers millénaires."
+      ]
+    },
+    {
+      "id": "PK-HUASHAN",
+      "overview": "Montagne sacrée taoïste, la « montagne de l'Ouest » parmi les cinq grandes montagnes, au Shaanxi.",
+      "anecdotes": [
+        "Son chemin de planches accroché à la falaise passe pour l'un des sentiers les plus vertigineux du monde."
+      ]
+    },
+    {
+      "id": "PK-HUANGSHAN",
+      "overview": "Montagne de l'Anhui célèbre pour ses pics de granite, ses pins et ses mers de nuages.",
+      "anecdotes": [
+        "Un dicton dit qu'après le Huang Shan, on n'a plus besoin de voir d'autres montagnes."
+      ]
+    },
+    {
+      "id": "PK-WUZHI",
+      "overview": "Plus haut sommet de l'île de Hainan.",
+      "anecdotes": [
+        "Son nom signifie « cinq doigts », d'après la forme de ses cinq pointes."
+      ]
+    },
+    {
+      "id": "PK-TAISHAN",
+      "overview": "La « montagne de l'Est », la plus vénérée des cinq grandes montagnes ; les empereurs y offraient des sacrifices au Ciel.",
+      "anecdotes": [
+        "Plus de 6 000 marches de pierre mènent au sommet."
       ]
     }
   ]

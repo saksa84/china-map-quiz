@@ -485,7 +485,7 @@ Commandes : voir `docs/build.md`. Avec PowerShell, définir d'abord `$env:JAVA_H
 - A : vérification des cours d'eau et longueur des fleuves (fait) ;
 - B : noms connus en Europe affichés « Nom connu / pinyin » (fait) ;
 - C : pinyin avec tons et bouton de prononciation (synthèse vocale Android en mandarin, qui lit les hanzi) ;
-- D : (provinces faites, à relire ; villes, cours d'eau et montagnes à faire) fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
+- D : (fait, 138 fiches à relire) fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
 - E : fiche compacte de 4 à 5 lignes pendant les quiz (fait).
 
 Ensuite : version 2 (parcs, lacs, villes-préfectures) et mode Contours.

@@ -11,10 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -43,6 +39,8 @@ fun EntityInfo(
     showAliases: Boolean = true,
     /** Fiche « En savoir plus » (mode Apprendre), dépliable sous les informations de base. */
     facts: PlaceFacts? = null,
+    factsExpanded: Boolean = false,
+    onFactsExpandedChange: (Boolean) -> Unit = {},
 ) {
     Column(modifier) {
         Text(entity.displayName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = color)
@@ -119,19 +117,22 @@ fun EntityInfo(
                 color = color,
             )
         }
-        if (facts != null) FactsSection(facts, color)
+        if (facts != null) FactsSection(facts, factsExpanded, onFactsExpandedChange, color)
     }
 }
 
-/** « En savoir plus » : rubriques de la fiche, repliées par défaut pour garder la carte visible. */
+/**
+ * « En savoir plus » : rubriques de la fiche, repliées par défaut pour garder la carte visible.
+ * L'état est tenu par l'écran, qui agrandit le panneau quand la section est dépliée.
+ */
 @Composable
-private fun FactsSection(facts: PlaceFacts, color: Color) {
-    var expanded by rememberSaveable(facts.id) { mutableStateOf(false) }
-    TextButton(onClick = { expanded = !expanded }, contentPadding = PaddingValues(0.dp)) {
+private fun FactsSection(facts: PlaceFacts, expanded: Boolean, onExpandedChange: (Boolean) -> Unit, color: Color) {
+    TextButton(onClick = { onExpandedChange(!expanded) }, contentPadding = PaddingValues(0.dp)) {
         Text(stringResource(if (expanded) R.string.facts_less else R.string.facts_more))
     }
     if (!expanded) return
     val lines = buildList {
+        facts.overview?.let { add(it) }
         populationText(facts)?.let { add(it) }
         facts.areaKm2?.let { add(stringResource(R.string.facts_area, String.format(Locale.FRENCH, "%,d", it))) }
         facts.languages?.let { add(stringResource(R.string.facts_languages, it)) }

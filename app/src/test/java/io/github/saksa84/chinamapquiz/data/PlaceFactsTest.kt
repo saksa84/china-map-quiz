@@ -55,7 +55,7 @@ class PlaceFactsTest {
     }
 
     @Test
-    fun realFacts_coverEveryProvincialUnit() {
+    fun realFacts_coverEveryPlace() {
         val facts = (PlaceFactsLoader.load(asset("geo/facts.json"), catalog) as FactsResult.Success).facts
         val provincial = catalog.inCategory(Category.PROVINCIAL).map { it.id }.toSet()
         assertEquals(provincial, provincial.intersect(facts.keys))
@@ -64,6 +64,11 @@ class PlaceFactsTest {
             assertTrue("$id : population", f.populationMillions != null && f.areaKm2 != null)
             assertTrue("$id : langues, histoire, économie, plat", listOf(f.languages, f.history, f.economy, f.dish).all { it != null })
         }
+        // Villes, cours d'eau et montagnes : une fiche chacun, avec au moins une anecdote.
+        val features = (catalog.inCategory(Category.CITY) + catalog.inCategory(Category.RIVER) + catalog.inCategory(Category.MOUNTAIN)).map { it.id }
+        features.forEach { id -> assertTrue("$id : fiche et anecdote", facts[id]?.anecdotes?.isNotEmpty() == true) }
+        catalog.inCategory(Category.CITY).forEach { assertTrue("${it.id} : rôle", facts[it.id]!!.role != null) }
+        (catalog.inCategory(Category.RIVER) + catalog.inCategory(Category.MOUNTAIN)).forEach { assertTrue("${it.id} : présentation", facts[it.id]!!.overview != null) }
         // Repères faciles à vérifier : la province la plus peuplée et la plus étendue.
         assertEquals("CN-GD", provincial.maxByOrNull { facts[it]!!.populationMillions!! })
         assertEquals("CN-XJ", provincial.maxByOrNull { facts[it]!!.areaKm2!! })

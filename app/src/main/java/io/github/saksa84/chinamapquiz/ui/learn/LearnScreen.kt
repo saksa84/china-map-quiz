@@ -62,6 +62,8 @@ fun LearnScreen(data: MapData, category: GeoCategory, onBack: () -> Unit) {
     var regionView by rememberSaveable { mutableStateOf(false) }
     var showNames by rememberSaveable { mutableStateOf(true) }
     var recenterKey by rememberSaveable { mutableIntStateOf(0) }
+    // « En savoir plus » déplié : replié de nouveau dès qu'on touche un autre lieu.
+    var factsExpanded by rememberSaveable(selectedId) { mutableStateOf(false) }
     val catalog = data.catalog
     val isRegions = category == GeoCategory.REGIONS
 
@@ -134,18 +136,22 @@ fun LearnScreen(data: MapData, category: GeoCategory, onBack: () -> Unit) {
                     modifier = modifier,
                 )
             }
-            // Taille fixe du panneau : la carte ne change pas de taille selon la quantité d'informations.
+            // Taille fixe du panneau : la carte ne change pas de taille selon la quantité d'informations,
+            // sauf quand on déplie « En savoir plus » : le panneau prend alors 60 % de la hauteur.
             // En paysage, le panneau passe à droite pour laisser toute la hauteur à la carte.
             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                 if (maxWidth > maxHeight) {
                     Row(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxHeight())
-                        InfoPanel(catalog, data.facts, selectedId, hint(category, regionView), Modifier.width(340.dp).fillMaxHeight())
+                        InfoPanel(catalog, data.facts, selectedId, hint(category, regionView), factsExpanded, { factsExpanded = it }, Modifier.width(340.dp).fillMaxHeight())
                     }
                 } else {
                     Column(Modifier.fillMaxSize()) {
                         map(Modifier.weight(1f).fillMaxWidth())
-                        InfoPanel(catalog, data.facts, selectedId, hint(category, regionView), Modifier.fillMaxWidth().height(200.dp))
+                        InfoPanel(
+                            catalog, data.facts, selectedId, hint(category, regionView), factsExpanded, { factsExpanded = it },
+                            Modifier.fillMaxWidth().then(if (factsExpanded) Modifier.fillMaxHeight(0.6f) else Modifier.height(200.dp)),
+                        )
                     }
                 }
             }
@@ -162,7 +168,15 @@ private fun hint(category: GeoCategory, regionView: Boolean): Int = when (catego
 }
 
 @Composable
-private fun InfoPanel(catalog: GeoCatalog, facts: Map<String, PlaceFacts>, selectedId: String?, @StringRes hint: Int, modifier: Modifier) {
+private fun InfoPanel(
+    catalog: GeoCatalog,
+    facts: Map<String, PlaceFacts>,
+    selectedId: String?,
+    @StringRes hint: Int,
+    factsExpanded: Boolean,
+    onFactsExpandedChange: (Boolean) -> Unit,
+    modifier: Modifier,
+) {
     Surface(tonalElevation = 3.dp, modifier = modifier) {
         val entity = selectedId?.let { catalog[it] }
         // Défilement : la fiche d'une grande région (liste des provinces) peut dépasser le panneau.
@@ -170,7 +184,7 @@ private fun InfoPanel(catalog: GeoCatalog, facts: Map<String, PlaceFacts>, selec
             if (entity == null) {
                 Text(stringResource(hint), modifier = Modifier.padding(16.dp))
             } else {
-                EntityInfo(catalog, entity, Modifier.padding(16.dp), facts = facts[entity.id])
+                EntityInfo(catalog, entity, Modifier.padding(16.dp), facts = facts[entity.id], factsExpanded = factsExpanded, onFactsExpandedChange = onFactsExpandedChange)
             }
         }
     }
