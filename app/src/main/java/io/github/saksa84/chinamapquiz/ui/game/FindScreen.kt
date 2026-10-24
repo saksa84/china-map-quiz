@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import io.github.saksa84.chinamapquiz.R
+import io.github.saksa84.chinamapquiz.ui.common.AutoSpeak
 import io.github.saksa84.chinamapquiz.data.MapData
 import io.github.saksa84.chinamapquiz.game.QuizSession
 import io.github.saksa84.chinamapquiz.ui.GameUiState
@@ -63,6 +64,7 @@ fun FindScreen(
         },
         overlay = { if (answer != null) AnswerCard(data, answer.targetId) },
         bottom = {
+            AutoSpeak(state.targetId?.let { data.catalog[it]?.hanzi })
             PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.displayName } ?: ""))
             val isLast = state.questionNumber >= state.total
             GameButton(

@@ -14,7 +14,7 @@
       "type": "island_group",
       "name": "Iles Paracel",
       "aliases": ["Paracel", "Paracel Islands", "Xisha Qundao", "Hoang Sa"],
-      "hanzi": "西沙群岛",
+      "hanzi": "西沙群岛", "pinyinTones": "Xīshā Qúndǎo",
       "claimedBy": ["CN", "TW", "VN"],
       "sourceId": "manual-disputes"
     }

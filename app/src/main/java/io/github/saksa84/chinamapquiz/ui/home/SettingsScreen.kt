@@ -1,5 +1,6 @@
 package io.github.saksa84.chinamapquiz.ui.home
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import io.github.saksa84.chinamapquiz.ui.game.GameButton
 fun SettingsScreen(
     settings: Settings,
     onShowHanzi: (Boolean) -> Unit,
+    onAutoSpeak: (Boolean) -> Unit,
     onResetProgress: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -53,20 +55,8 @@ fun SettingsScreen(
                 Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Row(
-                    Modifier.fillMaxWidth().background(QuizColors.Tile, RoundedCornerShape(4.dp)).padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.settings_hanzi), color = QuizColors.OnDark, fontSize = 18.sp)
-                        Text(stringResource(R.string.settings_hanzi_sub), color = QuizColors.Muted)
-                    }
-                    Switch(
-                        checked = settings.showHanzi,
-                        onCheckedChange = onShowHanzi,
-                        colors = SwitchDefaults.colors(checkedTrackColor = QuizColors.Accent, checkedThumbColor = QuizColors.Tile),
-                    )
-                }
+                SettingSwitch(R.string.settings_hanzi, R.string.settings_hanzi_sub, settings.showHanzi, onShowHanzi)
+                SettingSwitch(R.string.settings_auto_speak, R.string.settings_auto_speak_sub, settings.autoSpeak, onAutoSpeak)
 
                 GameButton(stringResource(R.string.settings_reset), { confirmingReset = true })
 
@@ -89,6 +79,24 @@ fun SettingsScreen(
                 }) { Text(stringResource(R.string.reset_confirm)) }
             },
             dismissButton = { TextButton(onClick = { confirmingReset = false }) { Text(stringResource(R.string.reset_cancel)) } },
+        )
+    }
+}
+
+@Composable
+private fun SettingSwitch(@StringRes title: Int, @StringRes subtitle: Int, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().background(QuizColors.Tile, RoundedCornerShape(4.dp)).padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(title), color = QuizColors.OnDark, fontSize = 18.sp)
+            Text(stringResource(subtitle), color = QuizColors.Muted)
+        }
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(checkedTrackColor = QuizColors.Accent, checkedThumbColor = QuizColors.Tile),
         )
     }
 }

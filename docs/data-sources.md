@@ -24,7 +24,7 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 | `regions.json` | Écrit à la main |
 | `islands.json` | Écrit à la main |
 | `map.geometry.json` | **Généré** par `tools/build_map_geometry.py`. Ne pas modifier à la main. |
-| `cities.json`, `rivers.json`, `mountains.json` | Écrits à la main (dont les noms connus `knownAs`) |
+| `cities.json`, `rivers.json`, `mountains.json` | Écrits à la main (dont les noms connus `knownAs` et les pinyins avec tons `pinyinTones`, saisis d'après les hanzi) |
 | `facts.json` | Écrit à la main ; chaque fiche porte `reviewed` (faux tant qu'elle n'est pas relue) |
 | `features.geometry.json` | **Généré** par `tools/build_features_geometry.py` : sélection des tronçons, villes et sommets, découpe à la frontière, vérification ville/province. Ne pas modifier à la main. |
 | `res/drawable/ic_launcher_foreground.xml` (icône) | **Généré** par `tools/build_icon.py` à partir de `map.geometry.json` |

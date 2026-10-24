@@ -1,6 +1,7 @@
 package io.github.saksa84.chinamapquiz.data
 
 import io.github.saksa84.chinamapquiz.game.AnswerChecker
+import io.github.saksa84.chinamapquiz.game.AnswerNormalizer
 import io.github.saksa84.chinamapquiz.game.GeoCategory
 import io.github.saksa84.chinamapquiz.game.LevelsConfig
 import io.github.saksa84.chinamapquiz.game.QuizLevels
@@ -111,6 +112,23 @@ class RealFeaturesTest {
             )
         }
         return minOf(endsTo(a, b), endsTo(b, a))
+    }
+
+    /**
+     * Le pinyin avec tons, sans ses accents, redonne le nom ou un alias : une faute de frappe dans
+     * les tons se voit. Exceptions : Shaanxi (orthographe spéciale de Shǎnxī, pour le distinguer du
+     * Shanxi) et Yarlung Zangbo (transcription du tibétain ; pinyin Yǎlǔ Zàngbù Jiāng).
+     */
+    @Test
+    fun pinyinTonesMatchTheName() {
+        val exceptions = setOf("CN-SN", "RV-YARLUNGZANGBO")
+        for (entity in catalog.entities) {
+            val tones = entity.pinyinTones
+            assertTrue("${entity.id} sans pinyin avec tons", tones != null)
+            if (entity.id in exceptions) continue
+            val accepted = (listOf(entity.name) + entity.aliases).map(AnswerNormalizer::normalize)
+            assertTrue("${entity.id} : $tones", AnswerNormalizer.normalize(tones!!) in accepted)
+        }
     }
 
     @Test

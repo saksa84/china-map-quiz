@@ -9,21 +9,21 @@
     }
   ],
   "entities": [
-    { "id": "RG-DONGBEI", "type": "region", "name": "Dongbei", "aliases": ["Northeast China", "Nord-Est"], "hanzi": "东北", "parentId": "CN",
+    { "id": "RG-DONGBEI", "type": "region", "name": "Dongbei", "aliases": ["Northeast China", "Nord-Est"], "hanzi": "东北", "pinyinTones": "Dōngběi", "parentId": "CN",
       "memberIds": ["CN-LN", "CN-JL", "CN-HL"], "sourceId": "manual-regions" },
-    { "id": "RG-HUABEI", "type": "region", "name": "Huabei", "aliases": ["North China", "Nord"], "hanzi": "华北", "parentId": "CN",
+    { "id": "RG-HUABEI", "type": "region", "name": "Huabei", "aliases": ["North China", "Nord"], "hanzi": "华北", "pinyinTones": "Huáběi", "parentId": "CN",
       "memberIds": ["CN-BJ", "CN-TJ", "CN-HE", "CN-SX", "CN-NM"], "sourceId": "manual-regions" },
-    { "id": "RG-HUADONG", "type": "region", "name": "Huadong", "aliases": ["East China", "Est"], "hanzi": "华东", "parentId": "CN",
+    { "id": "RG-HUADONG", "type": "region", "name": "Huadong", "aliases": ["East China", "Est"], "hanzi": "华东", "pinyinTones": "Huádōng", "parentId": "CN",
       "memberIds": ["CN-SH", "CN-JS", "CN-ZJ", "CN-AH", "CN-FJ", "CN-JX", "CN-SD", "CN-TW"], "sourceId": "manual-regions" },
-    { "id": "RG-ZHONGNAN", "type": "region", "name": "Zhongnan", "aliases": ["South Central China", "Centre-Sud"], "hanzi": "中南", "parentId": "CN",
+    { "id": "RG-ZHONGNAN", "type": "region", "name": "Zhongnan", "aliases": ["South Central China", "Centre-Sud"], "hanzi": "中南", "pinyinTones": "Zhōngnán", "parentId": "CN",
       "memberIds": ["CN-HA", "CN-HB", "CN-HN", "CN-GD", "CN-GX", "CN-HI", "CN-HK", "CN-MO"], "sourceId": "manual-regions" },
-    { "id": "RG-HUAZHONG", "type": "region", "name": "Huazhong", "aliases": ["Central China", "Centre"], "hanzi": "华中", "parentId": "RG-ZHONGNAN",
+    { "id": "RG-HUAZHONG", "type": "region", "name": "Huazhong", "aliases": ["Central China", "Centre"], "hanzi": "华中", "pinyinTones": "Huázhōng", "parentId": "RG-ZHONGNAN",
       "memberIds": ["CN-HA", "CN-HB", "CN-HN"], "sourceId": "manual-regions" },
-    { "id": "RG-HUANAN", "type": "region", "name": "Huanan", "aliases": ["South China", "Sud"], "hanzi": "华南", "parentId": "RG-ZHONGNAN",
+    { "id": "RG-HUANAN", "type": "region", "name": "Huanan", "aliases": ["South China", "Sud"], "hanzi": "华南", "pinyinTones": "Huánán", "parentId": "RG-ZHONGNAN",
       "memberIds": ["CN-GD", "CN-GX", "CN-HI", "CN-HK", "CN-MO"], "sourceId": "manual-regions" },
-    { "id": "RG-XIBEI", "type": "region", "name": "Xibei", "aliases": ["Northwest China", "Nord-Ouest"], "hanzi": "西北", "parentId": "CN",
+    { "id": "RG-XIBEI", "type": "region", "name": "Xibei", "aliases": ["Northwest China", "Nord-Ouest"], "hanzi": "西北", "pinyinTones": "Xīběi", "parentId": "CN",
       "memberIds": ["CN-SN", "CN-GS", "CN-QH", "CN-NX", "CN-XJ"], "sourceId": "manual-regions" },
-    { "id": "RG-XINAN", "type": "region", "name": "Xinan", "aliases": ["Southwest China", "Sud-Ouest"], "hanzi": "西南", "parentId": "CN",
+    { "id": "RG-XINAN", "type": "region", "name": "Xinan", "aliases": ["Southwest China", "Sud-Ouest"], "hanzi": "西南", "pinyinTones": "Xīnán", "parentId": "CN",
       "memberIds": ["CN-CQ", "CN-SC", "CN-GZ", "CN-YN", "CN-XZ"], "sourceId": "manual-regions" }
   ]
 }

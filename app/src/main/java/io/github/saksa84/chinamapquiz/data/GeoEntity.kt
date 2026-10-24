@@ -115,8 +115,10 @@ data class GeoEntity(
     val knownAs: String? = null,
     /** Autres graphies acceptées dans le mode Type (ex. "Tibet" pour Xizang, "Yangtze" pour Chang Jiang). */
     val aliases: List<String> = emptyList(),
-    /** Nom en caractères chinois, facultatif, pour vérification et enrichissement. */
+    /** Nom en caractères chinois, facultatif, pour vérification et enrichissement. Lu par le bouton 🔊. */
     val hanzi: String? = null,
+    /** Pinyin avec tons (« Sìchuān », « Zhūmùlǎngmǎ Fēng »), affiché pour aider à prononcer. */
+    val pinyinTones: String? = null,
     /** Parent hiérarchique ; les catégories autorisées dépendent de [type]. */
     val parentId: String? = null,
     /** Pour une grande région uniquement : les unités provinciales qui la composent. */

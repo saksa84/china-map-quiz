@@ -21,6 +21,9 @@ sealed interface ValidationError {
     /** Nom connu en alphabet latin (accents permis), différent du pinyin même aux accents près. */
     data class InvalidKnownAs(val entityId: String, val knownAs: String) : ValidationError
 
+    /** Pinyin avec tons : alphabet latin uniquement (les tons sont des accents). */
+    data class InvalidPinyinTones(val entityId: String, val pinyinTones: String) : ValidationError
+
     /** Seules les grandes régions ont des membres. */
     data class UnexpectedMembers(val entityId: String) : ValidationError
     data class EmptyRegion(val regionId: String) : ValidationError
@@ -92,6 +95,9 @@ object GeoCatalogValidator {
                 if (!KNOWN_NAME.matches(known) || withoutAccents(known) == withoutAccents(entity.name)) {
                     errors += ValidationError.InvalidKnownAs(entity.id, known)
                 }
+            }
+            entity.pinyinTones?.let { tones ->
+                if (!KNOWN_NAME.matches(tones)) errors += ValidationError.InvalidPinyinTones(entity.id, tones)
             }
             for (code in entity.claimedBy) {
                 if (!COUNTRY_CODE.matches(code)) errors += ValidationError.InvalidClaimant(entity.id, code)

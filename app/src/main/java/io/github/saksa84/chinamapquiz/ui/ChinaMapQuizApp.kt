@@ -13,7 +13,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.Alignment
@@ -30,6 +32,9 @@ import io.github.saksa84.chinamapquiz.ui.game.FindScreen
 import io.github.saksa84.chinamapquiz.ui.game.LevelSelectScreen
 import io.github.saksa84.chinamapquiz.ui.game.ResultScreen
 import io.github.saksa84.chinamapquiz.ui.game.TypeScreen
+import io.github.saksa84.chinamapquiz.speech.Pronouncer
+import io.github.saksa84.chinamapquiz.ui.common.LocalAutoSpeak
+import io.github.saksa84.chinamapquiz.ui.common.LocalPronouncer
 import io.github.saksa84.chinamapquiz.ui.common.LocalShowHanzi
 import io.github.saksa84.chinamapquiz.ui.home.CategoryScreen
 import io.github.saksa84.chinamapquiz.ui.home.HomeScreen
@@ -44,6 +49,10 @@ import io.github.saksa84.chinamapquiz.ui.learn.LearnScreen
  */
 @Composable
 fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
+    // Synthèse vocale créée une fois, libérée quand l'écran disparaît (rotation comprise).
+    val context = LocalContext.current
+    val pronouncer = remember { Pronouncer(context) }
+    DisposableEffect(pronouncer) { onDispose { pronouncer.shutdown() } }
     val activity = LocalContext.current as? Activity
     // Bouton retour du téléphone : écran précédent, ou fermeture depuis l'accueil.
     BackHandler { if (!vm.back()) activity?.finish() }
@@ -76,7 +85,11 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                 modifier = Modifier.align(Alignment.Center).padding(24.dp),
             )
         }
-        is LoadState.Ready -> CompositionLocalProvider(LocalShowHanzi provides vm.settings.showHanzi) { when (vm.screen) {
+        is LoadState.Ready -> CompositionLocalProvider(
+            LocalShowHanzi provides vm.settings.showHanzi,
+            LocalPronouncer provides pronouncer,
+            LocalAutoSpeak provides vm.settings.autoSpeak,
+        ) { when (vm.screen) {
             Screen.HOME -> HomeScreen(
                 levels = load.levels,
                 progress = vm.progress,
@@ -111,6 +124,7 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
             Screen.SETTINGS -> SettingsScreen(
                 settings = vm.settings,
                 onShowHanzi = vm::setShowHanzi,
+                onAutoSpeak = vm::setAutoSpeak,
                 onResetProgress = vm::resetProgress,
                 onBack = { vm.back() },
             )

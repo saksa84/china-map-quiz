@@ -138,6 +138,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch { store.setShowHanzi(show) }
     }
 
+    fun setAutoSpeak(enabled: Boolean) {
+        viewModelScope.launch { store.setAutoSpeak(enabled) }
+    }
+
     fun chooseCategory(newCategory: GeoCategory) {
         category = newCategory
         screen = Screen.CATEGORY

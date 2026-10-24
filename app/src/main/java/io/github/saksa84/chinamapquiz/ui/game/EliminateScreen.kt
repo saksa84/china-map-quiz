@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import io.github.saksa84.chinamapquiz.R
+import io.github.saksa84.chinamapquiz.ui.common.AutoSpeak
 import io.github.saksa84.chinamapquiz.data.MapData
 import io.github.saksa84.chinamapquiz.ui.GameUiState
 import io.github.saksa84.chinamapquiz.ui.common.QuizColors
@@ -59,6 +60,7 @@ fun EliminateScreen(
         },
         overlay = {},
         bottom = {
+            AutoSpeak(state.targetId?.let { data.catalog[it]?.hanzi })
             PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.displayName } ?: ""))
             GameProgress(state.score, state.total)
         },

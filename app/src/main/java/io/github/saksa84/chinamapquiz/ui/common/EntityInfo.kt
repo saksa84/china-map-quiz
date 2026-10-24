@@ -3,6 +3,7 @@ package io.github.saksa84.chinamapquiz.ui.common
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -43,9 +45,14 @@ fun EntityInfo(
     onFactsExpandedChange: (Boolean) -> Unit = {},
 ) {
     Column(modifier) {
-        Text(entity.displayName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = color)
-        val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
-        val subtitle = listOfNotNull(hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                entity.displayName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
+                color = color, modifier = Modifier.weight(1f, fill = false),
+            )
+            SpeakButton(entity.hanzi)
+        }
+        val subtitle = subtitle(entity)
         Text(subtitle, style = MaterialTheme.typography.titleMedium, color = color)
         Spacer(Modifier.height(8.dp))
 
@@ -174,12 +181,14 @@ fun CompactEntityInfo(
     color: Color = Color.Unspecified,
 ) {
     Column(modifier) {
-        Text(
-            entity.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold,
-            color = color, maxLines = 1, overflow = TextOverflow.Ellipsis,
-        )
-        val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
-        Text(listOfNotNull(hanzi, stringResource(typeLabel(entity.type))).joinToString(" · "), color = color, maxLines = 1)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                entity.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold,
+                color = color, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
+            )
+            SpeakButton(entity.hanzi)
+        }
+        Text(subtitle(entity), color = color, maxLines = 1, overflow = TextOverflow.Ellipsis)
         val parent = entity.parentId?.let { catalog[it] }
         val key = when (entity.type) {
             FeatureType.CITY -> listOfNotNull(
@@ -219,6 +228,13 @@ private fun RiverLength(entity: GeoEntity, color: Color) {
         stringResource(R.string.info_length_in_china, km(total), km(inChina))
     }
     Text(text, color = color)
+}
+
+/** « Sìchuān · 四川 · Province » : pinyin avec tons, hanzi (selon le réglage) et type. */
+@Composable
+private fun subtitle(entity: GeoEntity): String {
+    val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
+    return listOfNotNull(entity.pinyinTones, hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
 }
 
 @StringRes

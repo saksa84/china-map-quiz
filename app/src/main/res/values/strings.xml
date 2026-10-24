@@ -68,6 +68,8 @@
     <string name="settings_title">Paramètres</string>
     <string name="settings_hanzi">Caractères chinois</string>
     <string name="settings_hanzi_sub">Afficher le nom en hanzi dans les fiches</string>
+    <string name="settings_auto_speak">Lire les consignes</string>
+    <string name="settings_auto_speak_sub">Trouver et Éliminer : le nom demandé est prononcé en mandarin</string>
     <string name="settings_reset">Réinitialiser la progression</string>
     <string name="reset_title">Réinitialiser la progression ?</string>
     <string name="reset_message">Tous les records, temps et erreurs enregistrés seront effacés. Cette action est définitive.</string>
@@ -112,6 +114,9 @@
     <string name="info_flows_into">Se jette dans : %1$s</string>
     <string name="info_length">Longueur : %1$s km</string>
     <string name="info_length_in_china">Longueur : %1$s km, dont %2$s km en Chine</string>
+    <string name="speak_description">Écouter la prononciation</string>
+    <string name="speak_missing_voice">Voix chinoise absente : téléchargez « chinois (Chine) », puis réessayez.</string>
+    <string name="speak_unavailable">Synthèse vocale indisponible sur cet appareil.</string>
     <string name="facts_more">En savoir plus ▾</string>
     <string name="facts_less">Réduire ▴</string>
     <string name="facts_population">Population : %1$s millions (%2$d)</string>

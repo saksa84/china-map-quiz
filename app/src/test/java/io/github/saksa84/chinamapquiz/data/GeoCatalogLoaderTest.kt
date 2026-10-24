@@ -376,6 +376,12 @@ class GeoCatalogLoaderTest {
     }
 
     @Test
+    fun pinyinTonesInHanzi_isRejected() {
+        val river = """{"id":"RV-A","type":"major_river","name":"Chang Jiang","pinyinTones":"长江","sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidPinyinTones("RV-A", "长江")), errorsOf(fileWith(river)))
+    }
+
+    @Test
     fun lengthOnSomethingOtherThanARiver_isRejected() {
         val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","lengthKm":10,"sourceId":"s"}"""
         assertEquals(listOf(ValidationError.InvalidLength("IS-A")), errorsOf(fileWith(islands)))

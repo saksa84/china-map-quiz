@@ -41,6 +41,10 @@ Le Guangzhou que tu as visité s'appelle « Canton » en français.
 
 ## Étape C — Prononciation (bouton son)
 
+**Faite le 2026-10-24** : `pinyinTones` pour les 148 lieux ; composant `speech/Pronouncer` (voix mandarin installée sur l'appareil, de préférence hors ligne) ; bouton 🔊 dans les fiches du mode Apprendre et dans la fiche compacte des quiz. Si la voix manque, l'app l'explique et ouvre l'écran de téléchargement de voix. Essayé sur l'émulateur (lecture commencée puis terminée dans le journal) ; à écouter sur le Pixel.
+
+Ajouts du 2026-10-24 : la voix passe par le volume des médias (réglé par les boutons du téléphone) au lieu du volume d'accessibilité, trop faible ; dans Trouver et Éliminer, le nom demandé est lu automatiquement à chaque question (réglage « Lire les consignes », activé par défaut ; pas dans Saisir, où il donnerait la réponse).
+
 **Choix recommandé : la synthèse vocale d'Android** (`TextToSpeech`), en mandarin (`zh-CN`), qui lit les **caractères chinois** (`hanzi`) : c'est ainsi que la prononciation est la plus juste.
 - Avantages : aucun fichier audio à fournir (rien à télécharger ni à licencier), et tous les lieux sont couverts, y compris les futurs.
 - Point d'attention : la voix chinoise doit être présente sur le téléphone. Sur le Pixel, Google TTS la propose ; un téléchargement unique peut être nécessaire (Paramètres → Système → Synthèse vocale), ensuite cela fonctionne hors ligne. L'app détecte l'absence de voix et explique comment l'installer.

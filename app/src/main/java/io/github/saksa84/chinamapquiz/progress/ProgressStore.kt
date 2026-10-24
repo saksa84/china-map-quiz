@@ -14,7 +14,11 @@ import kotlinx.coroutines.flow.map
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "china_map_quiz")
 
 /** Réglages modifiables dans l'écran Paramètres. */
-data class Settings(val showHanzi: Boolean = true)
+data class Settings(
+    val showHanzi: Boolean = true,
+    /** Trouver et Éliminer : le nom demandé est lu en mandarin à chaque question. */
+    val autoSpeak: Boolean = true,
+)
 
 /**
  * Sauvegarde locale (sur le téléphone, sans compte ni serveur) de la progression et des réglages.
@@ -25,7 +29,9 @@ class ProgressStore(private val context: Context) {
 
     val progress: Flow<Progress> = context.dataStore.data.map { Progress.fromJson(it[PROGRESS]) }
 
-    val settings: Flow<Settings> = context.dataStore.data.map { Settings(showHanzi = it[SHOW_HANZI] ?: true) }
+    val settings: Flow<Settings> = context.dataStore.data.map {
+        Settings(showHanzi = it[SHOW_HANZI] ?: true, autoSpeak = it[AUTO_SPEAK] ?: true)
+    }
 
     suspend fun save(progress: Progress) {
         context.dataStore.edit { it[PROGRESS] = progress.toJson() }
@@ -39,8 +45,13 @@ class ProgressStore(private val context: Context) {
         context.dataStore.edit { it[SHOW_HANZI] = show }
     }
 
+    suspend fun setAutoSpeak(enabled: Boolean) {
+        context.dataStore.edit { it[AUTO_SPEAK] = enabled }
+    }
+
     private companion object {
         val PROGRESS = stringPreferencesKey("progress_v1")
         val SHOW_HANZI = booleanPreferencesKey("show_hanzi")
+        val AUTO_SPEAK = booleanPreferencesKey("auto_speak")
     }
 }
