@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "fixture",
+      "name": "Données de test écrites à la main",
+      "license": "Aucune (données de test, non redistribuées dans l'application)"
+    }
+  ],
+  "entities": [
+    {
+      "id": "CN",
+      "type": "country",
+      "pinyin": "Zhongguo",
+      "aliases": ["China", "Chine"],
+      "hanzi": "中国",
+      "capital": "Beijing",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "CN-BJ",
+      "type": "municipality",
+      "pinyin": "Beijing",
+      "aliases": ["Pekin", "Peking"],
+      "hanzi": "北京",
+      "parentId": "CN",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "CN-SC",
+      "type": "province",
+      "pinyin": "Sichuan",
+      "hanzi": "四川",
+      "parentId": "CN",
+      "capital": "Chengdu",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "CN-XZ",
+      "type": "autonomous_region",
+      "pinyin": "Xizang",
+      "aliases": ["Tibet"],
+      "hanzi": "西藏",
+      "parentId": "CN",
+      "capital": "Lhasa",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "CN-HB",
+      "type": "province",
+      "pinyin": "Hubei",
+      "hanzi": "湖北",
+      "parentId": "CN",
+      "capital": "Wuhan",
+      "sourceId": "fixture"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "fixture",
+      "name": "Données de test écrites à la main",
+      "license": "Aucune (données de test, non redistribuées dans l'application)"
+    }
+  ],
+  "entities": [
+    {
+      "id": "RG-HUABEI",
+      "type": "region",
+      "pinyin": "Huabei",
+      "aliases": ["North China"],
+      "hanzi": "华北",
+      "parentId": "CN",
+      "memberIds": ["CN-BJ"],
+      "sourceId": "fixture"
+    },
+    {
+      "id": "RG-XINAN",
+      "type": "region",
+      "pinyin": "Xinan",
+      "aliases": ["Southwest China"],
+      "hanzi": "西南",
+      "parentId": "CN",
+      "memberIds": ["CN-SC", "CN-XZ"],
+      "sourceId": "fixture"
+    },
+    {
+      "id": "RG-ZHONGNAN",
+      "type": "region",
+      "pinyin": "Zhongnan",
+      "aliases": ["South Central China"],
+      "hanzi": "中南",
+      "parentId": "CN",
+      "memberIds": ["CN-HB"],
+      "sourceId": "fixture"
+    },
+    {
+      "id": "RG-HUAZHONG",
+      "type": "region",
+      "pinyin": "Huazhong",
+      "aliases": ["Central China"],
+      "hanzi": "华中",
+      "parentId": "RG-ZHONGNAN",
+      "memberIds": ["CN-HB"],
+      "sourceId": "fixture"
+    }
+  ]
+}

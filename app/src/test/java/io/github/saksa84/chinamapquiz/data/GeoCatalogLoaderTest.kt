@@ -1,0 +1,330 @@
+package io.github.saksa84.chinamapquiz.data
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+class GeoCatalogLoaderTest {
+
+    // --- Outils ---
+
+    private fun readResource(path: String): String =
+        requireNotNull(javaClass.classLoader?.getResource(path)) { "Ressource introuvable : $path" }.readText()
+
+    private val fixtures = listOf("provinces", "regions", "features").map { readResource("geo/fixture_$it.json") }
+
+    private fun loadFixtures(): GeoCatalog =
+        when (val result = GeoCatalogLoader.load(*fixtures.toTypedArray())) {
+            is LoadResult.Success -> result.catalog
+            else -> throw AssertionError("Les fichiers de test devraient être valides : $result")
+        }
+
+    /** Une entité en JSON ; seuls les champs utiles au test sont renseignés. */
+    private fun entity(
+        id: String,
+        type: String = "province",
+        pinyin: String = "Sichuan",
+        parentId: String? = "CN",
+        memberIds: List<String> = emptyList(),
+        sourceId: String = "s",
+    ): String {
+        val parent = parentId?.let { ""","parentId":"$it"""" } ?: ""
+        val members = if (memberIds.isEmpty()) "" else ""","memberIds":[${memberIds.joinToString(",") { "\"$it\"" }}]"""
+        return """{"id":"$id","type":"$type","pinyin":"$pinyin","sourceId":"$sourceId"$parent$members}"""
+    }
+
+    /** Un fichier contenant le pays "CN" suivi des entités données. */
+    private fun fileWith(vararg entities: String, schemaVersion: Int = 1): String {
+        val all = listOf(entity("CN", type = "country", pinyin = "Zhongguo", parentId = null)) + entities
+        return """{"schemaVersion":$schemaVersion,
+            "sources":[{"id":"s","name":"test","license":"test"}],
+            "entities":[${all.joinToString(",")}]}"""
+    }
+
+    private fun errorsOf(vararg texts: String): List<ValidationError> =
+        when (val result = GeoCatalogLoader.load(*texts)) {
+            is LoadResult.Invalid -> result.errors
+            else -> throw AssertionError("Erreurs de validation attendues, obtenu : $result")
+        }
+
+    private fun assertValid(vararg texts: String) {
+        val result = GeoCatalogLoader.load(*texts)
+        assertTrue("Attendu valide, obtenu : $result", result is LoadResult.Success)
+    }
+
+    // --- Fichiers de test valides ---
+
+    @Test
+    fun fixtures_loadAllCategories() {
+        val catalog = loadFixtures()
+        assertEquals(4, catalog.inCategory(Category.PROVINCIAL).size)
+        assertEquals(4, catalog.inCategory(Category.REGION).size)
+        assertEquals(1, catalog.inCategory(Category.CITY).size)
+        assertEquals(2, catalog.inCategory(Category.RIVER).size)
+        assertEquals(3, catalog.inCategory(Category.MOUNTAIN).size)
+    }
+
+    @Test
+    fun fixtures_provincesAreChildrenOfChina() {
+        val catalog = loadFixtures()
+        val provincialChildren = catalog.children("CN").filter { it.category == Category.PROVINCIAL }
+        assertEquals(setOf("CN-BJ", "CN-SC", "CN-XZ", "CN-HB"), provincialChildren.map { it.id }.toSet())
+        assertNull(catalog["CN"]?.parentId)
+    }
+
+    @Test
+    fun fixtures_keepTypesAliasesAndMetadata() {
+        val catalog = loadFixtures()
+        val xizang = catalog["CN-XZ"]!!
+        assertEquals(FeatureType.AUTONOMOUS_REGION, xizang.type)
+        assertEquals(listOf("Tibet"), xizang.aliases)
+        assertEquals("西藏", xizang.hanzi)
+        assertEquals("Lhasa", xizang.capital)
+        assertEquals(FeatureType.MUNICIPALITY, catalog["CN-BJ"]!!.type)
+    }
+
+    @Test
+    fun fixtures_geometryKindDependsOnType() {
+        val catalog = loadFixtures()
+        assertEquals(GeometryKind.POLYGON, catalog["CN-SC"]!!.type.geometry)
+        assertEquals(GeometryKind.COMPOSITE, catalog["RG-XINAN"]!!.type.geometry)
+        assertEquals(GeometryKind.POINT, catalog["CT-CHENGDU"]!!.type.geometry)
+        assertEquals(GeometryKind.LINE, catalog["RV-CHANGJIANG"]!!.type.geometry)
+        assertEquals(GeometryKind.LINE, catalog["MT-HIMALAYA"]!!.type.geometry)
+        assertEquals(GeometryKind.POINT, catalog["PK-QOMOLANGMA"]!!.type.geometry)
+    }
+
+    @Test
+    fun fixtures_regionsResolveTheirProvinces() {
+        val catalog = loadFixtures()
+        assertEquals(listOf("CN-SC", "CN-XZ"), catalog.membersOf("RG-XINAN").map { it.id })
+        assertEquals("RG-XINAN", catalog.topRegionOf("CN-SC")?.id)
+        // Hubei est dans Huazhong, mais sa grande région de premier rang est Zhongnan.
+        assertEquals("RG-ZHONGNAN", catalog.topRegionOf("CN-HB")?.id)
+        assertEquals(listOf("RG-HUAZHONG"), catalog.children("RG-ZHONGNAN").map { it.id })
+    }
+
+    @Test
+    fun fixtures_riversAndMountainsHaveTheirOwnHierarchy() {
+        val catalog = loadFixtures()
+        assertEquals(listOf("RV-JIALINGJIANG"), catalog.children("RV-CHANGJIANG").map { it.id })
+        assertEquals(listOf("RV-CHANGJIANG"), catalog.ofType(FeatureType.MAJOR_RIVER).map { it.id })
+        assertEquals(listOf("PK-QOMOLANGMA"), catalog.children("MT-HIMALAYA").map { it.id })
+        assertNull("Un sommet peut être isolé", catalog["PK-TAISHAN"]!!.parentId)
+        assertEquals("CN-SC", catalog["CT-CHENGDU"]!!.parentId)
+    }
+
+    @Test
+    fun lookup_unknownIdReturnsEmptyResults() {
+        val catalog = loadFixtures()
+        assertNull(catalog["CN-XX"])
+        assertTrue(catalog.children("CN-XZ").isEmpty())
+        assertTrue(catalog.membersOf("RG-XX").isEmpty())
+        assertNull(catalog.topRegionOf("CN-XX"))
+    }
+
+    // --- Plusieurs fichiers ---
+
+    @Test
+    fun citiesFileAlone_failsBecauseItsProvinceIsMissing() {
+        val errors = errorsOf(readResource("geo/fixture_features.json"))
+        assertTrue(ValidationError.UnknownParent("CT-CHENGDU", "CN-SC") in errors)
+    }
+
+    @Test
+    fun sameIdInTwoFiles_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC")), fileWith())
+        assertEquals(listOf(ValidationError.DuplicateId("CN")), errors)
+    }
+
+    @Test
+    fun conflictingSourcesAcrossFiles_areRejected() {
+        val other = """{"schemaVersion":1,"sources":[{"id":"s","name":"autre","license":"test"}],"entities":[]}"""
+        assertEquals(listOf(ValidationError.ConflictingSource("s")), errorsOf(fileWith(), other))
+    }
+
+    // --- JSON illisible ---
+
+    @Test
+    fun malformedJson_isReported() {
+        assertTrue(GeoCatalogLoader.load("{ pas du json") is LoadResult.Malformed)
+    }
+
+    @Test
+    fun unknownFeatureType_isReported() {
+        assertTrue(GeoCatalogLoader.load(fileWith(entity("CN-SC", type = "canton"))) is LoadResult.Malformed)
+    }
+
+    @Test
+    fun missingRequiredField_isReported() {
+        val text = fileWith("""{"id":"CN-SC","type":"province","parentId":"CN","sourceId":"s"}""")
+        assertTrue(GeoCatalogLoader.load(text) is LoadResult.Malformed)
+    }
+
+    // --- Identifiants, sources, schéma ---
+
+    @Test
+    fun validMinimalFile_hasNoErrors() {
+        assertValid(fileWith(entity("CN-SC")))
+    }
+
+    @Test
+    fun duplicateId_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-SC", pinyin = "Sichuan bis")))
+        assertEquals(listOf(ValidationError.DuplicateId("CN-SC")), errors)
+    }
+
+    @Test
+    fun unknownSource_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC", sourceId = "inconnue")))
+        assertEquals(listOf(ValidationError.UnknownSource("CN-SC", "inconnue")), errors)
+    }
+
+    @Test
+    fun unsupportedSchemaVersion_isRejected() {
+        assertEquals(listOf(ValidationError.UnsupportedSchema(2)), errorsOf(fileWith(schemaVersion = 2)))
+    }
+
+    // --- Parents ---
+
+    @Test
+    fun unknownParent_isRejected() {
+        assertEquals(listOf(ValidationError.UnknownParent("CN-SC", "XX")), errorsOf(fileWith(entity("CN-SC", parentId = "XX"))))
+    }
+
+    @Test
+    fun missingRequiredParent_isRejected() {
+        assertEquals(listOf(ValidationError.MissingParent("CN-SC")), errorsOf(fileWith(entity("CN-SC", parentId = null))))
+        val tributary = entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = null)
+        assertEquals(listOf(ValidationError.MissingParent("RV-A")), errorsOf(fileWith(tributary)))
+    }
+
+    @Test
+    fun provinceUnderProvince_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", pinyin = "Yunnan", parentId = "CN-SC")))
+        assertEquals(listOf(ValidationError.InvalidParent("CN-YN", "CN-SC")), errors)
+    }
+
+    @Test
+    fun countryWithParent_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN2", type = "country", pinyin = "Zhongguo", parentId = "CN")))
+        assertEquals(listOf(ValidationError.InvalidParent("CN2", "CN")), errors)
+    }
+
+    @Test
+    fun tributaryOfACity_isRejected() {
+        val errors = errorsOf(
+            fileWith(
+                entity("CN-SC"),
+                entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN-SC"),
+                entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = "CT-A"),
+            ),
+        )
+        assertEquals(listOf(ValidationError.InvalidParent("RV-A", "CT-A")), errors)
+    }
+
+    @Test
+    fun cityDirectlyUnderCountry_isRejected() {
+        val errors = errorsOf(fileWith(entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN")))
+        assertEquals(listOf(ValidationError.InvalidParent("CT-A", "CN")), errors)
+    }
+
+    @Test
+    fun peakWithoutRange_isAccepted() {
+        assertValid(fileWith(entity("PK-A", type = "peak", pinyin = "Tai Shan", parentId = null)))
+    }
+
+    @Test
+    fun selfParent_isRejected() {
+        val errors = errorsOf(fileWith(entity("RV-A", type = "tributary", pinyin = "Min Jiang", parentId = "RV-A")))
+        assertEquals(listOf(ValidationError.InvalidParent("RV-A", "RV-A")), errors)
+    }
+
+    // --- Grandes régions ---
+
+    @Test
+    fun regionWithoutMembers_isRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("RG-A", type = "region", pinyin = "Xinan")))
+        assertTrue(ValidationError.EmptyRegion("RG-A") in errors)
+    }
+
+    @Test
+    fun regionWithUnknownOrNonProvincialMember_isRejected() {
+        val errors = errorsOf(
+            fileWith(
+                entity("CN-SC"),
+                entity("CT-A", type = "city", pinyin = "Chengdu", parentId = "CN-SC"),
+                entity("RG-A", type = "region", pinyin = "Xinan", memberIds = listOf("CN-SC", "CN-XX", "CT-A")),
+            ),
+        )
+        assertEquals(
+            listOf(ValidationError.UnknownMember("RG-A", "CN-XX"), ValidationError.InvalidMember("RG-A", "CT-A")),
+            errors,
+        )
+    }
+
+    @Test
+    fun membersOnNonRegion_areRejected() {
+        val errors = errorsOf(fileWith(entity("CN-SC"), entity("CN-YN", pinyin = "Yunnan", memberIds = listOf("CN-SC"))))
+        assertEquals(listOf(ValidationError.UnexpectedMembers("CN-YN")), errors)
+    }
+
+    @Test
+    fun subRegionMemberOutsideParentRegion_isRejected() {
+        val errors = errorsOf(
+            fileWith(
+                entity("CN-HB", pinyin = "Hubei"),
+                entity("CN-GD", pinyin = "Guangdong"),
+                entity("RG-ZN", type = "region", pinyin = "Zhongnan", memberIds = listOf("CN-HB")),
+                entity("RG-HZ", type = "region", pinyin = "Huazhong", parentId = "RG-ZN", memberIds = listOf("CN-HB", "CN-GD")),
+            ),
+        )
+        assertTrue(ValidationError.MemberOutsideParentRegion("RG-HZ", "CN-GD") in errors)
+    }
+
+    @Test
+    fun provinceInNoRegionOrInTwoRegions_isRejected() {
+        val errors = errorsOf(
+            fileWith(
+                entity("CN-SC"),
+                entity("CN-YN", pinyin = "Yunnan"),
+                entity("CN-HB", pinyin = "Hubei"),
+                entity("RG-A", type = "region", pinyin = "Xinan", memberIds = listOf("CN-SC", "CN-YN")),
+                entity("RG-B", type = "region", pinyin = "Xibei", memberIds = listOf("CN-SC")),
+            ),
+        )
+        assertEquals(
+            listOf(ValidationError.RegionCoverage("CN-SC", 2), ValidationError.RegionCoverage("CN-HB", 0)),
+            errors,
+        )
+    }
+
+    // --- Noms en alphabet latin ---
+
+    @Test
+    fun chineseCharactersAsPinyin_areRejected() {
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "四川")), errorsOf(fileWith(entity("CN-SC", pinyin = "四川"))))
+    }
+
+    @Test
+    fun toneMarks_areRejected() {
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "Sìchuān")), errorsOf(fileWith(entity("CN-SC", pinyin = "Sìchuān"))))
+    }
+
+    @Test
+    fun blankName_isRejected() {
+        assertEquals(listOf(ValidationError.InvalidName("CN-SC", "  ")), errorsOf(fileWith(entity("CN-SC", pinyin = "  "))))
+    }
+
+    @Test
+    fun apostrophesSpacesAndHyphens_areAccepted() {
+        assertValid(
+            fileWith(
+                entity("A", pinyin = "Xi'an"),
+                entity("B", pinyin = "Nei Mongol"),
+                entity("C", pinyin = "Hong-Kong"),
+            ),
+        )
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "fixture",
+      "name": "Données de test écrites à la main",
+      "license": "Aucune (données de test, non redistribuées dans l'application)"
+    }
+  ],
+  "entities": [
+    {
+      "id": "CT-CHENGDU",
+      "type": "city",
+      "pinyin": "Chengdu",
+      "hanzi": "成都",
+      "parentId": "CN-SC",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "RV-CHANGJIANG",
+      "type": "major_river",
+      "pinyin": "Chang Jiang",
+      "aliases": ["Yangtze", "Yangzi Jiang", "Yangtse"],
+      "hanzi": "长江",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "RV-JIALINGJIANG",
+      "type": "tributary",
+      "pinyin": "Jialing Jiang",
+      "aliases": ["Jialing"],
+      "hanzi": "嘉陵江",
+      "parentId": "RV-CHANGJIANG",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "MT-HIMALAYA",
+      "type": "mountain_range",
+      "pinyin": "Ximalaya Shan",
+      "aliases": ["Himalaya", "Himalayas"],
+      "hanzi": "喜马拉雅山",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "PK-QOMOLANGMA",
+      "type": "peak",
+      "pinyin": "Zhumulangma Feng",
+      "aliases": ["Qomolangma", "Everest", "Mount Everest"],
+      "hanzi": "珠穆朗玛峰",
+      "parentId": "MT-HIMALAYA",
+      "sourceId": "fixture"
+    },
+    {
+      "id": "PK-TAISHAN",
+      "type": "peak",
+      "pinyin": "Tai Shan",
+      "aliases": ["Taishan", "Mount Tai"],
+      "hanzi": "泰山",
+      "sourceId": "fixture"
+    }
+  ]
+}

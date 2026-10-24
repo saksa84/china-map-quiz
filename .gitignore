@@ -1,0 +1,27 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Clés de signature et secrets : ne jamais versionner
+*.jks
+*.keystore
+keystore.properties
+
+# Notes personnelles, sans rapport avec l'application
+/liste_composant_pc.txt
+
+# APK/AAB générés hors du dossier build
+*.apk
+*.aab
