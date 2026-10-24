@@ -16,6 +16,8 @@ Adapte tes explications à ce niveau : ne m'explique pas les bases de la program
 - Nom de paquet (`applicationId`) : `io.github.saksa84.chinamapquiz`
 - Téléphone cible : **Google Pixel 8 Pro** (écran 6,7" 1344×2992, haute densité). C'est sur lui que l'APK sera installé et testé ; l'émulateur sert au développement quotidien.
 - Plan initial et décisions prises : `docs/plan-initial.md`
+- Plan en cours (version 1.1) : `docs/plan-v1.1.md`
+- Sources et licences : `docs/data-sources.md` ; compilation et installation : `docs/build.md`
 
 **Objectif principal : construire progressivement une application fonctionnelle, fiable, agréable à utiliser, installable sur mon téléphone Android sous forme d'APK et publiable sur Git.**
 
@@ -91,7 +93,7 @@ L'application est livrée en trois versions de contenu successives. Chaque versi
   - grands fleuves (Chang Jiang, Huang He, Zhu Jiang, Heilong Jiang…) ;
   - affluents importants, rattachés au fleuve dans lequel ils se jettent.
 - Montagnes, en deux catégories sélectionnables séparément :
-  - chaînes, représentées par une ligne de crête (Himalaya, Tian Shan, Kunlun, Qinling…) ;
+  - chaînes, représentées par une **zone touchable** (polygones Natural Earth, coupés à la frontière au dessin), comme dans les applications de référence (Himalaya, Tian Shan, Kunlun, Qinling…) ;
   - sommets, représentés par un point (Qomolangma/Everest, Tai Shan, Huang Shan…), rattachés à leur chaîne quand c'est pertinent.
 
 **Version 2 — Approfondissement**
@@ -144,7 +146,9 @@ Le pinyin sans tons sera la convention d'affichage par défaut.
 
 Exemples : Beijing, Shanghai, Guangdong, Sichuan, Chongqing, Urumqi.
 
-Exceptions : quand un nom francophone usuel est nettement plus connu que le pinyin, il devient le nom principal et le pinyin passe en alias. C'est le cas de Hong Kong (Xianggang), de Macao (Aomen) et des îles Paracel (Xisha Qundao). Toute nouvelle exception doit être ajoutée à cette liste.
+Exceptions : quand un nom francophone usuel est nettement plus connu que le pinyin, il devient le nom principal et le pinyin passe en alias. C'est le cas de Hong Kong (Xianggang), de Macao (Aomen), de Taipei (Taibei) et des îles Paracel (Xisha Qundao). Toute nouvelle exception doit être ajoutée à cette liste.
+
+**Noms connus en Europe (décision du 2026-10-24, à mettre en œuvre en v1.1)** : quand un lieu a un nom courant en français ou à l'international, on l'affiche avec le pinyin, sous la forme « Nom connu / pinyin ». Exemples : Everest / Zhumulangma Feng, K2 / Qiaogeli Feng, Yangtsé / Chang Jiang, Pékin / Beijing, Canton / Guangzhou. Le pinyin reste le nom de référence (`name`) ; le nom connu est un champ à part (`knownAs`), dans lequel les accents sont autorisés. Les deux sont acceptés dans le mode Saisir.
 
 ### Territoires disputés
 
@@ -216,7 +220,7 @@ Conçois le moteur de jeu indépendamment des écrans. Les différents modes doi
 
 Menu des modes : **Trouver** (Find), **Éliminer** (Eliminate), **Saisir** (Type) et **Contours** (reconnaître une région d'après sa silhouette). Aucun autre mode n'est prévu pour l'instant. Les modes pas encore développés apparaissent comme « bientôt disponibles ».
 
-Parcours : mode → niveau (zone × variante) → partie → résultat. Le style s'inspire librement des applications de quiz géographique, sans copie : tuiles sombres, chrono en haut, consigne et bouton en bas.
+Parcours : catégorie (Régions, Villes, Fleuves, Montagnes) → mode → niveau → partie → résultat. La progression est enregistrée séparément pour chaque catégorie. Le style s'inspire librement des applications de quiz géographique, sans copie : tuiles sombres, chrono en haut, consigne et bouton en bas.
 
 ### Niveaux (configuration `assets/game/levels.json`)
 
@@ -461,25 +465,29 @@ Ne supprime pas des fichiers, des données ou du travail existant sans m'expliqu
 
 Privilégie les solutions simples, lisibles et robustes.
 
-## 15. Première mission
+## 15. État du projet et mission en cours
 
-Pour commencer, ne développe pas encore toute l'application.
+**Version 1 terminée et validée sur le Pixel 8 Pro le 2026-10-24** (commit `37a4fe8`, 125 tests unitaires) :
+- 34 unités provinciales, grandes régions et îles Paracel ; 40 villes, 27 cours d'eau, 17 chaînes et 20 sommets ;
+- modes Apprendre, Trouver, Éliminer et Saisir pour chaque catégorie ; progression, records, révision des erreurs, paramètres.
 
-Effectue uniquement les tâches suivantes :
+Repères dans le code :
+- `data/` : modèle `GeoEntity`, chargement et validation, `AssetGeoRepository` ;
+- `map/` : géométrie (surfaces, lignes, points), projection, détection du toucher, zoom ;
+- `game/` : moteurs `QuizSession` et `EliminateSession`, niveaux, `AnswerChecker`, `GeoCategory` ;
+- `progress/` : progression et DataStore ;
+- `ui/` : `AppViewModel` (état et navigation), écrans, composant `ChinaMap` ;
+- `tools/` : scripts Python de génération des données (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`).
 
-1. Vérifie l'état du dossier du projet.
-2. Propose l'architecture initiale et explique les choix techniques.
-3. Identifie les décisions encore ouvertes, notamment la source de la carte, les licences, la couverture géographique et la convention des noms.
-4. Propose un plan de développement découpé en étapes courtes.
-5. Définis le périmètre d'une première version minimale fonctionnelle.
-6. Identifie les prérequis logiciels nécessaires sur mon ordinateur.
-7. Propose les premiers tests de validation.
-8. Présente les fichiers qui seront créés lors de la première étape d'implémentation.
+Commandes : voir `docs/build.md`. Avec PowerShell, définir d'abord `$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"`, puis `.\gradlew.bat testDebugUnitTest assembleDebug`. Pour essayer sur l'émulateur : `installDebug`, puis captures avec `adb exec-out screencap -p`.
 
-Ne commence pas à générer l'ensemble des fichiers tant que le plan initial n'a pas été présenté.
+**Mission en cours : version 1.1, « mieux retenir »** (détail dans `docs/plan-v1.1.md`) :
+- A : vérification des cours d'eau et longueur des fleuves ;
+- B : noms connus en Europe affichés « Nom connu / pinyin » ;
+- C : pinyin avec tons et bouton de prononciation (synthèse vocale Android en mandarin, qui lit les hanzi) ;
+- D : fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
+- E : fiche compacte de 4 à 5 lignes pendant les quiz.
 
-Le premier objectif concret sera une application Android qui se lance, affiche une carte provinciale interactive, permet de sélectionner une région et affiche son nom en pinyin.
-
-Une fois ce prototype validé, nous ajouterons progressivement les modes de jeu.
+Ensuite : version 2 (parcs, lacs, villes-préfectures) et mode Contours.
 
 **Règle générale : privilégie toujours une petite fonctionnalité terminée, testée et comprise à une grande quantité de code générée sans validation.**

@@ -9,6 +9,10 @@ Registre de toutes les données intégrées à l'application : provenance, versi
 | `natural-earth-5.1.2` | Contours des 34 unités provinciales et des îles Paracel | [Natural Earth](https://www.naturalearthdata.com/) 1:10m, version **v5.1.2** ([dépôt GeoJSON](https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson)) | Domaine public ([conditions](https://www.naturalearthdata.com/about/terms-of-use/)) | Facultative ; mention « Made with Natural Earth » dans l'écran À propos |
 | `manual-iso-3166-2-cn` | Identifiants, types, noms pinyin, alias, hanzi, capitales des 34 unités | Saisie manuelle d'après [ISO 3166-2:CN](https://www.iso.org/obp/ui/#iso:code:3166:CN) et les noms officiels | Faits non protégeables, saisis pour le projet | — |
 | `manual-regions` | Composition des 8 grandes régions | Découpage statistique du Bureau national des statistiques de Chine, Zhongnan subdivisée (voir [CLAUDE.md](../CLAUDE.md) section 4) | Faits non protégeables, saisis pour le projet | — |
+| `census-2020-urban` | Population urbaine des 38 villes de plus de 3 millions | Recensement chinois 2020, via [List of cities in China by population](https://en.wikipedia.org/wiki/List_of_cities_in_China_by_population) ; coordonnées Natural Earth `populated_places` (Zhongshan saisie à la main : 113,39° E, 22,52° N) | Faits ; Natural Earth domaine public | — |
+| `natural-earth-rivers` | Tracés de 12 grands fleuves et 15 affluents, coupés à la frontière avec une marge de 10 km | Natural Earth `rivers_lake_centerlines` v5.1.2 ; rattachements saisis pour le projet | Domaine public | — |
+| `natural-earth-mountains` | 17 zones de chaînes et 17 sommets avec altitude | Natural Earth `geography_regions_polys` et `geography_regions_elevation_points` v5.1.2 | Domaine public | — |
+| `manual-peaks` | Tai Shan, Huang Shan, Emei Shan (absents de Natural Earth) | Coordonnées et altitudes approximatives d'après les articles encyclopédiques | Faits | — |
 | `manual-disputes` | Statut des territoires disputés (pays revendicateurs) | Saisie manuelle d'après les sources encyclopédiques ([Paracel Islands](https://en.wikipedia.org/wiki/Paracel_Islands)) | Faits non protégeables, saisis pour le projet | — |
 
 Fichiers produits (`app/src/main/assets/geo/`) :
@@ -19,6 +23,8 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 | `regions.json` | Écrit à la main |
 | `islands.json` | Écrit à la main |
 | `map.geometry.json` | **Généré** par `tools/build_map_geometry.py`. Ne pas modifier à la main. |
+| `cities.json`, `rivers.json`, `mountains.json` | Écrits à la main |
+| `features.geometry.json` | **Généré** par `tools/build_features_geometry.py` : sélection des tronçons, villes et sommets, découpe à la frontière, vérification ville/province. Ne pas modifier à la main. |
 | `res/drawable/ic_launcher_foreground.xml` (icône) | **Généré** par `tools/build_icon.py` à partir de `map.geometry.json` |
 
 ## Sources évaluées et écartées
