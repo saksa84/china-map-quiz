@@ -28,7 +28,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 **Pour mieux retenir** (version 1.1)
 - Noms connus en Europe affichés avec le pinyin : Everest / Zhumulangma Feng, Pékin / Beijing, Canton / Guangzhou.
 - Pinyin avec tons (Sìchuān) et bouton 🔊 qui prononce le nom en mandarin grâce à la synthèse vocale du téléphone. Le nom demandé est aussi lu automatiquement dans Trouver et Éliminer (désactivable).
-- 178 fiches « mini-Wikipédia » (vérification avec sources en cours : [docs/verification-fiches.md](docs/verification-fiches.md)) : population, langues, histoire, économie, plat emblématique, anecdotes ; pour les lacs et les parcs, leurs légendes (le Serpent blanc de Xi Hu, le miroir brisé de Jiuzhaigou…) et des faits insolites.
+- 178 fiches « mini-Wikipédia » (toutes vérifiées avec des sources citées : [docs/verification-fiches.md](docs/verification-fiches.md)) : population, langues, histoire, économie, plat emblématique, anecdotes ; pour les lacs et les parcs, leurs légendes (le Serpent blanc de Xi Hu, le miroir brisé de Jiuzhaigou…) et des faits insolites.
 - Dans les quiz (version 1.2) : bouton 🔊 à côté de la consigne pour réentendre le nom demandé ; son de bonne et de mauvaise réponse (désactivable) ; fiche « En savoir plus » dépliable après chaque réponse dans Trouver et Saisir, chrono en pause pendant la lecture.
 - Résultats avec la liste des erreurs, « rejouer les erreurs », records et lieux les plus souvent manqués.
 
