@@ -201,7 +201,7 @@ Nouvelle recherche le 2026-10-25 pour les deux parcs nationaux en point : OSM n'
 
 ### Statuts (`designations` dans `parks.json`)
 
-On affiche le statut exact : seuls les 5 parcs créés en octobre 2021 sont des **parcs nationaux** ; les autres sont des sites du patrimoine mondial, des géoparcs mondiaux UNESCO, des réserves naturelles nationales ou des zones panoramiques nationales. Les années d'inscription au patrimoine mondial et de label géoparc viennent des listes de l'UNESCO ; elles ont été saisies de mémoire par Claude et **restent à vérifier**. Les zones panoramiques et les réserves n'ont pas d'année.
+On affiche le statut exact : seuls les 5 parcs créés en octobre 2021 sont des **parcs nationaux** ; les autres sont des sites du patrimoine mondial, des géoparcs mondiaux UNESCO, des réserves naturelles nationales ou des zones panoramiques nationales. Les années d'inscription au patrimoine mondial et de label géoparc ont été **vérifiées le 2026-10-25** dans la liste officielle de l'UNESCO et la liste des géoparcs (une correction : Zhangye, géoparc mondial en 2020 et non en 2019). Détail et sources : [verification-fiches.md](verification-fiches.md). Les zones panoramiques et les réserves n'ont pas d'année.
 
 ## Régénérer les données
 

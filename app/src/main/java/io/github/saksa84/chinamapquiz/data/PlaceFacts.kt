@@ -32,7 +32,10 @@ data class PlaceFacts(
     val legend: String? = null,
     /** Une ou deux anecdotes. */
     val anecdotes: List<String> = emptyList(),
-    /** Faux tant que la fiche n'a pas été relue : l'application affiche « à vérifier ». */
+    /**
+     * Vrai quand chaque phrase a été vérifiée avec une source citable (registre : docs/verification-fiches.md) ;
+     * faux sinon, et l'application affiche « à vérifier ».
+     */
     val reviewed: Boolean = false,
 ) {
     val texts: List<String> get() = listOfNotNull(overview, legend, languages, history, economy, dish, role, landmark) + anecdotes

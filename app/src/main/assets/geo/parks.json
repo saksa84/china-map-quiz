@@ -29,6 +29,6 @@
     { "id": "PA-DANXIA", "type": "park", "name": "Danxia Shan", "aliases": ["Danxiashan", "Mont Danxia", "Danxia"], "hanzi": "丹霞山", "pinyinTones": "Dānxiá Shān", "parentId": "CN-GD", "designations": [{ "type": "world_heritage", "year": 2010 }, { "type": "global_geopark", "year": 2004 }], "sourceId": "osm-parks" },
     { "id": "PA-LUSHAN", "type": "park", "name": "Lu Shan", "aliases": ["Lushan", "Mont Lu"], "hanzi": "庐山", "pinyinTones": "Lú Shān", "parentId": "CN-JX", "designations": [{ "type": "world_heritage", "year": 1996 }, { "type": "global_geopark", "year": 2004 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
     { "id": "PA-SANQINGSHAN", "type": "park", "name": "Sanqing Shan", "aliases": ["Sanqingshan", "Mont Sanqing"], "hanzi": "三清山", "pinyinTones": "Sānqīng Shān", "parentId": "CN-JX", "designations": [{ "type": "world_heritage", "year": 2008 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
-    { "id": "PA-ZHANGYE", "type": "park", "name": "Zhangye Danxia", "aliases": ["Zhangye", "Rainbow Mountains", "Montagnes arc-en-ciel"], "hanzi": "张掖丹霞", "pinyinTones": "Zhāngyè Dānxiá", "parentId": "CN-GS", "designations": [{ "type": "global_geopark", "year": 2019 }], "sourceId": "osm-parks" }
+    { "id": "PA-ZHANGYE", "type": "park", "name": "Zhangye Danxia", "aliases": ["Zhangye", "Rainbow Mountains", "Montagnes arc-en-ciel"], "hanzi": "张掖丹霞", "pinyinTones": "Zhāngyè Dānxiá", "parentId": "CN-GS", "designations": [{ "type": "global_geopark", "year": 2020 }], "sourceId": "osm-parks" }
   ]
 }
