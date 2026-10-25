@@ -51,6 +51,7 @@ object QuizColors {
 
     // Lieux posés sur le fond de carte (villes, cours d'eau, montagnes).
     val River = Color(0xFF5FB4FF)
+    val Lake = Color(0xFF4FA3E8)
     val Range = Color(0xFFB07A4F)
     val Point = Color.White
     val Border = Color.White

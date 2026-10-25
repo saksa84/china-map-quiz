@@ -382,6 +382,22 @@ class GeoCatalogLoaderTest {
     }
 
     @Test
+    fun lakeArea_isCheckedAndReservedToLakes() {
+        fun lake(area: String) = """{"id":"CN-A","type":"province","name":"Anhui","parentId":"CN","sourceId":"s"},{"id":"LK-A","type":"lake","name":"Chao Hu","parentId":"CN-A","areaKm2":$area,"sourceId":"s"}"""
+        val valid = (GeoCatalogLoader.load(fileWith(lake("775"))) as LoadResult.Success).catalog["LK-A"]!!
+        assertEquals(775.0, valid.areaKm2!!, 0.0)
+        assertEquals(listOf(ValidationError.InvalidArea("LK-A")), errorsOf(fileWith(lake("0"))))
+        val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","areaKm2":10,"sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidArea("IS-A")), errorsOf(fileWith(islands)))
+    }
+
+    @Test
+    fun lakeOutsideAProvince_isRejected() {
+        val lake = """{"id":"LK-A","type":"small_lake","name":"Xi Hu","sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.MissingParent("LK-A")), errorsOf(fileWith(lake)))
+    }
+
+    @Test
     fun lengthOnSomethingOtherThanARiver_isRejected() {
         val islands = """{"id":"IS-A","type":"island_group","name":"Iles Paracel","lengthKm":10,"sourceId":"s"}"""
         assertEquals(listOf(ValidationError.InvalidLength("IS-A")), errorsOf(fileWith(islands)))

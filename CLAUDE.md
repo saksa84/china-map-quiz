@@ -96,10 +96,10 @@ L'application est livrée en trois versions de contenu successives. Chaque versi
   - chaînes, représentées par une **zone touchable** (polygones Natural Earth, coupés à la frontière au dessin), comme dans les applications de référence (Himalaya, Tian Shan, Kunlun, Qinling…) ;
   - sommets, représentés par un point (Qomolangma/Everest, Tai Shan, Huang Shan…), rattachés à leur chaîne quand c'est pertinent.
 
-**Version 2 — Approfondissement**
-- Parcs.
-- Lacs.
-- Villes-préfectures.
+**Version 2 — Approfondissement** (plan et décisions : `docs/plan-v2.md`)
+- Parcs : les 5 parcs nationaux officiels (créés en 2021) et une quinzaine de sites naturels célèbres, avec leur statut exact affiché. Contours tirés d'**OpenStreetMap** (ODbL : attribution, fichier dérivé sous ODbL). Décision du 2026-10-25.
+- Lacs : une vingtaine de grands lacs en surface (Natural Earth `ne_10m_lakes`, domaine public), plus Xi Hu, Dian Chi et Erhai par un point. Bangong Co (ligne de contrôle Chine–Inde) écarté pour l'instant.
+- Villes-préfectures (après les lacs et les parcs).
 
 **Version 3 — Culture**
 - Spécialités culinaires par province.
@@ -480,9 +480,15 @@ Privilégie les solutions simples, lisibles et robustes.
 
 ## 15. État du projet et mission en cours
 
-### Version 1.2 en cours (2026-10-25) — retours après essai sur le Pixel
+### Version 2 en cours (2026-10-25) : lacs et parcs
 
-Codée, 143 tests unitaires, essayée sur l'émulateur puis dans Android Studio par l'utilisateur, **commitée** (`versionName = "1.2"`, `versionCode = 3`) ; pas encore poussée ni publiée en release. Détail des règles dans la section 7 (« Mode Eliminate » et « Son et fiches pendant les quiz ») :
+Version 1.2 poussée sur GitHub (`a93dded`). Plan, sources examinées et décisions dans `docs/plan-v2.md`.
+- **Étape A (lacs) faite, pas encore commitée** : `assets/geo/lakes.json` (24 lacs, types `lake`, `reservoir`, `small_lake`, champ `areaKm2`, parent = province), contours dans `features.geometry.json` (dictionnaire `LAKES` de `build_features_geometry.py`), catégorie `GeoCategory.LAKES`, niveaux `lakes-west` / `lakes-east` / `lakes-all`, 147 tests. Sources des superficies dans `docs/data-sources.md`. Les petits lacs sont des points de même taille que les lacs vus de loin (`ShapeStyle.largePoint = false`) pour ne pas donner d'indice. Pas encore de fiches « En savoir plus » pour les lacs (étape C).
+- Prochaine étape : B (parcs, contours OpenStreetMap).
+
+### Version 1.2 (2026-10-25) — retours après essai sur le Pixel
+
+Codée, 143 tests unitaires, essayée sur l'émulateur puis dans Android Studio par l'utilisateur, **commitée et poussée** (`versionName = "1.2"`, `versionCode = 3`) ; release GitHub pas encore créée. Détail des règles dans la section 7 (« Mode Eliminate » et « Son et fiches pendant les quiz ») :
 1. Bouton 🔊 pour réécouter la consigne (Trouver, Éliminer).
 2. Sons de bonne et de mauvaise réponse (`res/raw`, `tools/build_sounds.py`, `speech/AnswerSounds`, réglage `answerSounds`).
 3. Éliminer : une seule chance par lieu, avec sélection puis confirmation comme dans Trouver ; trouvé = effacé, manqué = reste ; à la fin il ne reste que les manqués.

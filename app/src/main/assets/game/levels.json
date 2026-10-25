@@ -107,6 +107,29 @@
           "PK-HUASHAN", "PK-HUANGSHAN", "PK-WUZHI", "PK-TAISHAN"
         ]
       }
+    ],
+    "lakes": [
+      {
+        "id": "lakes-west", "name": "Ouest et plateaux", "subtitle": "Tibet, Qinghai, Xinjiang",
+        "memberIds": [
+          "LK-QINGHAI", "LK-GYARING", "LK-NGORING", "LK-NAMCO", "LK-SILING", "LK-YAMZHO", "LK-MAPAM", "LK-BOSTEN", "LK-EBINUR"
+        ]
+      },
+      {
+        "id": "lakes-east", "name": "Est et Sud",
+        "memberIds": [
+          "LK-POYANG", "LK-DONGTING", "LK-TAIHU", "LK-HONGZE", "LK-CHAOHU", "LK-GAOYOU", "LK-WEISHAN", "LK-HONGHU",
+          "LK-HULUN", "LK-XINGKAI", "LK-DANJIANGKOU", "LK-QIANDAO", "LK-XIHU", "LK-DIANCHI", "LK-ERHAI"
+        ]
+      },
+      {
+        "id": "lakes-all", "name": "Tous les lacs",
+        "memberIds": [
+          "LK-QINGHAI", "LK-GYARING", "LK-NGORING", "LK-NAMCO", "LK-SILING", "LK-YAMZHO", "LK-MAPAM", "LK-BOSTEN", "LK-EBINUR",
+          "LK-POYANG", "LK-DONGTING", "LK-TAIHU", "LK-HONGZE", "LK-CHAOHU", "LK-GAOYOU", "LK-WEISHAN", "LK-HONGHU",
+          "LK-HULUN", "LK-XINGKAI", "LK-DANJIANGKOU", "LK-QIANDAO", "LK-XIHU", "LK-DIANCHI", "LK-ERHAI"
+        ]
+      }
     ]
   }
 }

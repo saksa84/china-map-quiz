@@ -50,6 +50,8 @@ import io.github.saksa84.chinamapquiz.map.MapViewport
  * @param emphasized lieu sélectionné ou montré en réponse : s'il est minuscule, un réticule l'entoure
  * @param tappable le lieu peut être touché (faux pour le fond de carte d'un quiz sur les fleuves, par exemple)
  * @param lineWidthDp épaisseur du trait d'un cours d'eau, constante à l'écran
+ * @param largePoint lieu ponctuel (ville, sommet) dessiné en gros point ; faux pour un petit lac, dessiné
+ *   comme les surfaces minuscules pour ne pas paraître plus grand que les grands lacs vus de loin
  */
 data class ShapeStyle(
     val fill: Color,
@@ -58,6 +60,7 @@ data class ShapeStyle(
     val emphasized: Boolean = false,
     val tappable: Boolean = true,
     val lineWidthDp: Float = 2f,
+    val largePoint: Boolean = true,
 )
 
 /**
@@ -256,7 +259,7 @@ fun ChinaMap(
             if (style.emphasized) drawReticle(center, reticleRadiusPx, reticleStrokePx)
         }
         for ((id, style, center) in tiny) {
-            val radius = if (geometry[id]?.kind == ShapeKind.POINT) pointRadiusPx else dotRadiusPx
+            val radius = if (geometry[id]?.kind == ShapeKind.POINT && style.largePoint) pointRadiusPx else dotRadiusPx
             drawCircle(style.fill, radius = radius, center = center)
             val (ringColor, ringWidth) = if (id == selectedId) selectedBorderColor to dotBorderPx * 2 else borderColor to dotBorderPx
             drawCircle(ringColor, radius = radius, center = center, style = Stroke(ringWidth))

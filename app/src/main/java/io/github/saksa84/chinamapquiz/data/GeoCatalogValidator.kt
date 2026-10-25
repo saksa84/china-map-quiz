@@ -43,6 +43,9 @@ sealed interface ValidationError {
 
     /** Longueur réservée aux cours d'eau, strictement positive, et partie chinoise au plus égale au total. */
     data class InvalidLength(val entityId: String) : ValidationError
+
+    /** Superficie réservée aux lacs, strictement positive. */
+    data class InvalidArea(val entityId: String) : ValidationError
 }
 
 object GeoCatalogValidator {
@@ -103,6 +106,9 @@ object GeoCatalogValidator {
                 if (!COUNTRY_CODE.matches(code)) errors += ValidationError.InvalidClaimant(entity.id, code)
             }
             if (!hasValidLength(entity)) errors += ValidationError.InvalidLength(entity.id)
+            entity.areaKm2?.let { area ->
+                if (entity.category != Category.LAKE || area <= 0) errors += ValidationError.InvalidArea(entity.id)
+            }
             errors += checkParent(entity, byId)
             errors += checkMembers(entity, byId)
         }

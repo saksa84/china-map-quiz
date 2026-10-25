@@ -28,7 +28,7 @@ class AssetGeoRepository(private val assets: AssetManager) {
     private fun read(name: String): String = assets.open("geo/$name").bufferedReader().use { it.readText() }
 
     companion object {
-        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json", "cities.json", "rivers.json", "mountains.json")
+        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json", "cities.json", "rivers.json", "mountains.json", "lakes.json")
         const val GEOMETRY_FILE = "map.geometry.json"
         /** Villes, cours d'eau et montagnes, dessinés par-dessus les provinces. */
         const val FEATURES_GEOMETRY_FILE = "features.geometry.json"

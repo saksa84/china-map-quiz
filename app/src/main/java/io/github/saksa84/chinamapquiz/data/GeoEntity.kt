@@ -27,7 +27,7 @@ enum class GeometryKind {
     /** Fleuves, lignes de crête. */
     LINE,
 
-    /** Villes, sommets. */
+    /** Villes, sommets, petits lacs. */
     POINT,
 
     /** Pas de tracé propre : union des membres (grandes régions). */
@@ -75,7 +75,15 @@ enum class FeatureType(
     /** Parent facultatif : la chaîne à laquelle il appartient. */
     @SerialName("peak") PEAK(Category.MOUNTAIN, GeometryKind.POINT, setOf(Category.MOUNTAIN), parentRequired = false),
 
-    @SerialName("lake") LAKE(Category.LAKE, GeometryKind.POLYGON),
+    /** Parent : la province où se trouve l'essentiel du lac (lac Khanka : Heilongjiang). */
+    @SerialName("lake") LAKE(Category.LAKE, GeometryKind.POLYGON, setOf(Category.PROVINCIAL)),
+
+    /** Lac de barrage (Danjiangkou, Qiandao Hu). */
+    @SerialName("reservoir") RESERVOIR(Category.LAKE, GeometryKind.POLYGON, setOf(Category.PROVINCIAL)),
+
+    /** Lac trop petit pour être dessiné à l'échelle de la carte (Xi Hu, Dian Chi) : représenté par un point. */
+    @SerialName("small_lake") SMALL_LAKE(Category.LAKE, GeometryKind.POINT, setOf(Category.PROVINCIAL)),
+
     @SerialName("park") PARK(Category.PARK, GeometryKind.POLYGON),
 
     /** Archipel hors des unités provinciales, sans parent pour ne pas trancher une souveraineté disputée. */
@@ -132,8 +140,10 @@ data class GeoEntity(
     val claimedBy: List<String> = emptyList(),
     /** Villes : population urbaine (voir la source pour l'année et la définition). */
     val population: Long? = null,
-    /** Sommets : altitude en mètres. */
+    /** Sommets et lacs : altitude en mètres. */
     val elevation: Int? = null,
+    /** Lacs : superficie en km² (variable selon la saison pour certains ; voir la source). */
+    val areaKm2: Double? = null,
     /** Cours d'eau : longueur totale en km, de la source principale à l'embouchure (voir la source). */
     val lengthKm: Int? = null,
     /** Cours d'eau transfrontaliers : longueur du tronçon en Chine, en km. */

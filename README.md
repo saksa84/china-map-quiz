@@ -15,6 +15,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 - 40 grandes villes (plus de 3 millions d'habitants au recensement de 2020, plus Hong Kong et Taipei).
 - 27 cours d'eau (12 grands fleuves, 15 affluents), avec leur longueur.
 - 17 chaînes de montagnes et 20 sommets, avec leur altitude.
+- 24 lacs (version 2, en cours) : 21 grands lacs et lacs de barrage dessinés en surface, et 3 petits lacs célèbres (Xi Hu, Dian Chi, Er Hai) par un point, avec leur superficie et leur altitude.
 
 **Modes de jeu**, pour chaque catégorie :
 - **Apprendre** : explorer la carte, toucher un lieu pour afficher sa fiche, avec une section « En savoir plus ».
@@ -41,7 +42,7 @@ Conséquences à connaître :
 - Les commits portent la mention `Co-Authored-By: Claude`.
 - Les **fiches « En savoir plus »** ont été rédigées par Claude à partir de ses connaissances générales, sans source consultée pour chaque phrase. Elles ont été relues, mais peuvent contenir des erreurs. L'application les signale par la mention « à vérifier ».
 - Les **données vérifiables** (frontières, coordonnées, populations, longueurs des fleuves) viennent de sources citées dans [docs/data-sources.md](docs/data-sources.md), et non de la mémoire de l'IA.
-- Les tests automatisés (143, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
+- Les tests automatisés (147, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
 
 ## Inspiration et crédits
 
@@ -81,7 +82,7 @@ Prérequis : Android Studio 2026.2 ou plus récent (il fournit le JDK utilisé p
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-.\gradlew.bat testDebugUnitTest   # 143 tests unitaires, sur le PC, sans émulateur
+.\gradlew.bat testDebugUnitTest   # 147 tests unitaires, sur le PC, sans émulateur
 .\gradlew.bat assembleDebug       # APK debug
 ```
 
@@ -89,13 +90,13 @@ APK généré : `app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Tests unitaires
 
-Les **143 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
+Les **147 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
 
 | Fichier | Tests | Ce qui est vérifié |
 |---|---:|---|
-| `data/GeoCatalogLoaderTest` | 42 | Lecture et validation des fichiers de données : identifiants uniques, hiérarchie (une province sous la Chine, un affluent sous un fleuve…), grandes régions, noms en alphabet latin, territoires disputés, longueurs, noms connus, pinyin avec tons. |
+| `data/GeoCatalogLoaderTest` | 44 | Lecture et validation des fichiers de données : identifiants uniques, hiérarchie (une province sous la Chine, un affluent sous un fleuve…), grandes régions, noms en alphabet latin, territoires disputés, longueurs, superficies des lacs, noms connus, pinyin avec tons. |
 | `data/RealAssetsTest` | 9 | Vraies données provinciales : 34 unités et leurs types, codes ISO, capitales, hanzi, découpage des grandes régions, îles Paracel neutres. |
-| `data/RealFeaturesTest` | 12 | Vraies villes, fleuves et montagnes : géométrie du bon type, villes dans leur province, fleuves sans trou, pinyin cohérent avec le nom, niveaux de jeu. |
+| `data/RealFeaturesTest` | 14 | Vraies villes, fleuves, montagnes et lacs : géométrie du bon type, villes et lacs dans leur province, fleuves sans trou, pinyin cohérent avec le nom, niveaux de jeu. |
 | `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » : validation, et une fiche complète pour chacun des 138 lieux. |
 | `game/AnswerCheckerTest` | 10 | Mode Saisir : normalisation (tons, accents, casse), alias acceptés, fautes refusées, Shanxi et Shaanxi jamais confondus. |
 | `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir : score, une seule réponse par question, fin de partie, chronomètre (et sa pause pendant la lecture d'une fiche), erreurs à rejouer. |

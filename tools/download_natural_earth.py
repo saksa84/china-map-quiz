@@ -23,6 +23,8 @@ FILES = {
     "ne_10m_rivers_lake_centerlines.geojson": "bb854a900ecbd3b408df46d5e16e3e0f974ba55993f9d8b5c26e855273c0905a",
     "ne_10m_geography_regions_polys.geojson": "b7b26e50ea917d3696aec87f932def2bf5f890f5770e441d59c162c6f4c92a77",
     "ne_10m_geography_regions_elevation_points.geojson": "f98a16867867146ec4146d6d4b18c823eeedb2825947de666116cf9a4e3f43cb",
+    # Version 2 : contours des lacs.
+    "ne_10m_lakes.geojson": "2d036f53dedec578001c5c30c2959ee7d4eebc1306900fa4367c49929ec8f2d9",
 }
 
 RAW_DIR = Path(__file__).resolve().parent / "raw"

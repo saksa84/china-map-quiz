@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "natural-earth-lakes",
+      "name": "Contours des lacs (lakes), Natural Earth 1:10m v5.1.2 ; superficies et altitudes : voir docs/data-sources.md",
+      "license": "Domaine public (Natural Earth)",
+      "url": "https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-lakes/",
+      "version": "5.1.2"
+    },
+    {
+      "id": "manual-lakes",
+      "name": "Petits lacs absents de Natural Earth : coordonnées, superficies et altitudes d'après Wikidata (consulté le 2026-10-25)",
+      "license": "Faits non protégeables ; Wikidata CC0",
+      "url": "https://www.wikidata.org/"
+    }
+  ],
+  "entities": [
+    { "id": "LK-QINGHAI", "type": "lake", "name": "Qinghai Hu", "aliases": ["Qinghai", "Lac Qinghai", "Koukou Nor", "Kokonor"], "hanzi": "青海湖", "pinyinTones": "Qīnghǎi Hú", "parentId": "CN-QH", "areaKm2": 4489, "elevation": 3260, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-POYANG", "type": "lake", "name": "Poyang Hu", "aliases": ["Poyang", "Lac Poyang"], "hanzi": "鄱阳湖", "pinyinTones": "Póyáng Hú", "parentId": "CN-JX", "areaKm2": 3283, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-DONGTING", "type": "lake", "name": "Dongting Hu", "aliases": ["Dongting", "Lac Dongting"], "hanzi": "洞庭湖", "pinyinTones": "Dòngtíng Hú", "parentId": "CN-HN", "areaKm2": 2820, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-TAIHU", "type": "lake", "name": "Tai Hu", "aliases": ["Taihu", "Lac Tai"], "hanzi": "太湖", "pinyinTones": "Tài Hú", "parentId": "CN-JS", "areaKm2": 2338, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-HONGZE", "type": "lake", "name": "Hongze Hu", "aliases": ["Hongze", "Lac Hongze"], "hanzi": "洪泽湖", "pinyinTones": "Hóngzé Hú", "parentId": "CN-JS", "areaKm2": 1960, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-CHAOHU", "type": "lake", "name": "Chao Hu", "aliases": ["Chaohu", "Lac Chao"], "hanzi": "巢湖", "pinyinTones": "Cháo Hú", "parentId": "CN-AH", "areaKm2": 775, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-GAOYOU", "type": "lake", "name": "Gaoyou Hu", "aliases": ["Gaoyou", "Lac Gaoyou"], "hanzi": "高邮湖", "pinyinTones": "Gāoyóu Hú", "parentId": "CN-JS", "areaKm2": 760.67, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-WEISHAN", "type": "lake", "name": "Weishan Hu", "aliases": ["Weishan", "Nansi Hu", "Lac Weishan"], "hanzi": "微山湖", "pinyinTones": "Wēishān Hú", "parentId": "CN-SD", "areaKm2": 1266, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-HONGHU", "type": "lake", "name": "Hong Hu", "aliases": ["Honghu", "Lac Hong"], "hanzi": "洪湖", "pinyinTones": "Hóng Hú", "parentId": "CN-HB", "areaKm2": 348.2, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-HULUN", "type": "lake", "name": "Hulun Hu", "aliases": ["Hulun", "Hulun Nur", "Hulun Nuur", "Dalai Hu", "Lac Hulun"], "hanzi": "呼伦湖", "pinyinTones": "Hūlún Hú", "parentId": "CN-NM", "areaKm2": 2399, "elevation": 545, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-XINGKAI", "type": "lake", "name": "Xingkai Hu", "knownAs": "Khanka", "aliases": ["Lac Khanka", "Xingkai"], "hanzi": "兴凯湖", "pinyinTones": "Xīngkǎi Hú", "parentId": "CN-HL", "areaKm2": 4190, "elevation": 69, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-NAMCO", "type": "lake", "name": "Namu Cuo", "knownAs": "Namtso", "aliases": ["Nam Co", "Nam Tso", "Namuco"], "hanzi": "纳木错", "pinyinTones": "Nàmù Cuò", "parentId": "CN-XZ", "areaKm2": 1920, "elevation": 4718, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-SILING", "type": "lake", "name": "Selin Cuo", "aliases": ["Siling Co", "Siling", "Selinco"], "hanzi": "色林错", "pinyinTones": "Sèlín Cuò", "parentId": "CN-XZ", "areaKm2": 2437.33, "elevation": 4544, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-YAMZHO", "type": "lake", "name": "Yangzhuoyong Cuo", "knownAs": "Yamdrok", "aliases": ["Yamzho Yumco", "Yamdrok Tso", "Yamdrok Yumtso", "Yangzhuoyongcuo"], "hanzi": "羊卓雍错", "pinyinTones": "Yángzhuóyōng Cuò", "parentId": "CN-XZ", "areaKm2": 638, "elevation": 4441, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-MAPAM", "type": "lake", "name": "Mapangyong Cuo", "knownAs": "Manasarovar", "aliases": ["Mapam Yumco", "Mapam Yumtso", "Manasarowar", "Mapangyongcuo"], "hanzi": "玛旁雍错", "pinyinTones": "Mǎpángyōng Cuò", "parentId": "CN-XZ", "areaKm2": 395, "elevation": 4588, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-GYARING", "type": "lake", "name": "Zhaling Hu", "aliases": ["Gyaring", "Gyaring Hu", "Gyaring Co", "Zhaling"], "hanzi": "扎陵湖", "pinyinTones": "Zhālíng Hú", "parentId": "CN-QH", "areaKm2": 526, "elevation": 4294, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-NGORING", "type": "lake", "name": "Eling Hu", "aliases": ["Ngoring", "Ngoring Hu", "Ngoring Co", "Eling"], "hanzi": "鄂陵湖", "pinyinTones": "Èlíng Hú", "parentId": "CN-QH", "areaKm2": 610, "elevation": 4272, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-BOSTEN", "type": "lake", "name": "Bositeng Hu", "aliases": ["Bosten", "Bosten Hu", "Lac Bosten", "Bosteng"], "hanzi": "博斯腾湖", "pinyinTones": "Bósīténg Hú", "parentId": "CN-XJ", "areaKm2": 1010, "elevation": 1048, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-EBINUR", "type": "lake", "name": "Aibi Hu", "aliases": ["Ebinur", "Ebinur Hu", "Ebi Nur", "Aibi"], "hanzi": "艾比湖", "pinyinTones": "Àibǐ Hú", "parentId": "CN-XJ", "areaKm2": 500, "elevation": 189, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-DANJIANGKOU", "type": "reservoir", "name": "Danjiangkou Shuiku", "aliases": ["Danjiangkou", "Reservoir de Danjiangkou"], "hanzi": "丹江口水库", "pinyinTones": "Dānjiāngkǒu Shuǐkù", "parentId": "CN-HB", "areaKm2": 1022.75, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-QIANDAO", "type": "reservoir", "name": "Qiandao Hu", "knownAs": "Lac des Mille Îles", "aliases": ["Qiandao", "Xin'anjiang Shuiku", "Lac des Mille Iles"], "hanzi": "千岛湖", "pinyinTones": "Qiāndǎo Hú", "parentId": "CN-ZJ", "areaKm2": 567.4, "sourceId": "natural-earth-lakes" },
+    { "id": "LK-XIHU", "type": "small_lake", "name": "Xi Hu", "knownAs": "Lac de l'Ouest", "aliases": ["Xihu", "West Lake", "Lac de l'Ouest"], "hanzi": "西湖", "pinyinTones": "Xī Hú", "parentId": "CN-ZJ", "areaKm2": 6.5, "elevation": 10, "sourceId": "manual-lakes" },
+    { "id": "LK-DIANCHI", "type": "small_lake", "name": "Dian Chi", "aliases": ["Dianchi", "Lac Dian", "Kunming Hu"], "hanzi": "滇池", "pinyinTones": "Diān Chí", "parentId": "CN-YN", "areaKm2": 297.9, "elevation": 1900, "sourceId": "manual-lakes" },
+    { "id": "LK-ERHAI", "type": "small_lake", "name": "Er Hai", "aliases": ["Erhai", "Lac Erhai"], "hanzi": "洱海", "pinyinTones": "Ěr Hǎi", "parentId": "CN-YN", "areaKm2": 252.91, "elevation": 1972, "sourceId": "manual-lakes" }
+  ]
+}

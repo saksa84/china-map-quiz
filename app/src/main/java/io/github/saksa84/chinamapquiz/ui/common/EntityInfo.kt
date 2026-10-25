@@ -105,6 +105,11 @@ fun EntityInfo(
                 val peaks = catalog.children(entity.id).map { it.shortName }
                 if (peaks.isNotEmpty()) Text(stringResource(R.string.info_peaks, peaks.joinToString(", ")), color = color)
             }
+            FeatureType.LAKE, FeatureType.RESERVOIR, FeatureType.SMALL_LAKE -> {
+                parent?.let { Text(stringResource(R.string.info_province, it.shortName), color = color) }
+                entity.areaKm2?.let { Text(stringResource(R.string.facts_area, areaText(it)), color = color) }
+                entity.elevation?.let { Text(stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)), color = color) }
+            }
             else -> Unit
         }
         if (entity.claimedBy.isNotEmpty()) {
@@ -167,6 +172,10 @@ private fun populationText(facts: PlaceFacts): String? {
     return stringResource(R.string.facts_population, millionsText(millions), year)
 }
 
+/** Superficie d'un lac : « 4 489 », « 6,5 » pour Xi Hu. */
+private fun areaText(km2: Double): String =
+    if (km2 < 100) String.format(Locale.FRENCH, "%.1f", km2) else String.format(Locale.FRENCH, "%,d", Math.round(km2))
+
 /** 83,7 ; 0,68 pour Macao (moins d'un million). */
 private fun millionsText(millions: Double): String =
     String.format(Locale.FRENCH, if (millions < 1) "%.2f" else "%.1f", millions)
@@ -207,6 +216,11 @@ fun CompactEntityInfo(
             FeatureType.PEAK -> listOfNotNull(
                 entity.elevation?.let { stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)) },
                 parent?.shortName,
+            )
+            FeatureType.LAKE, FeatureType.RESERVOIR, FeatureType.SMALL_LAKE -> listOfNotNull(
+                parent?.shortName,
+                entity.areaKm2?.let { stringResource(R.string.compact_area, areaText(it)) },
+                entity.elevation?.let { stringResource(R.string.compact_elevation, String.format(Locale.FRENCH, "%,d", it)) },
             )
             else -> listOfNotNull(
                 entity.capital?.let { stringResource(R.string.info_capital, it) },
@@ -259,5 +273,7 @@ private fun typeLabel(type: FeatureType): Int = when (type) {
     FeatureType.TRIBUTARY -> R.string.type_tributary
     FeatureType.MOUNTAIN_RANGE -> R.string.type_mountain_range
     FeatureType.PEAK -> R.string.type_peak
+    FeatureType.LAKE, FeatureType.SMALL_LAKE -> R.string.type_lake
+    FeatureType.RESERVOIR -> R.string.type_reservoir
     else -> R.string.type_other
 }

@@ -13,6 +13,8 @@ Registre de toutes les données intégrées à l'application : provenance, versi
 | `natural-earth-rivers` | Tracés de 12 grands fleuves et 15 affluents, coupés à la frontière avec une marge de 10 km | Natural Earth `rivers_lake_centerlines` v5.1.2 ; rattachements saisis pour le projet | Domaine public | — |
 | `natural-earth-mountains` | 17 zones de chaînes et 17 sommets avec altitude | Natural Earth `geography_regions_polys` et `geography_regions_elevation_points` v5.1.2 | Domaine public | — |
 | `manual-peaks` | Tai Shan, Huang Shan, Emei Shan (absents de Natural Earth) | Coordonnées et altitudes approximatives d'après les articles encyclopédiques | Faits | — |
+| `natural-earth-lakes` | Contours de 19 lacs et 2 lacs de barrage (version 2) | Natural Earth `lakes` v5.1.2 ; superficies et altitudes : voir « Lacs » plus bas | Domaine public | — |
+| `manual-lakes` | Xi Hu, Dian Chi, Er Hai, représentés par un point (absents de Natural Earth) | Coordonnées, superficies et altitudes de [Wikidata](https://www.wikidata.org/) (Q502371, Q83640, Q83628), consulté le 2026-10-25 | Faits ; Wikidata CC0 | — |
 | `facts.json` (pas de `sourceId`) | Fiches « En savoir plus » : population, superficie, langues, histoire, économie, plat, anecdotes | Rédigées par Claude à partir de connaissances générales (2026-10-24), **à relire** ; population : recensement chinois 2020 (Hong Kong et Macao 2021, Taïwan estimation 2023) | Texte original du projet | — |
 | `manual-disputes` | Statut des territoires disputés (pays revendicateurs) | Saisie manuelle d'après les sources encyclopédiques ([Paracel Islands](https://en.wikipedia.org/wiki/Paracel_Islands)) | Faits non protégeables, saisis pour le projet | — |
 
@@ -115,11 +117,53 @@ Les longueurs de fleuves dépendent de la source retenue pour le cours principal
 | RV-BEIJIANG | 468 | | 北江 (85546379) | |
 | RV-YONGDINGHE | 747 | | 永定河 (94719486) | Texte de l'article, avec le Sanggan |
 
+## Lacs (version 2)
+
+### Contours (`tools/build_features_geometry.py`, dictionnaire `LAKES`)
+
+Chaque lac est le contour Natural Earth `ne_10m_lakes` du même nom, simplifié à 0,5 km. Le **Dongting Hu** est en trois morceaux dans Natural Earth, dont un seul est nommé : les deux autres sont rattachés par un cadre géographique (`LAKE_EXTRA_PARTS`). Le **lac Khanka** (Xingkai Hu) est partagé avec la Russie : comme les chaînes de montagnes, il est coupé à la frontière au dessin, et seule sa partie chinoise est touchable. Le script vérifie que chaque lac tombe dans sa province (le réservoir de Danjiangkou, à cheval sur le Hubei et le Henan, est rattaché au Hubei, où se trouve le barrage).
+
+Les contours Natural Earth datent et ne suivent pas les saisons : le Poyang Hu y est à environ 2 100 km² (basses eaux), le Selin Cuo à 1 600 km² (il s'est agrandi depuis). Le **Weishan Hu** n'y est que le lac Weishan proprement dit, alors que sa superficie (1 266 km²) est celle des quatre lacs Nansi, souvent appelés ensemble « lac Weishan ».
+
+Écarté : Bangong Co, à cheval sur la ligne de contrôle Chine–Inde (territoire disputé).
+
+### Superficies et altitudes (`areaKm2`, `elevation` dans `lakes.json`)
+
+Règle, comme pour les cours d'eau : **Wikipédia en chinois** (infobox ou texte de l'article), consultée le 2026-10-25 ; à défaut, **Wikidata**. La superficie d'un lac varie avec les saisons et les années : la valeur est indicative.
+
+| Identifiant | Superficie (km²) | Altitude (m) | Source |
+|---|---:|---:|---|
+| LK-QINGHAI | 4 489 | 3 260 | zh 青海湖 (94928825), valeur 2007 |
+| LK-POYANG | 3 283 | | zh 鄱阳湖 (92186273), à la cote de 21,71 m à Hukou |
+| LK-DONGTING | 2 820 | | zh 洞庭湖 (88682529) |
+| LK-TAIHU | 2 338 | | zh 太湖 (94420285) |
+| LK-HONGZE | 1 960 | | Wikidata Q31845950 |
+| LK-CHAOHU | 775 | | zh 巢湖 (92747516), texte |
+| LK-GAOYOU | 760,67 | | zh 高邮湖 (79509755), texte |
+| LK-WEISHAN | 1 266 | | zh 微山湖 (94296175), les quatre lacs Nansi |
+| LK-HONGHU | 348,2 | | zh 洪湖 (84129158) |
+| LK-HULUN | 2 399 | 545 | Wikidata Q537374 ; altitude zh 呼伦湖 (94706863) |
+| LK-XINGKAI | 4 190 | 69 | Wikidata Q201843 (lac entier) ; altitude zh 兴凯湖 (92434621) |
+| LK-NAMCO | 1 920 | 4 718 | zh 纳木错 (94330020) |
+| LK-SILING | 2 437,33 | 4 544 | zh 色林错 (91956217), mesure 2021 |
+| LK-YAMZHO | 638 | 4 441 | zh 羊卓雍错 (93373038), texte |
+| LK-MAPAM | 395 | 4 588 | Wikidata Q233627 ; altitude zh 玛旁雍错 (95244181) |
+| LK-GYARING | 526 | 4 294 | zh 扎陵湖 (91955855), texte |
+| LK-NGORING | 610 | 4 272 | zh 鄂陵湖 (94425369), texte |
+| LK-BOSTEN | 1 010 | 1 048 | Wikidata Q611206 ; altitude zh 博斯腾湖 (94311353) |
+| LK-EBINUR | 500 | 189 | Wikidata Q31845317 ; altitude zh 艾比湖 (91620068) |
+| LK-DANJIANGKOU | 1 022,75 | | zh 丹江口水库 (94413291), après la surélévation du barrage |
+| LK-QIANDAO | 567,4 | | zh 千岛湖 (94705290) |
+| LK-XIHU | 6,5 | 10 | Wikidata Q502371 ; altitude zh 西湖 (94452475) |
+| LK-DIANCHI | 297,9 | 1 900 | Wikidata Q83640 |
+| LK-ERHAI | 252,91 | 1 972 | Wikidata Q83628 |
+
 ## Régénérer les données
 
 ```powershell
 python tools/download_natural_earth.py        # télécharge dans tools/raw/ et vérifie les SHA-256
 python tools/build_map_geometry.py            # écrit map.geometry.json et affiche un rapport
+python tools/build_features_geometry.py       # écrit features.geometry.json (villes, cours d'eau, montagnes, lacs)
 ```
 
 Empreintes SHA-256 attendues (v5.1.2) :
@@ -128,3 +172,6 @@ Empreintes SHA-256 attendues (v5.1.2) :
 |---|---|
 | `ne_10m_admin_0_countries.geojson` | `239eec57ac17f100a11e2536cffc56752c318b50ae765b0918ff7aab4ce8f255` |
 | `ne_10m_admin_1_states_provinces.geojson` | `22d0e3ad85eb3e27f17cabf8ba2d50e554fbc27a87796ff891d958185da62fb5` |
+| `ne_10m_lakes.geojson` (version 2) | `2d036f53dedec578001c5c30c2959ee7d4eebc1306900fa4367c49929ec8f2d9` |
+
+Les empreintes des autres fichiers (villes, cours d'eau, montagnes) sont dans `tools/download_natural_earth.py`.

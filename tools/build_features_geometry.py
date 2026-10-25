@@ -1,4 +1,4 @@
-"""Construit la géométrie des villes, cours d'eau et montagnes pour l'application.
+"""Construit la géométrie des villes, cours d'eau, montagnes et lacs pour l'application.
 
 Usage (depuis la racine du projet, après tools/download_natural_earth.py et tools/build_map_geometry.py) :
     python tools/build_features_geometry.py
@@ -8,8 +8,9 @@ Entrées :
     tools/raw/ne_10m_rivers_lake_centerlines.geojson     (tracés des cours d'eau)
     tools/raw/ne_10m_geography_regions_polys.geojson     (zones des chaînes de montagnes)
     tools/raw/ne_10m_geography_regions_elevation_points.geojson (sommets)
+    tools/raw/ne_10m_lakes.geojson                       (contours des lacs)
     app/src/main/assets/geo/map.geometry.json            (contours des provinces : « est-ce en Chine ? »)
-    app/src/main/assets/geo/{cities,rivers,mountains}.json (identifiants et rattachements attendus)
+    app/src/main/assets/geo/{cities,rivers,mountains,lakes}.json (identifiants et rattachements attendus)
 Sortie :
     app/src/main/assets/geo/features.geometry.json
 
@@ -38,6 +39,8 @@ OUT_FILE = ASSETS / "features.geometry.json"
 BORDER_BUFFER = 100
 RIVER_TOLERANCE = 8      # simplification des rivières : 0,8 km
 RANGE_TOLERANCE = 15     # simplification des zones de montagne : 1,5 km
+LAKE_TOLERANCE = 5       # simplification des lacs : 0,5 km (petits contours, à garder reconnaissables)
+LAKE_PROVINCE_SLACK = 150  # un petit lac ou le centre d'un lac allongé peut tomber près d'une limite provinciale
 CITY_PROVINCE_SLACK = 50 # une ville côtière peut tomber 5 km en mer après simplification du littoral
 
 # Lieux absents de Natural Earth : (longitude, latitude), d'après les articles encyclopédiques.
@@ -46,6 +49,10 @@ MANUAL_POINTS = {
     "PK-TAISHAN": (117.10, 36.25),
     "PK-HUANGSHAN": (118.16, 30.13),
     "PK-EMEI": (103.33, 29.52),
+    # Petits lacs, d'après Wikidata (P625) : Xi Hu Q502371, Dian Chi Q83640, Er Hai Q83628.
+    "LK-XIHU": (120.141, 30.238),
+    "LK-DIANCHI": (102.671, 24.801),
+    "LK-ERHAI": (100.188, 25.763),
 }
 
 # Villes : nom chinois dans Natural Earth (champ NAME_ZH).
@@ -117,6 +124,38 @@ PEAKS = {
     "PK-BOGDA": "Bogda Feng", "PK-YUSHAN": "Yu Shan", "PK-TAIBAI": "Taibai Shan", "PK-WUTAI": "Wutai Shan",
     "PK-CHANGBAI": "Paektu-san", "PK-HUASHAN": "Hua Shan", "PK-WUZHI": "Wuzhi Shan",
 }
+
+
+# Lacs : nom Natural Earth (champ name) des contours de ne_10m_lakes.
+LAKES = {
+    "LK-QINGHAI": "Qinghai Hu", "LK-POYANG": "Poyang Hu", "LK-DONGTING": "Dongting Hu", "LK-TAIHU": "Tai Hu",
+    "LK-HONGZE": "Hongze Hu", "LK-CHAOHU": "Chao Hu", "LK-GAOYOU": "Gaoyou Hu", "LK-WEISHAN": "Weishan Hu",
+    "LK-HONGHU": "Hong Hu", "LK-HULUN": "Hulun Nuur", "LK-XINGKAI": "Lake Khanka", "LK-NAMCO": "Nam Co",
+    "LK-SILING": "Siling Co", "LK-YAMZHO": "Yamzho Yumco", "LK-MAPAM": "Mapam Yumco", "LK-GYARING": "Gyaring Hu",
+    "LK-NGORING": "Ngoring Hu", "LK-BOSTEN": "Bosten Hu", "LK-EBINUR": "Ebinur Hu",
+    "LK-DANJIANGKOU": "Danjiangkou Shuiku", "LK-QIANDAO": "Xinanjiang Shuiku",
+}
+
+# Parties sans nom dans Natural Earth à rattacher à un lac : cadre [lon min, lon max, lat min, lat max].
+# Le Dongting Hu y est en trois morceaux : seul le Dongting oriental porte un nom.
+LAKE_EXTRA_PARTS = {
+    "LK-DONGTING": (112.0, 113.2, 28.7, 29.6),
+}
+
+
+def polygons_of(geometry, tolerance):
+    """Polygones GeoJSON -> anneaux simplifiés en unités de carte (anneaux trop petits supprimés)."""
+    polys = [geometry["coordinates"]] if geometry["type"] == "Polygon" else geometry["coordinates"]
+    polygons = []
+    for poly in polys:
+        rings = []
+        for ring in poly:
+            pts = douglas_peucker([to_units(lon, lat) for lon, lat in ring], tolerance)
+            if len(pts) >= 4:
+                rings.append(pts[:-1] if pts[0] == pts[-1] else pts)
+        if rings:
+            polygons.append(rings)
+    return polygons
 
 
 def load(path):
@@ -225,7 +264,7 @@ def line_label(runs):
 def main() -> int:
     geometry = load(ASSETS / "map.geometry.json")
     china = China(geometry)
-    meta = {e["id"]: e for name in ("cities", "rivers", "mountains") for e in load(ASSETS / f"{name}.json")["entities"]}
+    meta = {e["id"]: e for name in ("cities", "rivers", "mountains", "lakes") for e in load(ASSETS / f"{name}.json")["entities"]}
     errors = []
     out = []
 
@@ -267,18 +306,7 @@ def main() -> int:
         if f is None:
             errors.append(f"{mid} : zone {ne_name} introuvable")
             continue
-        g = f["geometry"]
-        polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
-        polygons = []
-        for poly in polys:
-            rings = []
-            for ring in poly:
-                pts = douglas_peucker([to_units(lon, lat) for lon, lat in ring], RANGE_TOLERANCE)
-                if len(pts) >= 4:
-                    rings.append(pts[:-1] if pts[0] == pts[-1] else pts)
-            if rings:
-                polygons.append(rings)
-        out.append((mid, "polygon", polygons))
+        out.append((mid, "polygon", polygons_of(f["geometry"], RANGE_TOLERANCE)))
 
     elevation = load(RAW / "ne_10m_geography_regions_elevation_points.geojson")["features"]
     for pid, ne_name in PEAKS.items():
@@ -288,6 +316,34 @@ def main() -> int:
             continue
         lon, lat = f["geometry"]["coordinates"][:2]
         out.append((pid, "point", to_units(lon, lat)))
+
+    # --- Lacs -------------------------------------------------------------------------------
+    lakes = load(RAW / "ne_10m_lakes.geojson")["features"]
+    for lid, ne_name in LAKES.items():
+        matches = [f for f in lakes if f["properties"].get("name") == ne_name]
+        if len(matches) != 1:
+            errors.append(f"{lid} : {len(matches)} contour(s) {ne_name}")
+            continue
+        polygons = polygons_of(matches[0]["geometry"], LAKE_TOLERANCE)
+        box = LAKE_EXTRA_PARTS.get(lid)
+        if box:
+            for f in lakes:
+                ring = (f["geometry"]["coordinates"][0] if f["geometry"]["type"] == "Polygon"
+                        else f["geometry"]["coordinates"][0][0])
+                if not f["properties"].get("name") and centroid_in(ring, box):
+                    polygons += polygons_of(f["geometry"], LAKE_TOLERANCE)
+        out.append((lid, "polygon", polygons))
+        # Le lac est dans sa province : on teste son point d'étiquette (lac Khanka : partie chinoise).
+        x, y = label_point(polygons)[:2]
+        found = china.province_of(x, y)
+        if found != meta[lid]["parentId"] and china.distance_to_border(x, y) > LAKE_PROVINCE_SLACK:
+            errors.append(f"{lid} : centre dans {found}, attendu {meta[lid]['parentId']}")
+    for lid in [i for i in meta if i.startswith("LK-") and i not in LAKES]:
+        point = next((g for i, k, g in out if i == lid), None)
+        if point is None:
+            errors.append(f"{lid} : ni contour ni point")
+        elif china.province_of(*point) != meta[lid]["parentId"]:
+            errors.append(f"{lid} : dans {china.province_of(*point)}, attendu {meta[lid]['parentId']}")
 
     # --- Contrôles ----------------------------------------------------------------------
     ids = [i for i, _, _ in out]

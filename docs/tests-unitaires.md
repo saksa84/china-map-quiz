@@ -1,6 +1,6 @@
 # Tests unitaires de China Map Quiz
 
-Version 1.2 — 143 tests dans 14 fichiers.
+Version 2 (en cours) — 147 tests dans 14 fichiers.
 
 Ce document décrit chaque test unitaire de l'application : ce qu'il vérifie et pourquoi. Comme tout le projet, les tests et ce document ont été écrits par Claude Code (Anthropic), une IA générative, à la demande de l'auteur du projet.
 
@@ -29,9 +29,9 @@ Le rapport détaillé s'ouvre ensuite dans un navigateur : `app/build/reports/te
 
 | Fichier | Tests | Domaine |
 |---|---:|---|
-| `data/GeoCatalogLoaderTest` | 42 | Lecture et validation des fichiers de lieux |
+| `data/GeoCatalogLoaderTest` | 44 | Lecture et validation des fichiers de lieux |
 | `data/RealAssetsTest` | 9 | Vraies données : unités provinciales, régions, îles |
-| `data/RealFeaturesTest` | 12 | Vraies données : villes, cours d'eau, montagnes |
+| `data/RealFeaturesTest` | 14 | Vraies données : villes, cours d'eau, montagnes, lacs |
 | `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » |
 | `game/AnswerCheckerTest` | 10 | Validation des réponses tapées (mode Saisir) |
 | `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir |
@@ -43,9 +43,9 @@ Le rapport détaillé s'ouvre ensuite dans un navigateur : `app/build/reports/te
 | `map/RealMapTest` | 7 | Vraie carte et vraies coordonnées GPS |
 | `progress/ProgressTest` | 9 | Records, erreurs fréquentes, sauvegarde |
 | `ExampleUnitTest` | 1 | Exemple du modèle Android Studio |
-| **Total** | **143** | |
+| **Total** | **147** | |
 
-## data/GeoCatalogLoaderTest — lecture et validation des données (42 tests)
+## data/GeoCatalogLoaderTest — lecture et validation des données (44 tests)
 
 Le chargeur (`GeoCatalogLoader`) lit les fichiers JSON des lieux et les valide ensemble avant que l'application ne s'en serve. Chaque règle de validation a au moins un test qui la fait échouer volontairement, pour vérifier que l'erreur est bien détectée et bien nommée. Les premiers tests utilisent de petits fichiers d'exemple (« fixtures ») placés dans `app/src/test/resources/geo`.
 
@@ -93,6 +93,8 @@ Le chargeur (`GeoCatalogLoader`) lit les fichiers JSON des lieux et les valide e
 | `knownAsThatRepeatsTheNameOrUsesHanzi_isRejected` | Un nom connu qui répète le pinyin aux accents près (Taïwan / Taiwan), en hanzi, ou vide, est refusé. |
 | `pinyinTonesInHanzi_isRejected` | Le champ « pinyin avec tons » ne peut pas contenir de caractères chinois. |
 | `lengthOnSomethingOtherThanARiver_isRejected` | Une longueur n'a de sens que pour un cours d'eau. |
+| `lakeArea_isCheckedAndReservedToLakes` | La superficie d'un lac est lue ; une superficie nulle, ou donnée à autre chose qu'un lac, est refusée. |
+| `lakeOutsideAProvince_isRejected` | Un lac doit être rattaché à une unité provinciale. |
 
 ## data/RealAssetsTest — vraies unités provinciales, régions et îles (9 tests)
 
@@ -110,13 +112,13 @@ Ces tests lisent les vrais fichiers `provinces.json`, `regions.json`, `islands.j
 | `onlyDisputedTerritoriesHaveClaimants` | Seules les îles Paracel portent une mention « revendiqué par ». |
 | `geometryCoversExactlyTheMapEntities` | Le fichier de carte contient exactement un tracé non vide par unité provinciale et pour les îles, sans doublon ni oubli. |
 
-## data/RealFeaturesTest — vraies villes, cours d'eau et montagnes (12 tests)
+## data/RealFeaturesTest — vraies villes, cours d'eau, montagnes et lacs (14 tests)
 
 Ces tests chargent toutes les données livrées, comme le fait l'application au démarrage, avec les tracés de `features.geometry.json` et la configuration des niveaux.
 
 | Test | Ce qu'il vérifie |
 |---|---|
-| `everyFeatureHasGeometryOfTheRightKind` | Chaque ville est un point, chaque cours d'eau une ligne, chaque chaîne une surface et chaque sommet un point ; tous sont dessinés par-dessus les provinces. |
+| `everyFeatureHasGeometryOfTheRightKind` | Chaque ville est un point, chaque cours d'eau une ligne, chaque chaîne une surface, chaque sommet un point ; chaque lac une surface, sauf les petits lacs (points) ; tous sont dessinés par-dessus les provinces. |
 | `atLeast30CitiesWithPopulationAndAProvince` | Au moins 30 villes (exigence du cahier des charges), toutes de plus de 3 millions d'habitants et rattachées à une unité provinciale. |
 | `citiesFallInTheirProvinceOnTheMap` | Le point de chaque ville tombe bien dans sa province sur la carte, avec 5 km de tolérance pour les villes côtières. |
 | `tributariesFlowIntoAnotherRiver` | Chaque affluent se jette dans un cours d'eau ; le Dadu He se jette dans le Min Jiang. |
@@ -124,10 +126,12 @@ Ces tests chargent toutes les données livrées, comme le fait l'application au 
 | `riverSectionsLeaveNoGap` | Les tronçons d'un même cours d'eau se touchent (écart de moins de 30 km) : ce test aurait détecté le tronçon manquant du Zhu Jiang, corrigé avant la version 1.1. |
 | `pinyinTonesMatchTheName` | Le pinyin avec tons, une fois les accents retirés, redonne le nom ou un alias, ce qui repère une faute de frappe dans les tons. Exceptions documentées : Shaanxi (Shǎnxī) et Yarlung Zangbo. |
 | `peaksHaveAnElevation_andEverestIsTheHighest` | Chaque sommet a une altitude, et l'Everest est le plus haut. |
-| `levelsOfEachCategoryHaveTheExpectedSizes` | Les niveaux des villes (15, 38, 40), des fleuves (12, 15, 27) et des montagnes (17, 20, 37) ont la taille prévue. |
+| `levelsOfEachCategoryHaveTheExpectedSizes` | Les niveaux des villes (15, 38, 40), des fleuves (12, 15, 27), des montagnes (17, 20, 37) et des lacs (9, 15, 24) ont la taille prévue. |
+| `lakesHaveAnAreaAndAProvince_andQinghaiIsTheLargestInChina` | Au moins 20 lacs, chacun avec sa superficie et sa province ; le lac Qinghai est le plus grand lac entièrement chinois (le lac Khanka, plus grand, est partagé avec la Russie) ; le plus haut dépasse 4 500 m. |
+| `lakesAreDrawnInTheirProvince` | Chaque lac est dessiné dans sa province (15 km de tolérance), sauf le réservoir de Danjiangkou, à cheval sur le Hubei et le Henan. |
 | `levelsOnlyContainPlacesOfTheirCategory` | Un niveau « Fleuves » ne pose que des questions sur des fleuves, et ainsi de suite. |
-| `realCoordinatesHitTheRightFeature` | Un toucher aux vraies coordonnées de Wuhan trouve le Yangtsé, à Lanzhou le fleuve Jaune ; sur l'Everest, le sommet l'emporte sur la chaîne ; en pleine mer, aucun cours d'eau. |
-| `typedNamesAreAcceptedForFeatures` | Le mode Saisir accepte « Yangtze », « fleuve jaune », « Everest », « Canton », « Mékong » ou « mekong » ; l'affichage donne « Everest / Zhumulangma Feng ». |
+| `realCoordinatesHitTheRightFeature` | Un toucher aux vraies coordonnées de Wuhan trouve le Yangtsé, à Lanzhou le fleuve Jaune ; sur l'Everest, le sommet l'emporte sur la chaîne ; au milieu du lac Qinghai, de Xi Hu ou du côté chinois du lac Khanka, le bon lac ; en pleine mer, aucun cours d'eau. |
+| `typedNamesAreAcceptedForFeatures` | Le mode Saisir accepte « Yangtze », « fleuve jaune », « Everest », « Canton », « Mékong » ou « mekong », « Nam Co » et « lac des mille iles » ; l'affichage donne « Everest / Zhumulangma Feng » et « Namtso / Namu Cuo ». |
 
 ## data/PlaceFactsTest — fiches « En savoir plus » (5 tests)
 

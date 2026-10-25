@@ -15,7 +15,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
-/** Villes, cours d'eau et montagnes : vraies données livrées, chargées comme dans l'application. */
+/** Villes, cours d'eau, montagnes et lacs : vraies données livrées, chargées comme dans l'application. */
 class RealFeaturesTest {
 
     private companion object {
@@ -32,10 +32,11 @@ class RealFeaturesTest {
     @Test
     fun everyFeatureHasGeometryOfTheRightKind() {
         val expected = mapOf(Category.CITY to ShapeKind.POINT, Category.RIVER to ShapeKind.LINE)
-        for (entity in catalog.inCategory(Category.CITY) + catalog.inCategory(Category.RIVER) + catalog.inCategory(Category.MOUNTAIN)) {
+        val features = listOf(Category.CITY, Category.RIVER, Category.MOUNTAIN, Category.LAKE).flatMap { catalog.inCategory(it) }
+        for (entity in features) {
             val shape = geometry[entity.id]
             assertTrue("${entity.id} sans géométrie", shape != null)
-            val kind = expected[entity.category] ?: if (entity.type == FeatureType.PEAK) ShapeKind.POINT else ShapeKind.POLYGON
+            val kind = expected[entity.category] ?: if (entity.type in setOf(FeatureType.PEAK, FeatureType.SMALL_LAKE)) ShapeKind.POINT else ShapeKind.POLYGON
             assertEquals(entity.id, kind, shape!!.kind)
             assertTrue(entity.id, shape.overlay)
         }
@@ -144,7 +145,31 @@ class RealFeaturesTest {
         assertEquals(mapOf("cities-top15" to 15, "cities-mainland" to 38, "cities-complete" to 40), sizes[GeoCategory.CITIES])
         assertEquals(mapOf("rivers-major" to 12, "rivers-tributaries" to 15, "rivers-all" to 27), sizes[GeoCategory.RIVERS])
         assertEquals(mapOf("mountains-ranges" to 17, "mountains-peaks" to 20, "mountains-all" to 37), sizes[GeoCategory.MOUNTAINS])
+        assertEquals(mapOf("lakes-west" to 9, "lakes-east" to 15, "lakes-all" to 24), sizes[GeoCategory.LAKES])
         assertEquals(5, sizes[GeoCategory.REGIONS]!!.size)
+    }
+
+    @Test
+    fun lakesHaveAnAreaAndAProvince_andQinghaiIsTheLargestInChina() {
+        val lakes = catalog.inCategory(Category.LAKE)
+        assertTrue("Au moins 20 lacs", lakes.size >= 20)
+        lakes.forEach {
+            assertTrue("${it.id} : superficie", it.areaKm2 != null)
+            assertEquals(it.id, Category.PROVINCIAL, catalog[it.parentId!!]!!.category)
+        }
+        // Le lac Khanka est plus étendu (4 190 km²) mais partagé avec la Russie.
+        assertEquals("LK-QINGHAI", lakes.filter { it.id != "LK-XINGKAI" }.maxByOrNull { it.areaKm2!! }!!.id)
+        assertEquals("Le plus haut : Mapam ou Namtso, au-dessus de 4 500 m", true, lakes.maxOf { it.elevation ?: 0 } > 4_500)
+    }
+
+    @Test
+    fun lakesAreDrawnInTheirProvince() {
+        val provinces = HitTester(geometry.shapes.filter { !it.overlay })
+        // Le réservoir de Danjiangkou est à cheval sur le Hubei (barrage) et le Henan, où tombe le centre de son contour.
+        catalog.inCategory(Category.LAKE).filter { it.id != "LK-DANJIANGKOU" }.forEach { lake ->
+            // Point du lac, ou point d'étiquette de son contour (partie chinoise pour le lac Khanka).
+            assertEquals(lake.id, lake.parentId, provinces.hit(geometry[lake.id]!!.label, tolerance = 150f))
+        }
     }
 
     @Test
@@ -169,6 +194,10 @@ class RealFeaturesTest {
         // À 50 km de là, c'est la chaîne.
         assertEquals("MT-HIMALAYA", at(86.4, 28.1) { it.startsWith("PK-") || it.startsWith("MT-") })
         assertEquals("MT-QINLING", at(108.5, 33.9) { it.startsWith("MT-") })
+        // Lacs : le centre du lac Qinghai, l'île de Xi Hu à Hangzhou, et le côté chinois du lac Khanka.
+        assertEquals("LK-QINGHAI", at(100.2, 36.9) { it.startsWith("LK-") })
+        assertEquals("LK-XIHU", at(120.14, 30.24) { it.startsWith("LK-") })
+        assertEquals("LK-XINGKAI", at(132.5, 45.3) { it.startsWith("LK-") })
         assertNull(at(130.0, 20.0) { it.startsWith("RV-") })
     }
 
@@ -182,6 +211,9 @@ class RealFeaturesTest {
         assertTrue(checker.isCorrect("CT-XIAN", "Xian"))
         assertTrue(checker.isCorrect("CT-GUANGZHOU", "Canton"))
         assertTrue(checker.isCorrect("MT-DAXINGANLING", "Grand Khingan"))
+        assertTrue(checker.isCorrect("LK-NAMCO", "Nam Co"))
+        assertTrue(checker.isCorrect("LK-QIANDAO", "lac des mille iles"))
+        assertEquals("Namtso / Namu Cuo", catalog["LK-NAMCO"]!!.displayName)
         // Noms connus (étape B de la v1.1) : acceptés avec ou sans accents.
         assertTrue(checker.isCorrect("RV-LANCANGJIANG", "Mékong"))
         assertTrue(checker.isCorrect("RV-LANCANGJIANG", "mekong"))

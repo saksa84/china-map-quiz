@@ -111,6 +111,10 @@
     <string name="type_tributary">Affluent</string>
     <string name="type_mountain_range">Chaîne de montagnes</string>
     <string name="type_peak">Sommet</string>
+    <string name="type_lake">Lac</string>
+    <string name="type_reservoir">Lac de barrage</string>
+    <string name="compact_area">%1$s km²</string>
+    <string name="compact_elevation">%1$s m d\'altitude</string>
     <string name="info_province">Province : %1$s</string>
     <string name="info_province_capital">Capitale de la province : %1$s</string>
     <string name="info_population">Population urbaine : %1$s millions (2020)</string>
@@ -147,9 +151,12 @@
     <string name="category_rivers_sub">Fleuves et affluents</string>
     <string name="category_mountains">Montagnes</string>
     <string name="category_mountains_sub">Chaînes et sommets</string>
+    <string name="category_lakes">Lacs</string>
+    <string name="category_lakes_sub">Grands lacs et réservoirs</string>
     <string name="learn_title_category">Apprendre : %1$s</string>
     <string name="learn_hint_cities">Touchez une ville pour afficher sa fiche.\nPincez pour zoomer : les villes proches se séparent.</string>
     <string name="learn_hint_rivers">Touchez un cours d\'eau pour afficher sa fiche.\nLes grands fleuves sont plus épais que les affluents.</string>
+    <string name="learn_hint_lakes">Touchez un lac pour afficher sa fiche.\nLes plus petits (Xi Hu, Dian Chi, Er Hai) sont des points.</string>
     <string name="learn_hint_mountains">Touchez une chaîne (zone) ou un sommet (point) pour afficher sa fiche.</string>
     <string name="type_region">Grande région</string>
     <string name="info_members">Provinces : %1$s</string>
