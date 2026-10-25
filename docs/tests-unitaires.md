@@ -1,6 +1,6 @@
 # Tests unitaires de China Map Quiz
 
-Version 2 (en cours) — 151 tests dans 14 fichiers.
+Version 2 (en cours) — 152 tests dans 14 fichiers.
 
 Ce document décrit chaque test unitaire de l'application : ce qu'il vérifie et pourquoi. Comme tout le projet, les tests et ce document ont été écrits par Claude Code (Anthropic), une IA générative, à la demande de l'auteur du projet.
 
@@ -32,7 +32,7 @@ Le rapport détaillé s'ouvre ensuite dans un navigateur : `app/build/reports/te
 | `data/GeoCatalogLoaderTest` | 45 | Lecture et validation des fichiers de lieux |
 | `data/RealAssetsTest` | 9 | Vraies données : unités provinciales, régions, îles |
 | `data/RealFeaturesTest` | 16 | Vraies données : villes, cours d'eau, montagnes, lacs, parcs |
-| `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » |
+| `data/PlaceFactsTest` | 6 | Fiches « En savoir plus » |
 | `game/AnswerCheckerTest` | 10 | Validation des réponses tapées (mode Saisir) |
 | `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir |
 | `game/EliminateSessionTest` | 7 | Moteur du mode Éliminer |
@@ -43,7 +43,7 @@ Le rapport détaillé s'ouvre ensuite dans un navigateur : `app/build/reports/te
 | `map/RealMapTest` | 7 | Vraie carte et vraies coordonnées GPS |
 | `progress/ProgressTest` | 9 | Records, erreurs fréquentes, sauvegarde |
 | `ExampleUnitTest` | 1 | Exemple du modèle Android Studio |
-| **Total** | **151** | |
+| **Total** | **152** | |
 
 ## data/GeoCatalogLoaderTest — lecture et validation des données (45 tests)
 
@@ -136,7 +136,7 @@ Ces tests chargent toutes les données livrées, comme le fait l'application au 
 | `realCoordinatesHitTheRightFeature` | Un toucher aux vraies coordonnées de Wuhan trouve le Yangtsé, à Lanzhou le fleuve Jaune ; sur l'Everest, le sommet l'emporte sur la chaîne ; au milieu du lac Qinghai, de Xi Hu ou du côté chinois du lac Khanka, le bon lac ; à Jiuzhaigou, le site plutôt que le parc du Panda géant qui l'entoure ; en pleine mer, aucun cours d'eau. |
 | `typedNamesAreAcceptedForFeatures` | Le mode Saisir accepte « Yangtze », « fleuve jaune », « Everest », « Canton », « Mékong » ou « mekong », « Nam Co » et « lac des mille iles » ; l'affichage donne « Everest / Zhumulangma Feng » et « Namtso / Namu Cuo ». |
 
-## data/PlaceFactsTest — fiches « En savoir plus » (5 tests)
+## data/PlaceFactsTest — fiches « En savoir plus » (6 tests)
 
 Les fiches sont dans un fichier séparé, `facts.json`, rattaché aux lieux par leur identifiant.
 
@@ -146,7 +146,8 @@ Les fiches sont dans un fichier séparé, `facts.json`, rattaché aux lieux par 
 | `unknownOrDuplicateIds_areRejected` | Une fiche pour un lieu inexistant, ou deux fiches pour le même lieu, sont refusées. |
 | `emptyOrTooLongFacts_areRejected` | Une fiche vide, un texte de plus de 280 caractères ou plus de deux anecdotes sont refusés, pour que les fiches restent courtes. |
 | `impossibleNumbers_areRejected` | Une population négative, une population sans année (ou l'inverse) et une superficie nulle sont refusées. |
-| `realFacts_coverEveryPlace` | Le vrai fichier contient une fiche complète pour chacun des 138 lieux : population, superficie, langues, histoire, économie et plat pour les provinces ; rôle pour les villes ; présentation et anecdote pour les cours d'eau et les montagnes. Contrôle de vraisemblance : le Guangdong est la province la plus peuplée et le Xinjiang la plus étendue. |
+| `legend_isReadAndCheckedLikeOtherTexts` | La légende d'un lieu (lacs, parcs) est lue, et refusée si elle est trop longue, comme les autres textes. |
+| `realFacts_coverEveryPlace` | Le vrai fichier contient une fiche pour chacun des lieux : population, superficie, langues, histoire, économie et plat pour les provinces ; rôle pour les villes ; présentation et anecdote pour les cours d'eau et les montagnes ; présentation pour les lacs et les parcs, avec une légende ou une anecdote pour au moins 35 des 40. Contrôle de vraisemblance : le Guangdong est la province la plus peuplée et le Xinjiang la plus étendue. |
 
 ## game/AnswerCheckerTest — réponses tapées, mode Saisir (10 tests)
 

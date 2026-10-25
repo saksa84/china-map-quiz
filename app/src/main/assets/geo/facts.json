@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "origin": "Rédigé par Claude (Anthropic) à partir de connaissances générales, le 2026-10-24 (provinces, puis villes, cours d'eau et montagnes) ; à relire. Population : recensement chinois de 2020 (Hong Kong et Macao : recensements de 2021 ; Taïwan : estimation 2023). Superficies arrondies.",
+  "origin": "Rédigé par Claude (Anthropic) à partir de connaissances générales, le 2026-10-24 (provinces, puis villes, cours d'eau et montagnes), puis le 2026-10-25 (lacs et parcs : légendes et faits insolites) ; à relire. Population : recensement chinois de 2020 (Hong Kong et Macao : recensements de 2021 ; Taïwan : estimation 2023). Superficies arrondies.",
   "facts": [
     {
       "id": "CN-BJ",
@@ -1280,6 +1280,314 @@
       "overview": "La « montagne de l'Est », la plus vénérée des cinq grandes montagnes ; les empereurs y offraient des sacrifices au Ciel.",
       "anecdotes": [
         "Plus de 6 000 marches de pierre mènent au sommet."
+      ]
+    },
+    {
+      "id": "LK-QINGHAI",
+      "overview": "Le plus grand lac de Chine, salé, à 3 260 m d'altitude ; son nom mongol, Kokonor, signifie « lac bleu ».",
+      "legend": "En route pour épouser le roi du Tibet (641), la princesse Wencheng aurait jeté le miroir magique qui lui montrait sa patrie ; ses larmes devinrent le Daotang He, la « rivière qui coule à l'envers », vers l'ouest, jusqu'au lac.",
+      "anecdotes": [
+        "Chaque printemps, l'île aux Oiseaux accueille des milliers d'oies à tête barrée, capables de survoler l'Himalaya.",
+        "Une course cycliste internationale, le Tour du lac Qinghai, en fait le tour chaque été."
+      ]
+    },
+    {
+      "id": "LK-POYANG",
+      "overview": "Le plus grand lac d'eau douce de Chine, relié au Yangtsé : immense en été, il se réduit à des chenaux et des prairies en hiver.",
+      "legend": "Le rocher de Dagu Shan, au nord du lac, serait la chaussure perdue d'une fée, d'où son surnom de « montagne-chaussure » (Xie Shan).",
+      "anecdotes": [
+        "Près du temple de Laoyemiao, tant de bateaux ont sombré qu'on surnomme l'endroit le « triangle des Bermudes chinois ».",
+        "Il accueille en hiver presque toutes les grues de Sibérie du monde."
+      ]
+    },
+    {
+      "id": "LK-DONGTING",
+      "overview": "Lac de crue du Yangtsé, qui a donné leur nom au Hunan (« au sud du lac ») et au Hubei (« au nord du lac »).",
+      "legend": "Sur l'île de Junshan, les taches des « bambous tachetés » seraient les larmes d'Ehuang et Nüying, les deux épouses de l'empereur légendaire Shun, mortes de chagrin en apprenant sa mort.",
+      "anecdotes": [
+        "Au bord du lac, le pavillon de Yueyang est célèbre par un texte de Fan Zhongyan (1046) : « être le premier à s'inquiéter des soucis du monde, le dernier à jouir de ses joies »."
+      ]
+    },
+    {
+      "id": "LK-TAIHU",
+      "overview": "Grand lac d'eau douce au cœur du delta du Yangtsé, entre Suzhou et Wuxi.",
+      "legend": "Après la victoire du royaume de Yue sur celui de Wu (Ve siècle av. J.-C.), le ministre Fan Li se serait retiré sur le lac avec la belle Xi Shi, pour y vivre loin de la cour.",
+      "anecdotes": [
+        "Ses calcaires creusés par l'eau, les « pierres du lac Tai », ornent les jardins classiques de Suzhou.",
+        "En 2007, une prolifération d'algues bleues a privé Wuxi d'eau potable pendant plusieurs jours."
+      ]
+    },
+    {
+      "id": "LK-HONGZE",
+      "overview": "Lac formé par les crues du fleuve Jaune, qui ont barré le Huai ; son fond est plus haut que la plaine voisine, protégée par une longue digue.",
+      "legend": "Yu le Grand, dompteur des eaux, aurait enchaîné au fond d'un puits le singe-monstre Wuzhiqi, responsable des crues du Huai.",
+      "anecdotes": [
+        "La ville de Sizhou, engloutie par le lac en 1680, repose toujours sous ses eaux."
+      ]
+    },
+    {
+      "id": "LK-CHAOHU",
+      "overview": "L'un des cinq grands lacs d'eau douce de Chine, au cœur de l'Anhui, près de Hefei.",
+      "legend": "Une ville entière, Chaozhou, aurait été engloutie en une nuit ; seule une vieille femme, avertie par un dragon, put fuir. L'île de Laoshan (« la montagne de la vieille ») porterait son souvenir."
+    },
+    {
+      "id": "LK-GAOYOU",
+      "overview": "Lac du Jiangsu, en aval du lac Hongze, longé par le Grand Canal.",
+      "anecdotes": [
+        "Le savant Shen Kuo (XIe siècle) raconte qu'une « perle » lumineuse apparaissait la nuit au-dessus du lac, éclairant les arbres alentour.",
+        "La région est réputée pour ses œufs de cane à double jaune."
+      ]
+    },
+    {
+      "id": "LK-WEISHAN",
+      "overview": "Le plus grand lac d'eau douce du nord de la Chine : quatre lacs reliés (les lacs Nansi), entre Shandong et Jiangsu.",
+      "legend": "Le lac porte le nom de l'île de Weishan, où serait enterré Weizi, frère du dernier roi des Shang, réputé pour sa sagesse.",
+      "anecdotes": [
+        "Pendant la guerre contre le Japon, les guérilleros du chemin de fer se cachaient dans ses roseaux ; la chanson « Le lac Weishan est silencieux » les a rendus célèbres."
+      ]
+    },
+    {
+      "id": "LK-HONGHU",
+      "overview": "Lac du Hubei, au bord du Yangtsé, réputé pour ses lotus et ses poissons.",
+      "anecdotes": [
+        "La chanson « Les vagues du lac Hong », tirée d'un opéra de 1959 sur la guérilla communiste des années 1930, est connue de presque tous les Chinois."
+      ]
+    },
+    {
+      "id": "LK-HULUN",
+      "overview": "Grand lac des steppes de Hulunbuir, en Mongolie-Intérieure, près des frontières russe et mongole.",
+      "legend": "Selon une légende mongole, Hulun et Buir étaient deux amants changés en lacs ; la rivière Urshun, qui relie les deux lacs, les unit pour toujours.",
+      "anecdotes": [
+        "Les steppes de Hulunbuir sont le berceau de plusieurs peuples nomades, dont les Xianbei et les Mongols."
+      ]
+    },
+    {
+      "id": "LK-XINGKAI",
+      "overview": "Grand lac partagé avec la Russie : seul son quart nord est chinois ; la frontière le traverse.",
+      "anecdotes": [
+        "Un étroit cordon de sable le sépare du « petit lac Xingkai », entièrement chinois.",
+        "Il est réputé pour une carpe blanche, le « baiyu », l'un des « quatre grands poissons » de la Chine du Nord-Est."
+      ]
+    },
+    {
+      "id": "LK-NAMCO",
+      "overview": "Lac salé sacré du Tibet, à 4 718 m, l'un des plus hauts grands lacs du monde.",
+      "legend": "Pour les Tibétains, le lac est une déesse, épouse du mont Nyenchen Tanglha qui le domine ; les pèlerins en font le tour à pied, surtout l'année du Mouton.",
+      "anecdotes": [
+        "Il gèle entièrement en hiver ; la glace craque au printemps avec un bruit de tonnerre."
+      ]
+    },
+    {
+      "id": "LK-SILING",
+      "overview": "Lac salé du Tibet central qui, grossi par la fonte des glaciers, a dépassé le Namtso vers 2010 pour devenir le plus grand lac du Tibet.",
+      "legend": "Son nom évoque Siling, un démon chassé par le maître Padmasambhava, qui se serait réfugié dans le lac ; on l'appelle le « lac du démon »."
+    },
+    {
+      "id": "LK-YAMZHO",
+      "overview": "Lac sacré turquoise, en forme de scorpion, au sud de Lhassa, l'un des trois lacs sacrés du Tibet.",
+      "legend": "On dit que le lac est la vie du Tibet : s'il s'asséchait, le pays deviendrait inhabitable.",
+      "anecdotes": [
+        "Une centrale hydroélectrique pompe ses eaux, ce qui a inquiété les Tibétains pour le lac sacré."
+      ]
+    },
+    {
+      "id": "LK-MAPAM",
+      "overview": "Lac d'eau douce au pied du mont Kailash, sacré pour les hindous, les bouddhistes, les jaïns et les adeptes du bön.",
+      "legend": "Pour les hindous, Brahma l'a créé par la pensée (manas), d'où son nom de Manasarovar ; s'y baigner laverait les péchés de cent vies.",
+      "anecdotes": [
+        "Il est voisin du Rakshastal, salé et sans vie, le « lac des démons » : les deux lacs symbolisent la lumière et les ténèbres."
+      ]
+    },
+    {
+      "id": "LK-GYARING",
+      "overview": "Lac des sources du fleuve Jaune, jumeau du lac Ngoring, à plus de 4 200 m.",
+      "legend": "Le roi tibétain Songtsen Gampo serait venu jusqu'ici accueillir la princesse Wencheng, son épouse chinoise, en 641.",
+      "anecdotes": [
+        "Son nom tibétain signifie « long lac blanc »."
+      ]
+    },
+    {
+      "id": "LK-NGORING",
+      "overview": "Le plus grand lac d'eau douce du plateau tibétain, traversé par le jeune fleuve Jaune.",
+      "anecdotes": [
+        "Sur la colline entre les deux lacs, un monument à tête de yak marque la « source du fleuve Jaune ».",
+        "Son nom tibétain signifie « long lac bleu », par contraste avec son jumeau, le « long lac blanc »."
+      ]
+    },
+    {
+      "id": "LK-BOSTEN",
+      "overview": "Le plus grand lac d'eau douce du Xinjiang, alimenté par la rivière Kaidu, au bord du désert du Taklamakan.",
+      "anecdotes": [
+        "Ses roselières, parmi les plus grandes de Chine, fournissent la matière première de papeteries."
+      ]
+    },
+    {
+      "id": "LK-EBINUR",
+      "overview": "Lac salé de la dépression de Dzoungarie, à 189 m d'altitude, qui rétrécit à cause de l'irrigation.",
+      "anecdotes": [
+        "Les vents violents de la porte de Dzoungarie soulèvent le sel de ses rives asséchées en tempêtes de poussière."
+      ]
+    },
+    {
+      "id": "LK-DANJIANGKOU",
+      "overview": "Lac de barrage sur la rivière Han, achevé en 1973 et rehaussé en 2013.",
+      "anecdotes": [
+        "Il est le point de départ de la route centrale du grand transfert d'eau Sud-Nord, qui alimente Pékin depuis 2014."
+      ]
+    },
+    {
+      "id": "LK-QIANDAO",
+      "overview": "Lac de barrage du Zhejiang (1959), parsemé de plus d'un millier d'îles, d'où son nom de « lac des Mille Îles ».",
+      "anecdotes": [
+        "Sous ses eaux reposent deux anciennes villes, dont Shicheng, la « cité du Lion », remarquablement conservée et visitée par des plongeurs."
+      ]
+    },
+    {
+      "id": "LK-XIHU",
+      "overview": "Le lac de Hangzhou, chanté par les poètes et modèle de nombreux jardins en Chine et au Japon ; patrimoine mondial depuis 2011.",
+      "legend": "La légende du Serpent blanc : un esprit-serpent devenu femme rencontre son amour sur le Pont brisé, avant que le moine Fahai ne l'emprisonne sous la pagode Leifeng.",
+      "anecdotes": [
+        "Le poète Su Dongpo, gouverneur de Hangzhou, fit curer le lac et bâtir avec la vase la digue qui porte son nom (vers 1090)."
+      ]
+    },
+    {
+      "id": "LK-DIANCHI",
+      "overview": "Le plus grand lac du Yunnan, au pied de Kunming, la « ville du printemps éternel ».",
+      "legend": "Les Collines de l'Ouest qui dominent le lac dessinent la « Belle endormie » : une princesse qui aurait pleuré son amant jusqu'à se changer en montagne.",
+      "anecdotes": [
+        "Chaque hiver depuis 1985, des milliers de mouettes rieuses venues de Sibérie s'installent sur le lac."
+      ]
+    },
+    {
+      "id": "LK-ERHAI",
+      "overview": "Lac en forme d'oreille (« er ») au pied des monts Cang, au cœur du pays bai, à Dali.",
+      "legend": "Un dicton de Dali résume ses quatre merveilles : le vent de Xiaguan, les fleurs de Shangguan, la neige des monts Cang et la lune d'Erhai.",
+      "anecdotes": [
+        "Les pêcheurs bai y pêchaient avec des cormorans dressés."
+      ]
+    },
+    {
+      "id": "PA-SANJIANGYUAN",
+      "overview": "Le plus grand parc national de Chine, qui protège les sources du Yangtsé, du fleuve Jaune et du Mékong : le « château d'eau de la Chine ».",
+      "legend": "Les Tibétains de la région y voient les terres du roi Gesar, héros d'une épopée chantée par des bardes, l'une des plus longues du monde.",
+      "anecdotes": [
+        "Ses gardes, souvent d'anciens bergers, protègent l'antilope du Tibet, autrefois massacrée pour sa laine, le shahtoosh."
+      ]
+    },
+    {
+      "id": "PA-PANDA",
+      "overview": "Parc réparti sur le Sichuan, le Shaanxi et le Gansu, qui abrite la grande majorité des pandas géants sauvages.",
+      "legend": "Le panda était tout blanc : en deuil d'une bergère morte pour en sauver un, les pandas se frottèrent les yeux et les oreilles avec des cendres, puis s'enlacèrent en pleurant, d'où leurs taches noires.",
+      "anecdotes": [
+        "Un panda passe plus de la moitié de la journée à manger : jusqu'à une trentaine de kilos de bambou."
+      ]
+    },
+    {
+      "id": "PA-HUBAO",
+      "overview": "Parc du Jilin et du Heilongjiang, le long de la frontière russe, créé pour le tigre et le léopard de l'Amour.",
+      "anecdotes": [
+        "Le léopard de l'Amour est l'un des félins les plus rares du monde : il en reste seulement quelques centaines au plus.",
+        "Sur le front du tigre, les Chinois lisent dans ses rayures le caractère 王, « roi »."
+      ]
+    },
+    {
+      "id": "PA-HAINAN",
+      "overview": "La plus grande forêt tropicale humide d'un seul tenant en Chine, au centre de l'île de Hainan, pays des peuples li et miao.",
+      "anecdotes": [
+        "Il abrite le gibbon de Hainan, le primate le plus rare du monde : quelques dizaines d'individus."
+      ]
+    },
+    {
+      "id": "PA-WUYISHAN",
+      "overview": "Montagnes de grès rouge du Fujian, berceau du thé Da Hong Pao et de l'école néoconfucéenne de Zhu Xi.",
+      "legend": "Le nom viendrait de Peng Wu et Peng Yi, deux fils d'un immortel qui auraient creusé les vallées pour dompter les eaux.",
+      "anecdotes": [
+        "Les théiers « mères » du Da Hong Pao, accrochés à une falaise, ne sont plus récoltés depuis 2006 : quelques grammes de leur thé se sont vendus plus cher que l'or."
+      ]
+    },
+    {
+      "id": "PA-JIUZHAIGOU",
+      "overview": "Vallée des « neuf villages » tibétains, célèbre pour ses lacs turquoise et ses cascades.",
+      "legend": "Le dieu des montagnes Dage offrit un miroir à la déesse Semo ; un démon le fit tomber et il se brisa en 108 morceaux, devenus les lacs de la vallée.",
+      "anecdotes": [
+        "Le séisme de 2017 a vidé un lac, abîmé une grande cascade et fermé le parc pendant deux ans."
+      ]
+    },
+    {
+      "id": "PA-HUANGLONG",
+      "overview": "Vallée de terrasses de calcaire jaune et de bassins colorés, à plus de 3 000 m, dans le Sichuan.",
+      "legend": "La vallée serait le corps d'un dragon jaune qui aida Yu le Grand à maîtriser les crues ; ses écailles dorées sont les terrasses.",
+      "anecdotes": [
+        "Les bassins se forment par dépôt de calcaire, comme à Pamukkale en Turquie."
+      ]
+    },
+    {
+      "id": "PA-WULINGYUAN",
+      "overview": "Forêt de plus de 3 000 piliers de grès près de Zhangjiajie, dans le Hunan.",
+      "legend": "Le nom Zhangjiajie, « le domaine de la famille Zhang », viendrait de Zhang Liang, conseiller du fondateur des Han, qui s'y serait retiré.",
+      "anecdotes": [
+        "Un pilier a été renommé « montagne Hallelujah d'Avatar » en 2010, le film de James Cameron s'en étant inspiré.",
+        "L'ascenseur de Bailong, accroché à une falaise, monte à plus de 300 m."
+      ]
+    },
+    {
+      "id": "PA-LIJIANG",
+      "overview": "La rivière Li entre Guilin et Yangshuo, bordée de pitons calcaires : le paysage du billet de 20 yuans.",
+      "legend": "La colline de la Trompe d'éléphant, à Guilin, serait l'éléphant de l'Empereur céleste, changé en pierre pour être resté aider les paysans.",
+      "anecdotes": [
+        "Quelques pêcheurs y pêchent encore au cormoran, la nuit, à la lanterne."
+      ]
+    },
+    {
+      "id": "PA-SHILIN",
+      "overview": "« Forêt de pierre » de colonnes calcaires, vieille de plus de 200 millions d'années, au sud-est de Kunming.",
+      "legend": "Un rocher y représente Ashima, héroïne du peuple sani (yi) ; enlevée par un riche seigneur puis emportée par une crue, elle serait devenue pierre."
+    },
+    {
+      "id": "PA-FANJINGSHAN",
+      "overview": "Montagne sacrée bouddhiste du Guizhou, îlot de forêt ancienne au-dessus des plateaux karstiques.",
+      "anecdotes": [
+        "Son Sommet doré, une aiguille de rocher fendue en deux, porte un temple de chaque côté de la fente, reliés par un pont.",
+        "Il abrite le rhinopithèque du Guizhou, un singe doré qui ne vit nulle part ailleurs."
+      ]
+    },
+    {
+      "id": "PA-KANAS",
+      "overview": "Lac glaciaire et forêts de l'Altaï, à l'extrême nord du Xinjiang, près du Kazakhstan, de la Russie et de la Mongolie.",
+      "legend": "Le lac aurait son monstre : des « poissons géants » longs de plus de 10 m, signalés depuis les années 1980 ; sans doute de grands saumons du Danube (taïmens).",
+      "anecdotes": [
+        "Les Touvas, peuple de bergers, vivent dans des maisons en rondins au bord du lac."
+      ]
+    },
+    {
+      "id": "PA-DANXIA",
+      "overview": "Montagne de grès rouge du Guangdong qui a donné son nom au relief « danxia », que l'on retrouve dans toute la Chine.",
+      "anecdotes": [
+        "On y vénère un rocher de 28 m en forme de phallus, le Yangyuan Shi, et en face un rocher féminin : des lieux de prière pour la fertilité."
+      ]
+    },
+    {
+      "id": "PA-LUSHAN",
+      "overview": "Montagne du Jiangxi au-dessus du lac Poyang, souvent noyée de brume ; station d'été des Occidentaux puis des dirigeants chinois.",
+      "legend": "« On ne voit pas le vrai visage du Lushan quand on est dans la montagne » : ce vers de Su Dongpo est devenu un proverbe pour dire qu'on juge mal ce qui nous entoure.",
+      "anecdotes": [
+        "En 1959, à la conférence de Lushan, le maréchal Peng Dehuai critiqua le Grand Bond en avant, ce qui provoqua sa chute."
+      ]
+    },
+    {
+      "id": "PA-SANQINGSHAN",
+      "overview": "Montagne taoïste du Jiangxi aux pics de granite élancés.",
+      "legend": "Ses trois sommets principaux figureraient les « Trois Purs » (Sanqing), les divinités suprêmes du taoïsme, qui y siègent.",
+      "anecdotes": [
+        "Un pic haut de 86 m, la « Déesse », ressemble à une femme assise aux longs cheveux."
+      ]
+    },
+    {
+      "id": "PA-ZHANGYE",
+      "overview": "Collines rayées de rouge, de jaune et de vert, dans le Gansu, le long de l'ancienne route de la soie.",
+      "anecdotes": [
+        "Les couleurs viennent de couches de grès et de minéraux déposées il y a des millions d'années, puis plissées et érodées.",
+        "Zhang Yimou y a tourné en 2009 son film « A Woman, a Gun and a Noodle Shop »."
       ]
     }
   ]

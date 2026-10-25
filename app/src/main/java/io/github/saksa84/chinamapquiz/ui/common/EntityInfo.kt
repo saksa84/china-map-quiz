@@ -155,6 +155,7 @@ private fun FactsSection(facts: PlaceFacts, expanded: Boolean, onExpandedChange:
     if (!expanded) return
     val lines = buildList {
         facts.overview?.let { add(it) }
+        facts.legend?.let { add(stringResource(R.string.facts_legend, it)) }
         populationText(facts)?.let { add(it) }
         facts.areaKm2?.let { add(stringResource(R.string.facts_area, String.format(Locale.FRENCH, "%,d", it))) }
         facts.languages?.let { add(stringResource(R.string.facts_languages, it)) }

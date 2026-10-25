@@ -45,6 +45,14 @@ class PlaceFactsTest {
     }
 
     @Test
+    fun legend_isReadAndCheckedLikeOtherTexts() {
+        val result = PlaceFactsLoader.load(file("""{"id":"LK-XIHU","legend":"Le Serpent blanc"}"""), catalog)
+        assertEquals("Le Serpent blanc", (result as FactsResult.Success).facts["LK-XIHU"]!!.legend)
+        val long = "a".repeat(PlaceFactsLoader.MAX_TEXT_LENGTH + 1)
+        assertEquals(listOf(FactsError.TooLong("LK-XIHU", long)), errorsOf(file("""{"id":"LK-XIHU","legend":"$long"}""")))
+    }
+
+    @Test
     fun impossibleNumbers_areRejected() {
         listOf(
             """{"id":"CN-SC","populationMillions":-1,"populationYear":2020}""",
@@ -69,6 +77,10 @@ class PlaceFactsTest {
         features.forEach { id -> assertTrue("$id : fiche et anecdote", facts[id]?.anecdotes?.isNotEmpty() == true) }
         catalog.inCategory(Category.CITY).forEach { assertTrue("${it.id} : rôle", facts[it.id]!!.role != null) }
         (catalog.inCategory(Category.RIVER) + catalog.inCategory(Category.MOUNTAIN)).forEach { assertTrue("${it.id} : présentation", facts[it.id]!!.overview != null) }
+        // Lacs et parcs : une présentation chacun ; la légende ou l'anecdote quand on en connaît une (la plupart).
+        val lakesAndParks = catalog.inCategory(Category.LAKE) + catalog.inCategory(Category.PARK)
+        lakesAndParks.forEach { assertTrue("${it.id} : présentation", facts[it.id]?.overview != null) }
+        assertTrue("Légende ou anecdote pour la plupart", lakesAndParks.count { facts[it.id]!!.legend != null || facts[it.id]!!.anecdotes.isNotEmpty() } >= 35)
         // Repères faciles à vérifier : la province la plus peuplée et la plus étendue.
         assertEquals("CN-GD", provincial.maxByOrNull { facts[it]!!.populationMillions!! })
         assertEquals("CN-XJ", provincial.maxByOrNull { facts[it]!!.areaKm2!! })

@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class PlaceFacts(
     val id: String,
-    /** Cours d'eau et montagnes : présentation en une phrase, affichée en tête sans intitulé. */
+    /** Cours d'eau, montagnes, lacs et parcs : présentation en une phrase, affichée en tête sans intitulé. */
     val overview: String? = null,
     /** Population en millions et année du recensement ou de l'estimation. */
     val populationMillions: Double? = null,
@@ -28,12 +28,14 @@ data class PlaceFacts(
     val role: String? = null,
     /** Villes : monument ou lieu célèbre. */
     val landmark: String? = null,
+    /** Légende attachée au lieu (lacs, parcs), présentée comme telle : ce n'est pas un fait historique. */
+    val legend: String? = null,
     /** Une ou deux anecdotes. */
     val anecdotes: List<String> = emptyList(),
     /** Faux tant que la fiche n'a pas été relue : l'application affiche « à vérifier ». */
     val reviewed: Boolean = false,
 ) {
-    val texts: List<String> get() = listOfNotNull(overview, languages, history, economy, dish, role, landmark) + anecdotes
+    val texts: List<String> get() = listOfNotNull(overview, legend, languages, history, economy, dish, role, landmark) + anecdotes
 }
 
 @Serializable
