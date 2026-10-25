@@ -34,7 +34,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 Tout le contenu de ce dépôt a été produit par **Claude Code**, l'assistant de programmation d'Anthropic, au fil d'une conversation avec l'auteur du projet (compte GitHub `saksa84`) :
 
 - **Produit par Claude Code** : le code Kotlin, les scripts Python de préparation des données, les fichiers de données (noms, alias, rattachements, longueurs, pinyins avec tons), les 138 fiches de lecture, les tests unitaires et toute la documentation, y compris ce README.
-- **Fait par l'auteur** : la définition du besoin et des règles du jeu (voir [CLAUDE.md](CLAUDE.md), les instructions données à l'IA), les décisions (périmètre, noms, traitement des territoires disputés), la relecture et les essais sur un vrai téléphone (Google Pixel ).
+- **Fait par l'auteur** : la définition du besoin et des règles du jeu (voir [CLAUDE.md](CLAUDE.md), les instructions données à l'IA), les décisions (périmètre, noms, traitement des territoires disputés), la relecture et les essais sur un vrai téléphone (Google Pixel).
 
 Conséquences à connaître :
 - Les commits portent la mention `Co-Authored-By: Claude`.

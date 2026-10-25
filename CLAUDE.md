@@ -148,7 +148,7 @@ Exemples : Beijing, Shanghai, Guangdong, Sichuan, Chongqing, Urumqi.
 
 Exceptions : quand un nom francophone usuel est nettement plus connu que le pinyin, il devient le nom principal et le pinyin passe en alias. C'est le cas de Hong Kong (Xianggang), de Macao (Aomen), de Taipei (Taibei) et des îles Paracel (Xisha Qundao). Toute nouvelle exception doit être ajoutée à cette liste.
 
-**Noms connus en Europe (décision du 2026-10-24, à mettre en œuvre en v1.1)** : quand un lieu a un nom courant en français ou à l'international, on l'affiche avec le pinyin, sous la forme « Nom connu / pinyin ». Exemples : Everest / Zhumulangma Feng, K2 / Qiaogeli Feng, Yangtsé / Chang Jiang, Pékin / Beijing, Canton / Guangzhou. Le pinyin reste le nom de référence (`name`) ; le nom connu est un champ à part (`knownAs`), dans lequel les accents sont autorisés. Les deux sont acceptés dans le mode Saisir.
+**Noms connus en Europe (décision du 2026-10-24, mise en œuvre en v1.1)** : quand un lieu a un nom courant en français ou à l'international, on l'affiche avec le pinyin, sous la forme « Nom connu / pinyin ». Exemples : Everest / Zhumulangma Feng, K2 / Qiaogeli Feng, Yangtsé / Chang Jiang, Pékin / Beijing, Canton / Guangzhou. Le pinyin reste le nom de référence (`name`) ; le nom connu est un champ à part (`knownAs`), dans lequel les accents sont autorisés. Les deux sont acceptés dans le mode Saisir.
 
 ### Territoires disputés
 
@@ -467,27 +467,53 @@ Privilégie les solutions simples, lisibles et robustes.
 
 ## 15. État du projet et mission en cours
 
-**Version 1 terminée et validée sur le Pixel 8 Pro le 2026-10-24** (commit `37a4fe8`, 125 tests unitaires) :
-- 34 unités provinciales, grandes régions et îles Paracel ; 40 villes, 27 cours d'eau, 17 chaînes et 20 sommets ;
-- modes Apprendre, Trouver, Éliminer et Saisir pour chaque catégorie ; progression, records, révision des erreurs, paramètres.
+### Où on en est (au 2026-10-25)
 
-Repères dans le code :
-- `data/` : modèle `GeoEntity`, chargement et validation, `AssetGeoRepository` ;
+**Version 1.1 terminée, testée sur l'émulateur, commitée et publiée sur GitHub** : https://github.com/saksa84/china-map-quiz (branche `main`). 138 tests unitaires, `versionName = "1.1"`, `versionCode = 2`. La V1 (commit `37a4fe8`) avait été validée sur le Pixel 8 Pro le 2026-10-24 ; la V1.1 n'a pas encore été installée ni écoutée sur le Pixel.
+
+Contenu : 34 unités provinciales, 8 grandes régions (6 de premier rang, Zhongnan subdivisée) et les îles Paracel ; 40 villes, 27 cours d'eau (12 grands fleuves, 15 affluents), 17 chaînes et 20 sommets. Modes Apprendre, Trouver, Éliminer et Saisir pour chaque catégorie ; progression, records, révision des erreurs, paramètres. Le mode Contours est annoncé « bientôt ».
+
+**Ce que la V1.1 a ajouté** (détail et décisions dans `docs/plan-v1.1.md`) :
+- A. Longueur des cours d'eau (`lengthKm`, `lengthInChinaKm`, sources dans `docs/data-sources.md`) ; tracés du Huai, du Liao, du Tarim et du Yongding complétés ; test `riverSectionsLeaveNoGap`.
+- B. Noms connus en Europe (`knownAs`, 23 lieux) : « Mékong / Lancang Jiang » partout (fiches, consignes, résultats), nom court sur la carte ; accepté dans Saisir, avec ou sans accents.
+- C. Pinyin avec tons (`pinyinTones`, 148 lieux) ; bouton 🔊 (`speech/Pronouncer`, synthèse vocale d'Android en mandarin, lit les hanzi, voix hors ligne de préférence, canal « médias » pour le volume) ; lecture automatique du nom demandé dans Trouver et Éliminer (réglage « Lire les consignes », activé par défaut, pas dans Saisir où elle donnerait la réponse).
+- D. Fiches « En savoir plus » : `assets/geo/facts.json` (138 fiches, modèle `PlaceFacts`, validation dans `PlaceFactsLoader`), section dépliable dans Apprendre (le panneau passe à 60 % de la hauteur).
+- E. Fiche compacte de 4 lignes avec 🔊 dans le retour de réponse des quiz.
+
+### Repères dans le code
+
+- `data/` : `GeoEntity` (dont `knownAs`, `pinyinTones`, `lengthKm`), chargement et validation, `PlaceFacts`, `AssetGeoRepository` ;
 - `map/` : géométrie (surfaces, lignes, points), projection, détection du toucher, zoom ;
 - `game/` : moteurs `QuizSession` et `EliminateSession`, niveaux, `AnswerChecker`, `GeoCategory` ;
-- `progress/` : progression et DataStore ;
-- `ui/` : `AppViewModel` (état et navigation), écrans, composant `ChinaMap` ;
-- `tools/` : scripts Python de génération des données (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`).
+- `progress/` : progression, réglages (`showHanzi`, `autoSpeak`) et DataStore ;
+- `speech/` : `Pronouncer` (synthèse vocale, sans dépendance du moteur de jeu) ;
+- `ui/` : `AppViewModel`, écrans, `ChinaMap`, `common/EntityInfo` (fiche complète et fiche compacte), `common/SpeakButton` ;
+- `tools/` : scripts Python (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`, `build_tests_pdf.py`).
 
-Commandes : voir `docs/build.md`. Avec PowerShell, définir d'abord `$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"`, puis `.\gradlew.bat testDebugUnitTest assembleDebug`. Pour essayer sur l'émulateur : `installDebug`, puis captures avec `adb exec-out screencap -p`.
+### Commandes
 
-**Mission en cours : version 1.1, « mieux retenir »** (détail dans `docs/plan-v1.1.md`) :
-- A : vérification des cours d'eau et longueur des fleuves (fait) ;
-- B : noms connus en Europe affichés « Nom connu / pinyin » (fait) ;
-- C : (fait) pinyin avec tons et bouton de prononciation (synthèse vocale Android en mandarin, qui lit les hanzi) ;
-- D : (fait, 138 fiches relues par Claude le 2026-10-24, encore marquées « à vérifier ») fiches « mini-Wikipédia » dans un fichier séparé `facts.json` (histoire, langues, économie, plat, anecdotes), au ton factuel et neutre sur les sujets sensibles ;
-- E : fiche compacte de 4 à 5 lignes pendant les quiz (fait).
+Voir `docs/build.md`. Avec PowerShell : `$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"`, puis `.\gradlew.bat testDebugUnitTest assembleDebug`. Essai sur l'émulateur : `installDebug`, captures avec `adb exec-out screencap -p`. L'APK est dans `app/build/outputs/apk/debug/app-debug.apk`. Dans l'émulateur, la voix mandarin est installée : le journal `adb logcat -s Pronouncer:*` montre « Lecture commencée / terminée ».
 
-Ensuite : version 2 (parcs, lacs, villes-préfectures) et mode Contours.
+### À faire ensuite
+
+1. **Créer la Release GitHub `v1.1`** avec l'APK debug en pièce jointe (procédure dans `docs/build.md`), puis installer sur le Pixel et **écouter** la prononciation et le volume (jamais entendue, seulement vue dans les journaux). `gh` n'est pas installé : la release se fait sur le site (ou `winget install GitHub.cli`).
+2. **Relire les 138 fiches** de `facts.json` : Claude les a relues le 2026-10-24 (9 corrections) mais de mémoire, sans source. Elles restent marquées « à vérifier » tant que `reviewed` n'est pas à `true`.
+3. **Choisir une licence** pour le code (aucune pour l'instant ; MIT proposée).
+4. **Version 2** : parcs, lacs, villes-préfectures ; puis le **mode Contours** ; version 3 : spécialités culinaires.
+5. Limite connue : le Min Jiang n'a que son cours inférieur (Natural Earth n'a pas le reste).
+
+### Règles de publication (mises en place le 2026-10-24)
+
+- Le dépôt est public et **ne contient aucune capture d'application commerciale** : `Inspirations/` et `screenshot/` restent dans `.gitignore`, comme `tools/raw/`, les APK, les clés de signature et `.idea/deploymentTargetSelector.xml` (il contient le numéro de série du téléphone).
+- **Transparence** : le README et l'écran Paramètres → À propos disent que tout est fait avec une IA générative (Claude Code) et que le projet s'inspire des applications de Qbis Studio (World Map Quiz) sans rien copier ni être affilié. À conserver à chaque mise à jour.
+- Les 138 tests sont décrits dans `docs/tests-unitaires.md` et en PDF (`docs/tests-unitaires.pdf`). **Quand on ajoute ou modifie un test** : mettre à jour le `.md` (et le tableau du README), puis `python tools/build_tests_pdf.py`.
+- Les commits se terminent par `Co-Authored-By: Claude` (la ligne exacte vient de la consigne d'attribution de la session).
+- **Ne jamais pousser sans autorisation explicite** (déjà donnée pour la V1.1 uniquement). Au premier envoi, Git Credential Manager demande une connexion GitHub dans le navigateur : c'est à l'utilisateur de la faire. Le README a été modifié sur GitHub par l'utilisateur après le premier envoi : toujours faire `git fetch` avant de travailler.
+
+### Pièges rencontrés
+
+- PowerShell : l'encodage par défaut est cp1252 ; pour afficher du français ou du chinois depuis Python, utiliser `sys.stdout.reconfigure(encoding="utf-8")`. Python 3.10 : pas de barre oblique inverse dans une expression d'f-string.
+- Expressions régulières Kotlin dans une chaîne normale : il faut doubler la barre inverse (`"\\p{IsLatin}"`, `"\\-"`).
+- Ne pas modifier un fichier de test sans relancer tout `testDebugUnitTest` : plusieurs tests lisent les vrais fichiers de `assets`.
 
 **Règle générale : privilégie toujours une petite fonctionnalité terminée, testée et comprise à une grande quantité de code générée sans validation.**
