@@ -14,8 +14,8 @@ android {
         applicationId = "io.github.saksa84.chinamapquiz"
         minSdk = 26
         targetSdk = 37
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,4 +56,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+}
+// Plusieurs tests lisent les vraies données de src/main/assets : sans cette déclaration, Gradle
+// considère les tests « à jour » après une modification des données et ne les relance pas.
+tasks.withType<Test>().configureEach {
+    inputs.dir("src/main/assets").withPropertyName("assets")
 }

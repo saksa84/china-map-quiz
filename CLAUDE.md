@@ -480,49 +480,35 @@ Privilégie les solutions simples, lisibles et robustes.
 
 ## 15. État du projet et mission en cours
 
-### Version 2 en cours (2026-10-25) : lacs et parcs
+### Où on en est (au 2026-10-25) : version 2.0
 
-Version 1.2 poussée sur GitHub (`a93dded`). Plan, sources examinées et décisions dans `docs/plan-v2.md`.
-- **Étape A (lacs) faite, pas encore commitée** : `assets/geo/lakes.json` (24 lacs, types `lake` et `reservoir`, champ `areaKm2`, parent = province), contours dans `features.geometry.json` (dictionnaire `LAKES` de `build_features_geometry.py`), catégorie `GeoCategory.LAKES`, niveaux `lakes-west` / `lakes-east` / `lakes-all`, 147 tests. Sources des superficies dans `docs/data-sources.md`. Xi Hu, Dian Chi et Er Hai : contours OSM dans `osm.geometry.json` (le type `small_lake` en point a été supprimé). Pas encore de fiches « En savoir plus » pour les lacs (étape C).
-- **Étape A commitée** (`2851072`).
-- **Étape B (parcs) faite, pas encore commitée** : `assets/geo/parks.json` (16 parcs, champ `designations` : national_park, world_heritage, global_geopark, national_nature_reserve, national_scenic_area, avec l'année), contours OSM dans `osm.geometry.json` (**ODbL**, fichier séparé, script `tools/build_osm_geometry.py`), attribution OSM dans À propos et le README. Parcs Tigre et léopard et Hainan en points (absents d'OSM ; WDPA interdit la redistribution), de même taille que les petits parcs vus de loin (`ShapeStyle.largePoint = false`). Tous les lieux OSM (parcs et 3 petits lacs) sont dans `osm.geometry.json`, construit par `tools/build_osm_geometry.py`. Au toucher, la plus petite de deux zones superposées l'emporte (`HitTester`) ; au dessin, les grandes zones passent dessous. 151 tests. Années UNESCO saisies de mémoire : à vérifier.
-- **Étape B commitée** (`d4854e0`), avec les contours OSM de Xi Hu, Dian Chi et Er Hai.
-- **Étape C (fiches) faite** : 40 fiches lacs et parcs dans `facts.json` (178 au total). Demande de l'utilisateur : privilégier les **légendes** et les **faits insolites**, plus mémorables que l'altitude ; nouveau champ `legend`, affiché « Légende : … » juste après la présentation. Rien inventé pour combler : une fiche sans légende connue reste plus courte. 152 tests.
-- **Vérification avec sources** (demandée le 2026-10-25, « scientifique et historique ») : méthode et registre dans `docs/verification-fiches.md`. Règle : chaque phrase a une source citable (révision Wikipédia notée, UNESCO, site officiel) ; ce qui est introuvable est **retiré**, pas remplacé par du non vérifié ; une fiche vérifiée passe à `reviewed: true`. **Fait pour les 178 fiches** (toutes `reviewed: true`) et les statuts des parcs ; populations et superficies des provinces recalées sur une source unique. Erreurs corrigées notamment : Shenzhen 30 000 hab. en 1980, Kaifeng « capitale du Nord » en 1368, canal de Lingqu hors service depuis 1956, Er Hai pas « en forme d'oreille ». Une nouvelle fiche doit suivre la même règle avant d'être marquée `reviewed`. Outil : script `wp.py` (texte brut d'un article Wikipédia + recherche de mots-clés, avec pauses : Wikipédia renvoie des erreurs 429 si l'on enchaîne trop vite).
-- Ensuite : D (finitions, version 2.0).
+**Version 2.0 terminée, commitée, poussée et publiée en release GitHub `v2.0`** (APK debug joint) : https://github.com/saksa84/china-map-quiz. 152 tests unitaires, `versionName = "2.0"`, `versionCode = 4`. Pas encore installée sur le Pixel (la V1 l'a été le 2026-10-24, la V1.2 essayée dans Android Studio).
 
-### Version 1.2 (2026-10-25) — retours après essai sur le Pixel
+Contenu : 34 unités provinciales, 8 grandes régions et les îles Paracel ; 40 villes, 27 cours d'eau, 17 chaînes et 20 sommets, 24 lacs, 16 parcs (187 lieux) ; 178 fiches « En savoir plus », toutes vérifiées avec sources. Modes Apprendre, Trouver, Éliminer et Saisir pour les six catégories ; progression, records, révision des erreurs, paramètres. Le mode Contours est annoncé « bientôt ».
 
-Codée, 143 tests unitaires, essayée sur l'émulateur puis dans Android Studio par l'utilisateur, **commitée et poussée** (`versionName = "1.2"`, `versionCode = 3`) ; release GitHub pas encore créée. Détail des règles dans la section 7 (« Mode Eliminate » et « Son et fiches pendant les quiz ») :
-1. Bouton 🔊 pour réécouter la consigne (Trouver, Éliminer).
-2. Sons de bonne et de mauvaise réponse (`res/raw`, `tools/build_sounds.py`, `speech/AnswerSounds`, réglage `answerSounds`).
-3. Éliminer : une seule chance par lieu, avec sélection puis confirmation comme dans Trouver ; trouvé = effacé, manqué = reste ; à la fin il ne reste que les manqués.
-4. Fiche « En savoir plus » dépliable après chaque réponse dans Trouver et Saisir, chrono en pause (`game/Stopwatch`).
+Historique des versions (détails dans les plans) :
+- **1.1** (`docs/plan-v1.1.md`) : longueurs des fleuves (`lengthKm`), noms connus en Europe (`knownAs`), pinyin avec tons et prononciation (`speech/Pronouncer`), fiches « En savoir plus » (`facts.json`, `PlaceFacts`), fiche compacte en jeu.
+- **1.2** (retours après essai sur le Pixel, section 7) : 🔊 pour réécouter la consigne, sons de réponse (`speech/AnswerSounds`, `tools/build_sounds.py`, réglage `answerSounds`), Éliminer à une seule chance avec confirmation, fiche dépliable en jeu avec chrono en pause (`game/Stopwatch`).
+- **2.0** (`docs/plan-v2.md`) :
+  - Lacs : `lakes.json` (types `lake`, `reservoir`, champ `areaKm2`), contours Natural Earth (`LAKES` de `build_features_geometry.py`) ; Xi Hu, Dian Chi, Er Hai depuis OpenStreetMap.
+  - Parcs : `parks.json` (champ `designations` avec année : national_park, world_heritage, global_geopark, national_nature_reserve, national_scenic_area), contours OpenStreetMap. Tigre et léopard et Hainan en points (absents d'OSM ; WDPA interdit la redistribution), même taille que les petits parcs vus de loin (`ShapeStyle.largePoint = false`).
+  - Tout ce qui vient d'OSM est dans `osm.geometry.json` (**ODbL**, fichier séparé, `tools/build_osm_geometry.py`), attribution dans À propos et le README.
+  - Au toucher, la plus petite de deux zones superposées l'emporte (`HitTester`) ; au dessin, les grandes zones passent dessous.
+  - Fiches : champ `legend` (« Légende : … »), à la demande de l'utilisateur qui préfère les légendes et faits insolites aux chiffres.
+  - Finitions : README illustré, présentation PDF (`docs/presentation.pdf`, `tools/build_presentation_pdf.py`), captures (`docs/images/`).
+- **Vérification avec sources** (demandée le 2026-10-25, « scientifique et historique ») : méthode et registre dans `docs/verification-fiches.md`. Règle : chaque phrase a une source citable (révision Wikipédia notée, UNESCO, site officiel) ; ce qui est introuvable est **retiré**, pas remplacé par du non vérifié ; une fiche vérifiée passe à `reviewed: true`. **Une nouvelle fiche doit suivre la même règle.** Outil (dans le répertoire temporaire de la session, à recréer au besoin) : un script qui télécharge le texte brut d'un article Wikipédia et cherche des mots-clés, avec des pauses (Wikipédia renvoie 429 si l'on enchaîne trop vite).
 
-À vérifier sur le Pixel : volume et timbre des sons, lisibilité de la fiche dépliée, rythme d'Éliminer (0,6 s après une bonne réponse, 1,5 s après une erreur).
-
-### Où on en est (au 2026-10-25)
-
-**Version 1.1 terminée, testée sur l'émulateur, commitée et publiée sur GitHub** : https://github.com/saksa84/china-map-quiz (branche `main`). 138 tests unitaires, `versionName = "1.1"`, `versionCode = 2`. La V1 (commit `37a4fe8`) avait été validée sur le Pixel 8 Pro le 2026-10-24 ; la V1.1 n'a pas encore été installée ni écoutée sur le Pixel.
-
-Contenu : 34 unités provinciales, 8 grandes régions (6 de premier rang, Zhongnan subdivisée) et les îles Paracel ; 40 villes, 27 cours d'eau (12 grands fleuves, 15 affluents), 17 chaînes et 20 sommets. Modes Apprendre, Trouver, Éliminer et Saisir pour chaque catégorie ; progression, records, révision des erreurs, paramètres. Le mode Contours est annoncé « bientôt ».
-
-**Ce que la V1.1 a ajouté** (détail et décisions dans `docs/plan-v1.1.md`) :
-- A. Longueur des cours d'eau (`lengthKm`, `lengthInChinaKm`, sources dans `docs/data-sources.md`) ; tracés du Huai, du Liao, du Tarim et du Yongding complétés ; test `riverSectionsLeaveNoGap`.
-- B. Noms connus en Europe (`knownAs`, 23 lieux) : « Mékong / Lancang Jiang » partout (fiches, consignes, résultats), nom court sur la carte ; accepté dans Saisir, avec ou sans accents.
-- C. Pinyin avec tons (`pinyinTones`, 148 lieux) ; bouton 🔊 (`speech/Pronouncer`, synthèse vocale d'Android en mandarin, lit les hanzi, voix hors ligne de préférence, canal « médias » pour le volume) ; lecture automatique du nom demandé dans Trouver et Éliminer (réglage « Lire les consignes », activé par défaut, pas dans Saisir où elle donnerait la réponse).
-- D. Fiches « En savoir plus » : `assets/geo/facts.json` (138 fiches, modèle `PlaceFacts`, validation dans `PlaceFactsLoader`), section dépliable dans Apprendre (le panneau passe à 60 % de la hauteur).
-- E. Fiche compacte de 4 lignes avec 🔊 dans le retour de réponse des quiz.
+À vérifier sur le Pixel : volume et timbre des sons, prononciation, lisibilité des fiches dépliées, rythme d'Éliminer (0,6 s après une bonne réponse, 1,5 s après une erreur), points des parcs Tigre et léopard et Hainan.
 
 ### Repères dans le code
 
-- `data/` : `GeoEntity` (dont `knownAs`, `pinyinTones`, `lengthKm`), chargement et validation, `PlaceFacts`, `AssetGeoRepository` ;
+- `data/` : `GeoEntity` (dont `knownAs`, `pinyinTones`, `lengthKm`, `areaKm2`, `designations`), chargement et validation, `PlaceFacts` (dont `legend`), `AssetGeoRepository` ;
 - `map/` : géométrie (surfaces, lignes, points), projection, détection du toucher, zoom ;
 - `game/` : moteurs `QuizSession` et `EliminateSession`, chronomètre `Stopwatch`, niveaux, `AnswerChecker`, `GeoCategory` ;
 - `progress/` : progression, réglages (`showHanzi`, `autoSpeak`, `answerSounds`) et DataStore ;
 - `speech/` : `Pronouncer` (synthèse vocale, sans dépendance du moteur de jeu) et `AnswerSounds` (sons de réponse) ;
 - `ui/` : `AppViewModel`, écrans, `ChinaMap`, `common/EntityInfo` (fiche complète et fiche compacte), `common/SpeakButton` ;
-- `tools/` : scripts Python (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`, `build_sounds.py`, `build_tests_pdf.py`).
+- `tools/` : scripts Python (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_osm_geometry.py`, `build_icon.py`, `build_sounds.py`, `build_tests_pdf.py`, `build_presentation_pdf.py`).
 
 ### Commandes
 
@@ -530,24 +516,24 @@ Voir `docs/build.md`. Avec PowerShell : `$env:JAVA_HOME = "C:\Program Files\Andr
 
 ### À faire ensuite
 
-1. **Créer la Release GitHub `v1.1`** avec l'APK debug en pièce jointe (procédure dans `docs/build.md`), puis installer sur le Pixel et **écouter** la prononciation et le volume (jamais entendue, seulement vue dans les journaux). `gh` n'est pas installé : la release se fait sur le site (ou `winget install GitHub.cli`).
-2. ~~Relire les fiches~~ : fait le 2026-10-25, avec sources (voir `docs/verification-fiches.md`).
-3. **Choisir une licence** pour le code (aucune pour l'instant ; MIT proposée).
-4. **Version 2** : parcs, lacs, villes-préfectures ; puis le **mode Contours** ; version 3 : spécialités culinaires.
-5. Limite connue : le Min Jiang n'a que son cours inférieur (Natural Earth n'a pas le reste).
+1. **Installer la v2.0 sur le Pixel** depuis la release GitHub et écouter la prononciation et les sons.
+2. **Choisir une licence** pour le code (aucune pour l'instant ; MIT proposée ; les contours OSM restent sous ODbL).
+3. Suite de la version 2 : **villes-préfectures** ; puis le **mode Contours** ; version 3 : spécialités culinaires.
+4. Limites connues : le Min Jiang n'a que son cours inférieur (Natural Earth) ; Shennongjia, Tianchi, Trois rivières parallèles et Xishuangbanna absents faute de contour libre.
 
 ### Règles de publication (mises en place le 2026-10-24)
 
-- Le dépôt est public et **ne contient aucune capture d'application commerciale** : `Inspirations/` et `screenshot/` restent dans `.gitignore`, comme `tools/raw/`, les APK, les clés de signature et `.idea/deploymentTargetSelector.xml` (il contient le numéro de série du téléphone).
+- Le dépôt est public et **ne contient aucune capture d'application commerciale** (les captures de `docs/images/` sont celles de notre propre application) : `Inspirations/` et `screenshot/` restent dans `.gitignore`, comme `tools/raw/`, les APK, les clés de signature et `.idea/deploymentTargetSelector.xml` (il contient le numéro de série du téléphone).
 - **Transparence** : le README et l'écran Paramètres → À propos disent que tout est fait avec une IA générative (Claude Code) et que le projet s'inspire des applications de Qbis Studio (World Map Quiz) sans rien copier ni être affilié. À conserver à chaque mise à jour.
-- Les tests (143 en v1.2) sont décrits dans `docs/tests-unitaires.md` et en PDF (`docs/tests-unitaires.pdf`). **Quand on ajoute ou modifie un test** : mettre à jour le `.md` (et le tableau du README), puis `python tools/build_tests_pdf.py`.
+- Les tests (152 en v2.0) sont décrits dans `docs/tests-unitaires.md` et en PDF (`docs/tests-unitaires.pdf`). **Quand on ajoute ou modifie un test** : mettre à jour le `.md` (et le tableau du README), puis `python tools/build_tests_pdf.py`.
 - Les commits se terminent par `Co-Authored-By: Claude` (la ligne exacte vient de la consigne d'attribution de la session).
-- **Ne jamais pousser sans autorisation explicite** (déjà donnée pour la V1.1 uniquement). Au premier envoi, Git Credential Manager demande une connexion GitHub dans le navigateur : c'est à l'utilisateur de la faire. Le README a été modifié sur GitHub par l'utilisateur après le premier envoi : toujours faire `git fetch` avant de travailler.
+- **Ne jamais pousser sans autorisation explicite** (donnée au cas par cas : V1.1, V1.2, V2.0). Au premier envoi, Git Credential Manager demande une connexion GitHub dans le navigateur : c'est à l'utilisateur de la faire. Le README a été modifié sur GitHub par l'utilisateur après le premier envoi : toujours faire `git fetch` avant de travailler.
 
 ### Pièges rencontrés
 
 - PowerShell : l'encodage par défaut est cp1252 ; pour afficher du français ou du chinois depuis Python, utiliser `sys.stdout.reconfigure(encoding="utf-8")`. Python 3.10 : pas de barre oblique inverse dans une expression d'f-string.
 - Expressions régulières Kotlin dans une chaîne normale : il faut doubler la barre inverse (`"\\p{IsLatin}"`, `"\\-"`).
 - Ne pas modifier un fichier de test sans relancer tout `testDebugUnitTest` : plusieurs tests lisent les vrais fichiers de `assets`.
+- Les données de `src/main/assets` sont déclarées comme entrées des tests (`app/build.gradle.kts`) depuis la v2.0 : avant, Gradle sautait les tests après une modification des seules données, et un test cassé pouvait passer inaperçu. En cas de doute : `testDebugUnitTest --rerun`.
 
 **Règle générale : privilégie toujours une petite fonctionnalité terminée, testée et comprise à une grande quantité de code générée sans validation.**

@@ -1,6 +1,6 @@
 # Tests unitaires de China Map Quiz
 
-Version 2 (en cours) — 152 tests dans 14 fichiers.
+Version 2.0 — 152 tests dans 14 fichiers.
 
 Ce document décrit chaque test unitaire de l'application : ce qu'il vérifie et pourquoi. Comme tout le projet, les tests et ce document ont été écrits par Claude Code (Anthropic), une IA générative, à la demande de l'auteur du projet.
 

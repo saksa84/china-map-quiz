@@ -1,8 +1,15 @@
 # China Map Quiz
 
-Application Android personnelle pour apprendre la géographie de la Chine sur une carte interactive : provinces, grandes régions, villes, fleuves et montagnes. Elle fonctionne entièrement hors ligne, sans compte, sans publicité et sans collecte de données. Les noms sont affichés en pinyin, avec le nom connu en français quand il existe (« Mékong / Lancang Jiang »).
+Application Android personnelle pour apprendre la géographie de la Chine sur une carte interactive : provinces, grandes régions, villes, fleuves, montagnes, lacs et parcs. Elle fonctionne entièrement hors ligne, sans compte, sans publicité et sans collecte de données. Les noms sont affichés en pinyin, avec le nom connu en français quand il existe (« Mékong / Lancang Jiang »).
 
-**Version actuelle : 1.1.**
+**Version actuelle : 2.0.** Présentation illustrée du projet et de sa création : [docs/presentation.pdf](docs/presentation.pdf).
+
+<p>
+<img src="docs/images/01-accueil.jpg" width="200" alt="Accueil">
+<img src="docs/images/07-trouver-fiche.jpg" width="200" alt="Trouver, fiche dépliée">
+<img src="docs/images/10-eliminer.jpg" width="200" alt="Éliminer">
+<img src="docs/images/08-parcs-fiche.jpg" width="200" alt="Parcs, fiche de Jiuzhaigou">
+</p>
 
 > **Transparence.** Ce projet a été entièrement réalisé avec une IA générative, **[Claude Code](https://claude.com/claude-code)** (Anthropic). Voir [Réalisation avec l'IA générative](#réalisation-avec-lia-générative).
 >
@@ -15,8 +22,8 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 - 40 grandes villes (plus de 3 millions d'habitants au recensement de 2020, plus Hong Kong et Taipei).
 - 27 cours d'eau (12 grands fleuves, 15 affluents), avec leur longueur.
 - 17 chaînes de montagnes et 20 sommets, avec leur altitude.
-- 16 parcs et sites naturels (version 2, en cours) : les 5 parcs nationaux officiels et 11 sites célèbres (Jiuzhaigou, Zhangjiajie, Guilin, Forêt de pierre…), avec leur statut exact (parc national, patrimoine mondial, géoparc).
-- 24 lacs (version 2, en cours) : dont 2 lacs de barrage, tous dessinés en surface (Natural Earth, et OpenStreetMap pour Xi Hu, Dian Chi et Er Hai), avec leur superficie et leur altitude.
+- 16 parcs et sites naturels (version 2) : les 5 parcs nationaux officiels et 11 sites célèbres (Jiuzhaigou, Zhangjiajie, Guilin, Forêt de pierre…), avec leur statut exact (parc national, patrimoine mondial, géoparc).
+- 24 lacs (version 2), dont 2 lacs de barrage, tous dessinés en surface (Natural Earth, et OpenStreetMap pour Xi Hu, Dian Chi et Er Hai), avec leur superficie et leur altitude.
 
 **Modes de jeu**, pour chaque catégorie :
 - **Apprendre** : explorer la carte, toucher un lieu pour afficher sa fiche, avec une section « En savoir plus ».
@@ -25,7 +32,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 - **Saisir** : taper le nom du lieu coloré ; tons, accents, casse et espaces sont ignorés.
 - *Contours* : prévu, pas encore disponible.
 
-**Pour mieux retenir** (version 1.1)
+**Pour mieux retenir**
 - Noms connus en Europe affichés avec le pinyin : Everest / Zhumulangma Feng, Pékin / Beijing, Canton / Guangzhou.
 - Pinyin avec tons (Sìchuān) et bouton 🔊 qui prononce le nom en mandarin grâce à la synthèse vocale du téléphone. Le nom demandé est aussi lu automatiquement dans Trouver et Éliminer (désactivable).
 - 178 fiches « mini-Wikipédia » (toutes vérifiées avec des sources citées : [docs/verification-fiches.md](docs/verification-fiches.md)) : population, langues, histoire, économie, plat emblématique, anecdotes ; pour les lacs et les parcs, leurs légendes (le Serpent blanc de Xi Hu, le miroir brisé de Jiuzhaigou…) et des faits insolites.
@@ -41,7 +48,7 @@ Tout le contenu de ce dépôt a été produit par **Claude Code**, l'assistant d
 
 Conséquences à connaître :
 - Les commits portent la mention `Co-Authored-By: Claude`.
-- Les **fiches « En savoir plus »** ont été rédigées par Claude à partir de ses connaissances générales, sans source consultée pour chaque phrase. Elles ont été relues, mais peuvent contenir des erreurs. L'application les signale par la mention « à vérifier ».
+- Les **fiches « En savoir plus »** ont d'abord été rédigées par Claude de mémoire, puis **vérifiées phrase par phrase** avec des sources citées (Wikipédia avec révision, UNESCO, sites officiels) ; ce qui n'était confirmé par aucune source a été retiré. Le registre est dans [docs/verification-fiches.md](docs/verification-fiches.md). Des erreurs restent possibles.
 - Les **données vérifiables** (frontières, coordonnées, populations, longueurs des fleuves) viennent de sources citées dans [docs/data-sources.md](docs/data-sources.md), et non de la mémoire de l'IA.
 - Les tests automatisés (152, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
 
@@ -126,5 +133,5 @@ Les **152 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. 
 | `app/src/main/assets/geo` | Données géographiques et fiches (voir `docs/data-sources.md`) |
 | `app/src/main/assets/game` | Configuration des niveaux |
 | `app/src/test` | Tests unitaires |
-| `tools/` | Scripts Python : préparation des données, icône, PDF des tests |
-| `docs/` | Plans, sources de données, compilation, tests |
+| `tools/` | Scripts Python : préparation des données (Natural Earth, OpenStreetMap), icône, sons, PDF des tests et de la présentation |
+| `docs/` | Plans, sources de données, vérification des fiches, compilation, tests, présentation, captures (`docs/images/`) |

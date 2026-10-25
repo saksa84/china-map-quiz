@@ -106,9 +106,9 @@ Bilan du lot : 40 fiches, dont plus de la moitié corrigées ; une erreur franch
 - **CN-XZ** — sources : en:Tibet Autonomous Region (1381565795), zh:西藏自治区 (95242335), en:Potala Palace (1372535590). Corrections : « Élevage du yak, mines » non confirmés ; part du budget chiffrée ; altitude rattachée au plateau.
 - **CN-SN** — sources : en:Shaanxi (1377682762), zh:陕西省 (94254951), en:Yan'an (1378291234), en:Biangbiang noodles (1381232802). Corrections : Dates de Yan'an corrigées (1935-1947 au lieu de 1937-1947) ; « plus de 50 traits » précisé (58).
 - **CN-GS** — sources : en:Gansu (1377824250), zh:甘肃省 (94494827), en:Mogao Caves (1373712116). Corrections : Pétrole de Yumen, « près de mille ans » (environ 900) et « plus de 1 600 km » non confirmés ; superficie corrigée (457 400 km² au lieu de 425 800).
-- **CN-QH** — sources : en:Qinghai (1378487652), zh:青海省 (94494944). Corrections : Plat (mouton, yaourt de yak) et potasse du lac Qarhan non confirmés, retirés.
+- **CN-QH** — sources : en:Qinghai (1378487652), zh:青海省 (94494944). Corrections : Plat (mouton, yaourt de yak) et potasse du lac Qarhan non confirmés ; plat remplacé par le mian pian, attesté par en:Xining (1378847127).
 - **CN-NX** — sources : en:Ningxia (1378231235), zh:宁夏回族自治区 (95137512), en:Western Xia mausoleums (1366157511). Corrections : « Pyramides de Chine » non confirmé, remplacé par l'inscription UNESCO de 2025.
-- **CN-XJ** — sources : en:Xinjiang (1381904750). Corrections : Profondeur corrigée (−155 m au lieu de −154) ; plat (polo, brochettes) non trouvé dans la source, retiré.
+- **CN-XJ** — sources : en:Xinjiang (1381904750). Corrections : Profondeur corrigée (−155 m au lieu de −154) ; plat confirmé ensuite par en:Uyghur cuisine (1379091277) : polo, laghman, brochettes.
 - **CN-HK** — sources : en:Hong Kong (1381597913). Corrections : Précisions sourcées (troisième place financière, record de gratte-ciel).
 - **CN-MO** — sources : en:Macau (1380630381). Corrections : « Premier comptoir européen durable » non confirmé, retiré ; terres gagnées chiffrées.
 - **CN-TW** — sources : en:Taiwan (1380084849), en:Demographics of Taiwan (1381597217), en:Taipei (1381377799). Corrections : Population mise à jour (23,4 millions en 2025) ; « plus haut que le mont Fuji » et dates de Taipei 101 remplacés par des faits sourcés.
