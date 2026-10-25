@@ -18,6 +18,8 @@ data class Settings(
     val showHanzi: Boolean = true,
     /** Trouver et Éliminer : le nom demandé est lu en mandarin à chaque question. */
     val autoSpeak: Boolean = true,
+    /** Son de bonne ou de mauvaise réponse dans les quiz. */
+    val answerSounds: Boolean = true,
 )
 
 /**
@@ -30,7 +32,11 @@ class ProgressStore(private val context: Context) {
     val progress: Flow<Progress> = context.dataStore.data.map { Progress.fromJson(it[PROGRESS]) }
 
     val settings: Flow<Settings> = context.dataStore.data.map {
-        Settings(showHanzi = it[SHOW_HANZI] ?: true, autoSpeak = it[AUTO_SPEAK] ?: true)
+        Settings(
+            showHanzi = it[SHOW_HANZI] ?: true,
+            autoSpeak = it[AUTO_SPEAK] ?: true,
+            answerSounds = it[ANSWER_SOUNDS] ?: true,
+        )
     }
 
     suspend fun save(progress: Progress) {
@@ -49,9 +55,14 @@ class ProgressStore(private val context: Context) {
         context.dataStore.edit { it[AUTO_SPEAK] = enabled }
     }
 
+    suspend fun setAnswerSounds(enabled: Boolean) {
+        context.dataStore.edit { it[ANSWER_SOUNDS] = enabled }
+    }
+
     private companion object {
         val PROGRESS = stringPreferencesKey("progress_v1")
         val SHOW_HANZI = booleanPreferencesKey("show_hanzi")
         val AUTO_SPEAK = booleanPreferencesKey("auto_speak")
+        val ANSWER_SOUNDS = booleanPreferencesKey("answer_sounds")
     }
 }

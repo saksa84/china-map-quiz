@@ -135,7 +135,11 @@ fun EntityInfo(
 @Composable
 private fun FactsSection(facts: PlaceFacts, expanded: Boolean, onExpandedChange: (Boolean) -> Unit, color: Color) {
     TextButton(onClick = { onExpandedChange(!expanded) }, contentPadding = PaddingValues(0.dp)) {
-        Text(stringResource(if (expanded) R.string.facts_less else R.string.facts_more))
+        // Sur le fond sombre des quiz, le bouton prend la couleur des consignes pour rester lisible.
+        Text(
+            stringResource(if (expanded) R.string.facts_less else R.string.facts_more),
+            color = if (color == Color.Unspecified) Color.Unspecified else QuizColors.Accent,
+        )
     }
     if (!expanded) return
     val lines = buildList {
@@ -179,6 +183,9 @@ fun CompactEntityInfo(
     facts: PlaceFacts?,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
+    /** Fiche « En savoir plus » dépliée sous les 4 lignes ; sans bouton si [onFactsExpandedChange] est null. */
+    factsExpanded: Boolean = false,
+    onFactsExpandedChange: ((Boolean) -> Unit)? = null,
 ) {
     Column(modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -213,6 +220,7 @@ fun CompactEntityInfo(
                 maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
+        if (facts != null && onFactsExpandedChange != null) FactsSection(facts, factsExpanded, onFactsExpandedChange, color)
     }
 }
 

@@ -125,6 +125,7 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                 settings = vm.settings,
                 onShowHanzi = vm::setShowHanzi,
                 onAutoSpeak = vm::setAutoSpeak,
+                onAnswerSounds = vm::setAnswerSounds,
                 onResetProgress = vm::resetProgress,
                 onBack = { vm.back() },
             )
@@ -137,6 +138,7 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                         onTap = vm::tap,
                         onConfirm = vm::confirm,
                         onNext = vm::next,
+                        onFactsExpanded = vm::setFactsExpanded,
                         onBack = { vm.back() },
                     )
                     GameMode.TYPE -> TypeScreen(
@@ -146,6 +148,7 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                         onSubmit = vm::submitTyped,
                         onSkip = vm::skip,
                         onNext = vm::next,
+                        onFactsExpanded = vm::setFactsExpanded,
                         onBack = { vm.back() },
                     )
                     GameMode.ELIMINATE -> EliminateScreen(
@@ -153,6 +156,7 @@ fun ChinaMapQuizApp(vm: AppViewModel = viewModel()) {
                         state = state,
                         elapsedMs = vm::elapsedMs,
                         onTap = vm::tap,
+                        onConfirm = vm::confirm,
                         onBack = { vm.back() },
                     )
                 }

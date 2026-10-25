@@ -1,6 +1,6 @@
 # Tests unitaires de China Map Quiz
 
-Version 1.1 — 138 tests dans 13 fichiers.
+Version 1.2 — 143 tests dans 14 fichiers.
 
 Ce document décrit chaque test unitaire de l'application : ce qu'il vérifie et pourquoi. Comme tout le projet, les tests et ce document ont été écrits par Claude Code (Anthropic), une IA générative, à la demande de l'auteur du projet.
 
@@ -34,15 +34,16 @@ Le rapport détaillé s'ouvre ensuite dans un navigateur : `app/build/reports/te
 | `data/RealFeaturesTest` | 12 | Vraies données : villes, cours d'eau, montagnes |
 | `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » |
 | `game/AnswerCheckerTest` | 10 | Validation des réponses tapées (mode Saisir) |
-| `game/QuizSessionTest` | 13 | Moteur des modes Trouver et Saisir |
-| `game/EliminateSessionTest` | 6 | Moteur du mode Éliminer |
+| `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir |
+| `game/EliminateSessionTest` | 7 | Moteur du mode Éliminer |
+| `game/StopwatchTest` | 3 | Chronomètre avec pause |
 | `game/QuizLevelsTest` | 6 | Niveaux de jeu |
 | `map/HitTesterTest` | 13 | Détection du toucher sur la carte |
 | `map/MapViewportTest` | 5 | Zoom et déplacement |
 | `map/RealMapTest` | 7 | Vraie carte et vraies coordonnées GPS |
 | `progress/ProgressTest` | 9 | Records, erreurs fréquentes, sauvegarde |
 | `ExampleUnitTest` | 1 | Exemple du modèle Android Studio |
-| **Total** | **138** | |
+| **Total** | **143** | |
 
 ## data/GeoCatalogLoaderTest — lecture et validation des données (42 tests)
 
@@ -157,7 +158,7 @@ Les fiches sont dans un fichier séparé, `facts.json`, rattaché aux lieux par 
 | `emptyOrUnknownIsWrong` | Une saisie vide, ou une question sur un lieu inconnu, donne « faux » sans planter. |
 | `capitalsAreNotAcceptedAsProvinceNames` | La capitale (« Chengdu ») n'est pas acceptée à la place de la province (Sichuan). |
 
-## game/QuizSessionTest — moteur des modes Trouver et Saisir (13 tests)
+## game/QuizSessionTest — moteur des modes Trouver et Saisir (14 tests)
 
 `QuizSession` déroule une partie : une question par lieu, une seule réponse par question, un chronomètre, puis un bilan. Le temps est simulé dans les tests, ce qui les rend instantanés et reproductibles.
 
@@ -175,20 +176,32 @@ Les fiches sont dans un fichier séparé, `facts.json`, rattaché aux lieux par 
 | `shuffled_isReproducibleWithASeedAndAsksEachPlaceOnce` | Le tirage aléatoire pose chaque lieu une fois exactement, et le même germe redonne le même ordre. |
 | `typedAnswers_keepTheTextAndTheCheckerVerdict` | En mode Saisir, le texte tapé et le verdict du vérificateur sont conservés. |
 | `skippedQuestion_isAMistake` | Une question passée (bouton « Passer ») compte comme une erreur. |
+| `readingTheFacts_pausesTheTimerUntilTheNextQuestion` | Pendant la lecture de la fiche « En savoir plus », le chrono est en pause ; il repart à la question suivante, et le temps de lecture n'est pas compté. |
 | `duplicateTargets_areRejected` | Une partie qui poserait deux fois le même lieu est refusée à la création. |
 
-## game/EliminateSessionTest — moteur du mode Éliminer (6 tests)
+## game/EliminateSessionTest — moteur du mode Éliminer (7 tests)
 
-`EliminateSession` applique les règles du mode Éliminer : erreurs illimitées, et un lieu trouvé disparaît du jeu.
+`EliminateSession` applique les règles du mode Éliminer (version 1.2) : une seule chance par lieu, un lieu trouvé disparaît du jeu, un lieu manqué reste sur la carte.
 
 | Test | Ce qu'il vérifie |
 |---|---|
-| `wrongTaps_keepTheSameQuestion` | Après une erreur, la consigne reste la même. |
+| `wrongTap_isAMistakeAndMovesOn_withoutEliminating` | Une erreur compte, passe à la consigne suivante, et le lieu manqué reste sur la carte. |
 | `correctTap_eliminatesAndMovesOn` | Un bon toucher élimine le lieu et passe à la consigne suivante. |
-| `eliminatedRegionsCannotBeTappedAgain` | Un lieu éliminé n'est plus touchable. |
-| `gameEndsWhenEverythingIsFound_andTimerStops` | La partie se termine quand tout est trouvé, et le chronomètre s'arrête. |
-| `summary_countsFirstTrySuccessesAndListsEachMistake` | Le bilan compte les lieux trouvés du premier coup et liste chaque erreur. |
+| `eliminatedRegionsCannotBeTappedAgain` | Un lieu éliminé n'est plus touchable : le toucher n'est pas une réponse. |
+| `gameEndsWhenEveryPlaceWasAskedOnce_andTimerStops` | La partie se termine quand chaque lieu a été demandé une fois, et le chronomètre s'arrête. |
+| `onlyMissedPlacesRemainOnTheMapAtTheEnd` | À la fin, seuls les lieux manqués restent sur la carte. |
+| `summary_countsSuccessesAndListsEachMistake` | Le bilan compte les lieux trouvés et liste chaque erreur (lieu cherché, lieu touché). |
 | `emptyGame_isFinished` | Une partie sans lieu est terminée d'emblée. |
+
+## game/StopwatchTest — chronomètre avec pause (3 tests)
+
+`Stopwatch` mesure le temps de jeu ; il se met en pause pendant la lecture d'une fiche.
+
+| Test | Ce qu'il vérifie |
+|---|---|
+| `pausedTime_isNotCounted` | Le temps passé en pause n'est pas compté. |
+| `pauseAndResume_twice_areHarmless` | Mettre deux fois en pause ou relancer deux fois ne fausse pas le temps. |
+| `stop_endsAPauseAndFreezesTheTime` | L'arrêt de fin de partie termine une pause en cours et fige le temps ; une pause après l'arrêt est sans effet. |
 
 ## game/QuizLevelsTest — niveaux de jeu (6 tests)
 

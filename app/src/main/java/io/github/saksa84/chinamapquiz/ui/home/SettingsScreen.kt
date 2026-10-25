@@ -41,6 +41,7 @@ fun SettingsScreen(
     settings: Settings,
     onShowHanzi: (Boolean) -> Unit,
     onAutoSpeak: (Boolean) -> Unit,
+    onAnswerSounds: (Boolean) -> Unit,
     onResetProgress: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -57,6 +58,7 @@ fun SettingsScreen(
             ) {
                 SettingSwitch(R.string.settings_hanzi, R.string.settings_hanzi_sub, settings.showHanzi, onShowHanzi)
                 SettingSwitch(R.string.settings_auto_speak, R.string.settings_auto_speak_sub, settings.autoSpeak, onAutoSpeak)
+                SettingSwitch(R.string.settings_answer_sounds, R.string.settings_answer_sounds_sub, settings.answerSounds, onAnswerSounds)
 
                 GameButton(stringResource(R.string.settings_reset), { confirmingReset = true })
 

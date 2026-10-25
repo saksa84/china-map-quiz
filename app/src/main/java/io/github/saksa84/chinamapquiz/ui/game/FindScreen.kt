@@ -24,6 +24,7 @@ fun FindScreen(
     onTap: (String?) -> Unit,
     onConfirm: () -> Unit,
     onNext: () -> Unit,
+    onFactsExpanded: (Boolean) -> Unit,
     onBack: () -> Unit,
 ) {
     val shownMs = rememberElapsed(elapsedMs)
@@ -38,6 +39,7 @@ fun FindScreen(
                 stringResource(R.string.find_points, state.score),
                 stringResource(R.string.find_round, state.questionNumber, state.total),
                 onBack,
+                paused = state.factsExpanded,
             )
         },
         feedback = {
@@ -62,10 +64,11 @@ fun FindScreen(
                 selectedBorderColor = QuizColors.Accent,
             )
         },
-        overlay = { if (answer != null) AnswerCard(data, answer.targetId) },
+        overlay = { if (answer != null) AnswerCard(data, answer.targetId, state.factsExpanded, onFactsExpanded) },
         bottom = {
-            AutoSpeak(state.targetId?.let { data.catalog[it]?.hanzi })
-            PromptText(stringResource(R.string.find_prompt, state.targetId?.let { data.catalog[it]?.displayName } ?: ""))
+            val target = state.targetId?.let { data.catalog[it] }
+            AutoSpeak(target?.hanzi)
+            PromptWithSpeech(stringResource(R.string.find_prompt, target?.displayName ?: ""), target?.hanzi)
             val isLast = state.questionNumber >= state.total
             GameButton(
                 stringResource(

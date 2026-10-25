@@ -45,6 +45,7 @@ fun TypeScreen(
     onSubmit: (String) -> Unit,
     onSkip: () -> Unit,
     onNext: () -> Unit,
+    onFactsExpanded: (Boolean) -> Unit,
     onBack: () -> Unit,
 ) {
     val shownMs = rememberElapsed(elapsedMs)
@@ -65,6 +66,7 @@ fun TypeScreen(
                 stringResource(R.string.find_points, state.score),
                 stringResource(R.string.find_round, state.questionNumber, state.total),
                 onBack,
+                paused = state.factsExpanded,
             )
         },
         feedback = {
@@ -88,7 +90,7 @@ fun TypeScreen(
                 selectedBorderColor = QuizColors.Accent,
             )
         },
-        overlay = { if (answer != null) AnswerCard(data, answer.targetId) },
+        overlay = { if (answer != null) AnswerCard(data, answer.targetId, state.factsExpanded, onFactsExpanded) },
         bottom = {
             if (asking) {
                 PromptText(stringResource(R.string.type_prompt))

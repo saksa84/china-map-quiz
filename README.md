@@ -19,7 +19,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 **Modes de jeu**, pour chaque catégorie :
 - **Apprendre** : explorer la carte, toucher un lieu pour afficher sa fiche, avec une section « En savoir plus ».
 - **Trouver** : toucher le lieu demandé, une seule chance par question.
-- **Éliminer** : trouver tous les lieux ; ceux qui sont trouvés disparaissent de la carte.
+- **Éliminer** : toucher le lieu demandé puis confirmer, une seule chance ; un lieu trouvé s'efface de la carte, un lieu manqué y reste. À la fin, il ne reste que les lieux manqués.
 - **Saisir** : taper le nom du lieu coloré ; tons, accents, casse et espaces sont ignorés.
 - *Contours* : prévu, pas encore disponible.
 
@@ -27,6 +27,7 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 - Noms connus en Europe affichés avec le pinyin : Everest / Zhumulangma Feng, Pékin / Beijing, Canton / Guangzhou.
 - Pinyin avec tons (Sìchuān) et bouton 🔊 qui prononce le nom en mandarin grâce à la synthèse vocale du téléphone. Le nom demandé est aussi lu automatiquement dans Trouver et Éliminer (désactivable).
 - 138 fiches « mini-Wikipédia » : population, langues, histoire, économie, plat emblématique, anecdotes.
+- Dans les quiz (version 1.2) : bouton 🔊 à côté de la consigne pour réentendre le nom demandé ; son de bonne et de mauvaise réponse (désactivable) ; fiche « En savoir plus » dépliable après chaque réponse dans Trouver et Saisir, chrono en pause pendant la lecture.
 - Résultats avec la liste des erreurs, « rejouer les erreurs », records et lieux les plus souvent manqués.
 
 ## Réalisation avec l'IA générative
@@ -40,7 +41,7 @@ Conséquences à connaître :
 - Les commits portent la mention `Co-Authored-By: Claude`.
 - Les **fiches « En savoir plus »** ont été rédigées par Claude à partir de ses connaissances générales, sans source consultée pour chaque phrase. Elles ont été relues, mais peuvent contenir des erreurs. L'application les signale par la mention « à vérifier ».
 - Les **données vérifiables** (frontières, coordonnées, populations, longueurs des fleuves) viennent de sources citées dans [docs/data-sources.md](docs/data-sources.md), et non de la mémoire de l'IA.
-- Les tests automatisés (138, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
+- Les tests automatisés (143, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
 
 ## Inspiration et crédits
 
@@ -80,7 +81,7 @@ Prérequis : Android Studio 2026.2 ou plus récent (il fournit le JDK utilisé p
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-.\gradlew.bat testDebugUnitTest   # 138 tests unitaires, sur le PC, sans émulateur
+.\gradlew.bat testDebugUnitTest   # 143 tests unitaires, sur le PC, sans émulateur
 .\gradlew.bat assembleDebug       # APK debug
 ```
 
@@ -88,7 +89,7 @@ APK généré : `app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Tests unitaires
 
-Les **138 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
+Les **143 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
 
 | Fichier | Tests | Ce qui est vérifié |
 |---|---:|---|
@@ -97,8 +98,9 @@ Les **138 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. 
 | `data/RealFeaturesTest` | 12 | Vraies villes, fleuves et montagnes : géométrie du bon type, villes dans leur province, fleuves sans trou, pinyin cohérent avec le nom, niveaux de jeu. |
 | `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » : validation, et une fiche complète pour chacun des 138 lieux. |
 | `game/AnswerCheckerTest` | 10 | Mode Saisir : normalisation (tons, accents, casse), alias acceptés, fautes refusées, Shanxi et Shaanxi jamais confondus. |
-| `game/QuizSessionTest` | 13 | Moteur des modes Trouver et Saisir : score, une seule réponse par question, fin de partie, chronomètre, erreurs à rejouer. |
-| `game/EliminateSessionTest` | 6 | Moteur du mode Éliminer : erreurs illimitées, lieux éliminés, fin de partie, bilan. |
+| `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir : score, une seule réponse par question, fin de partie, chronomètre (et sa pause pendant la lecture d'une fiche), erreurs à rejouer. |
+| `game/EliminateSessionTest` | 7 | Moteur du mode Éliminer : une seule chance par lieu, lieux éliminés, seuls les lieux manqués restent, fin de partie, bilan. |
+| `game/StopwatchTest` | 3 | Chronomètre : le temps de pause n'est pas compté, arrêt définitif en fin de partie. |
 | `game/QuizLevelsTest` | 6 | Niveaux Nord, Sud et Toute la Chine : couverture, tailles, équilibre, aucune question sans réponse. |
 | `map/HitTesterTest` | 13 | Détection du toucher : îles, trous, tolérance pour les petites régions, lignes, points prioritaires. |
 | `map/MapViewportTest` | 5 | Zoom et déplacement : centrage, zoom sous les doigts, limites. |

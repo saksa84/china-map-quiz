@@ -22,6 +22,7 @@ import io.github.saksa84.chinamapquiz.game.QuizSummary
 import io.github.saksa84.chinamapquiz.progress.Progress
 import io.github.saksa84.chinamapquiz.progress.ProgressStore
 import io.github.saksa84.chinamapquiz.progress.Settings
+import io.github.saksa84.chinamapquiz.speech.AnswerSounds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,8 +43,11 @@ sealed interface LoadState {
     data class Failed(val message: String) : LoadState
 }
 
-/** Retour bref après un toucher en mode Éliminer (la région clignote). */
-data class Flash(val id: String, val correct: Boolean)
+/**
+ * Retour bref après un toucher en mode Éliminer : le lieu touché clignote (et, en cas d'erreur,
+ * le lieu demandé [targetId] est montré) avant la consigne suivante.
+ */
+data class Flash(val id: String, val correct: Boolean, val targetId: String)
 
 /** Ce que l'écran de jeu affiche ; recalculé après chaque action pour que Compose redessine. */
 data class GameUiState(
@@ -56,13 +60,15 @@ data class GameUiState(
     val score: Int,
     /** Mode Éliminer : erreurs cumulées. */
     val errors: Int = 0,
-    /** Mode Trouver : lieu touché mais pas encore confirmé. */
+    /** Modes Trouver et Éliminer : lieu touché mais pas encore confirmé. */
     val pendingId: String? = null,
     /** Modes Trouver et Saisir : réponse affichée pendant le retour. */
     val lastAnswer: AnswerRecord? = null,
     /** Mode Éliminer : régions déjà trouvées. */
     val eliminated: Set<String> = emptySet(),
     val flash: Flash? = null,
+    /** Modes Trouver et Saisir : fiche « En savoir plus » dépliée pendant le retour (chrono en pause). */
+    val factsExpanded: Boolean = false,
 )
 
 /**
@@ -106,6 +112,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     private var pendingId: String? = null
     private var flash: Flash? = null
     private var checker: AnswerChecker? = null
+    private var factsExpanded = false
+    private val sounds = AnswerSounds(application)
     private val clock = { SystemClock.elapsedRealtime() }
 
     init {
@@ -140,6 +148,18 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setAutoSpeak(enabled: Boolean) {
         viewModelScope.launch { store.setAutoSpeak(enabled) }
+    }
+
+    fun setAnswerSounds(enabled: Boolean) {
+        viewModelScope.launch { store.setAnswerSounds(enabled) }
+    }
+
+    private fun playAnswerSound(correct: Boolean) {
+        if (settings.answerSounds) sounds.play(correct)
+    }
+
+    override fun onCleared() {
+        sounds.release()
     }
 
     fun chooseCategory(newCategory: GeoCategory) {
@@ -206,14 +226,15 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
         pendingId = null
         flash = null
+        factsExpanded = false
         summary = null
         refresh()
         screen = Screen.GAME
     }
 
     /**
-     * Toucher la carte. Trouver : sélectionne, et un second toucher sur la même région confirme.
-     * Éliminer : chaque toucher est une réponse.
+     * Toucher la carte (Trouver et Éliminer) : sélectionne, et un second toucher sur la même
+     * région confirme, comme le bouton Confirmer.
      */
     fun tap(id: String?) {
         val lvl = level ?: return
@@ -226,16 +247,28 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                     refresh()
                 }
             }
-            GameMode.ELIMINATE -> tapEliminate(id)
+            GameMode.ELIMINATE -> {
+                val s = eliminate ?: return
+                if (flash != null || s.isFinished || id in s.eliminated) return
+                if (id == pendingId) confirm() else {
+                    pendingId = id
+                    refresh()
+                }
+            }
             GameMode.TYPE -> Unit // en mode Saisir, la carte sert seulement à montrer la région
         }
     }
 
     fun confirm() {
         val selected = pendingId ?: return
-        quiz?.answer(selected)
         pendingId = null
-        refresh()
+        when (mode) {
+            GameMode.ELIMINATE -> answerEliminate(selected)
+            else -> {
+                quiz?.answer(selected)?.let { playAnswerSound(it.correct) }
+                refresh()
+            }
+        }
     }
 
     /** Mode Saisir : valide le texte tapé. */
@@ -244,6 +277,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         val target = s.currentTarget ?: return
         if (text.isBlank()) return
         s.answer(selectedId = null, typed = text.trim(), correct = checker?.isCorrect(target, text) == true)
+            ?.let { playAnswerSound(it.correct) }
         refresh()
     }
 
@@ -253,21 +287,39 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         refresh()
     }
 
+    /** Déplie ou replie la fiche du lieu pendant le retour ; le chrono est en pause tant qu'elle est ouverte. */
+    fun setFactsExpanded(expanded: Boolean) {
+        val s = quiz ?: return
+        if (s.phase != QuizSession.Phase.FEEDBACK) return
+        factsExpanded = expanded
+        if (expanded) s.pause() else s.resume()
+        refresh()
+    }
+
     fun next() {
         val s = quiz ?: return
+        factsExpanded = false
         s.next()
         if (s.phase == QuizSession.Phase.FINISHED) finish(s.summary())
         refresh()
     }
 
-    private fun tapEliminate(id: String) {
+    /**
+     * Éliminer : la réponse confirmée, juste ou fausse. Pendant le clignotement, la consigne
+     * reste affichée et la carte ne répond pas ; ensuite vient la consigne suivante. Une erreur reste
+     * affichée plus longtemps, pour voir où était le lieu demandé.
+     */
+    private fun answerEliminate(id: String) {
         val s = eliminate ?: return
+        if (flash != null) return
+        val target = s.currentTarget ?: return
         val record = s.tap(id) ?: return
-        val current = Flash(id, record.correct)
+        playAnswerSound(record.correct)
+        val current = Flash(id, record.correct, target)
         flash = current
         refresh()
         viewModelScope.launch {
-            delay(if (s.isFinished) 900 else 600)
+            delay(if (record.correct) 600 else 1_500)
             if (flash == current) {
                 flash = null
                 refresh()
@@ -336,19 +388,22 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                     score = s.score,
                     pendingId = pendingId,
                     lastAnswer = s.lastAnswer,
+                    factsExpanded = factsExpanded,
                 )
             }
             GameMode.ELIMINATE -> eliminate?.let { s ->
                 GameUiState(
                     mode = mode,
                     level = lvl,
-                    phase = if (s.isFinished) QuizSession.Phase.FINISHED else QuizSession.Phase.ASKING,
-                    targetId = s.currentTarget,
-                    questionNumber = (s.eliminated.size + 1).coerceAtMost(s.total),
+                    phase = if (s.isFinished && flash == null) QuizSession.Phase.FINISHED else QuizSession.Phase.ASKING,
+                    // Pendant le clignotement, on garde la consigne à laquelle on vient de répondre.
+                    targetId = flash?.targetId ?: s.currentTarget,
+                    questionNumber = (s.asked + 1).coerceAtMost(s.total),
                     total = s.total,
                     score = s.eliminated.size,
                     errors = s.errors,
                     eliminated = s.eliminated,
+                    pendingId = pendingId,
                     flash = flash,
                 )
             }

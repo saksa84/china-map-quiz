@@ -28,6 +28,7 @@ Fichiers produits (`app/src/main/assets/geo/`) :
 | `facts.json` | Écrit à la main ; chaque fiche porte `reviewed` (faux tant qu'elle n'est pas relue) |
 | `features.geometry.json` | **Généré** par `tools/build_features_geometry.py` : sélection des tronçons, villes et sommets, découpe à la frontière, vérification ville/province. Ne pas modifier à la main. |
 | `res/drawable/ic_launcher_foreground.xml` (icône) | **Généré** par `tools/build_icon.py` à partir de `map.geometry.json` |
+| `res/raw/answer_correct.wav`, `answer_wrong.wav` (sons de réponse) | **Générés** par `tools/build_sounds.py` : notes synthétisées par le script, aucun enregistrement extérieur ; création du projet, sans licence tierce |
 
 ## Sources évaluées et écartées
 

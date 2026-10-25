@@ -19,7 +19,7 @@
     <string name="mode_find">Trouver</string>
     <string name="mode_find_sub">Sur la carte</string>
     <string name="mode_eliminate">Éliminer</string>
-    <string name="mode_eliminate_sub">Jusqu\'à tout trouver</string>
+    <string name="mode_eliminate_sub">Une chance, la carte se vide</string>
     <string name="mode_type">Saisir</string>
     <string name="mode_type_sub">Écrire le nom</string>
     <string name="mode_outlines">Contours</string>
@@ -52,7 +52,7 @@
 
     <string name="eliminate_found">Trouvées : %1$d / %2$d</string>
     <string name="eliminate_errors">Erreurs : %1$d</string>
-    <string name="eliminate_wrong">Non, ça c\'est : %1$s</string>
+    <string name="eliminate_wrong">Faux ! Vous avez touché : %1$s</string>
 
     <string name="result_new_record">Nouveau record !</string>
 
@@ -70,6 +70,8 @@
     <string name="settings_hanzi_sub">Afficher le nom en hanzi dans les fiches</string>
     <string name="settings_auto_speak">Lire les consignes</string>
     <string name="settings_auto_speak_sub">Trouver et Éliminer : le nom demandé est prononcé en mandarin</string>
+    <string name="settings_answer_sounds">Sons de réponse</string>
+    <string name="settings_answer_sounds_sub">Un son pour une bonne réponse, un autre pour une erreur</string>
     <string name="settings_reset">Réinitialiser la progression</string>
     <string name="reset_title">Réinitialiser la progression ?</string>
     <string name="reset_message">Tous les records, temps et erreurs enregistrés seront effacés. Cette action est définitive.</string>
@@ -120,6 +122,7 @@
     <string name="speak_unavailable">Synthèse vocale indisponible sur cet appareil.</string>
     <string name="facts_more">En savoir plus ▾</string>
     <string name="facts_less">Réduire ▴</string>
+    <string name="timer_paused">⏸ en pause</string>
     <string name="facts_population">Population : %1$s millions (%2$d)</string>
     <string name="facts_area">Superficie : %1$s km²</string>
     <string name="facts_languages">Langues : %1$s</string>

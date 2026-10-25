@@ -15,7 +15,7 @@ data class AnswerRecord(
 )
 
 /**
- * Bilan d'une partie. Une question peut avoir plusieurs réponses (mode Éliminer) :
+ * Bilan d'une partie. Une question peut en principe avoir plusieurs réponses :
  * elle est réussie si sa première réponse est juste.
  */
 data class QuizSummary(
@@ -46,8 +46,7 @@ class QuizSession(
 ) {
     enum class Phase { ASKING, FEEDBACK, FINISHED }
 
-    private val startMs = clock()
-    private var endMs: Long? = null
+    private val stopwatch = Stopwatch(clock)
     private val records = mutableListOf<AnswerRecord>()
 
     var index: Int = 0
@@ -58,7 +57,7 @@ class QuizSession(
 
     init {
         require(targetIds.toSet().size == targetIds.size) { "Un lieu ne peut être demandé qu'une fois par partie" }
-        if (targetIds.isEmpty()) endMs = startMs
+        if (targetIds.isEmpty()) stopwatch.stop()
     }
 
     val total: Int get() = targetIds.size
@@ -69,8 +68,17 @@ class QuizSession(
     /** Dernière réponse, affichée pendant [Phase.FEEDBACK]. */
     val lastAnswer: AnswerRecord? get() = records.lastOrNull()
 
-    /** Temps écoulé ; figé à la dernière réponse. */
-    fun elapsedMs(): Long = (endMs ?: clock()) - startMs
+    /** Temps écoulé, pauses déduites ; figé à la dernière réponse. */
+    fun elapsedMs(): Long = stopwatch.elapsedMs()
+
+    val isPaused: Boolean get() = stopwatch.isPaused
+
+    /** Met le chronomètre en pause, par exemple pendant la lecture d'une fiche. */
+    fun pause() {
+        if (phase != Phase.FINISHED) stopwatch.pause()
+    }
+
+    fun resume() = stopwatch.resume()
 
     /**
      * Enregistre la réponse à la question en cours. Ignorée si on n'attend pas de réponse.
@@ -79,16 +87,18 @@ class QuizSession(
     fun answer(selectedId: String?, typed: String? = null, correct: Boolean? = null): AnswerRecord? {
         if (phase != Phase.ASKING) return null
         val target = targetIds[index]
-        val record = AnswerRecord(target, selectedId, clock() - startMs, typed, correct ?: (selectedId == target))
+        stopwatch.resume()
+        val record = AnswerRecord(target, selectedId, stopwatch.elapsedMs(), typed, correct ?: (selectedId == target))
         records += record
-        if (index == targetIds.lastIndex) endMs = clock()
+        if (index == targetIds.lastIndex) stopwatch.stop()
         phase = Phase.FEEDBACK
         return record
     }
 
-    /** Passe à la question suivante après le retour visuel. */
+    /** Passe à la question suivante après le retour visuel ; relance le chronomètre s'il était en pause. */
     fun next() {
         if (phase != Phase.FEEDBACK) return
+        stopwatch.resume()
         index++
         phase = if (index >= targetIds.size) Phase.FINISHED else Phase.ASKING
     }

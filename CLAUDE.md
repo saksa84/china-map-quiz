@@ -273,11 +273,24 @@ L'écran de résultat affiche le score, le pourcentage de bonnes réponses, le t
 
 Définis précisément les règles de ce mode avant de le développer. Il doit être possible de faire évoluer la logique sans modifier le moteur cartographique.
 
-Règles retenues le 2026-10-24 :
+Règles retenues le 2026-10-24 (remplacées en version 1.2, voir plus bas) :
 - Une consigne « Trouver : X » à la fois, dans un ordre aléatoire.
 - **Erreurs illimitées** : un toucher vaut une réponse, sans confirmation. Une erreur fait clignoter la région touchée en rouge et la consigne reste la même.
 - Une région trouvée est **éliminée** : elle reste colorée et n'est plus touchable, si bien que la carte se vide peu à peu.
 - La partie se termine quand tout est trouvé. Le résultat compte les régions trouvées du premier coup, les erreurs et le temps ; la liste des erreurs et « rejouer les erreurs » fonctionnent comme dans Trouver.
+
+**Règles révisées le 2026-10-25 (version 1.2), qui remplacent les précédentes** :
+- **Une seule chance par lieu**, avec **confirmation comme dans Trouver** (décision du 2026-10-25, après essai) : un toucher sélectionne (en jaune), on valide avec le bouton Confirmer ou en touchant une seconde fois la même région. Une région éliminée ne peut pas être sélectionnée.
+- Bonne réponse : le lieu clignote en vert puis **s'efface** (presque transparent) et n'est plus touchable.
+- Erreur : le lieu touché clignote en rouge, le lieu demandé est montré en vert (1,5 s), puis on **passe à la consigne suivante**. Le lieu manqué **reste sur la carte** et n'est plus redemandé dans la partie.
+- La partie se termine quand chaque lieu a été demandé une fois : il ne reste sur la carte que les lieux manqués. Résultat, liste des erreurs et « rejouer les erreurs » comme dans Trouver.
+- Pendant le clignotement, la consigne reste affichée et la carte ne répond pas.
+
+### Son et fiches pendant les quiz (version 1.2, demandé le 2026-10-25)
+
+- **Réécouter la consigne** : un bouton 🔊 à côté de « Trouver : X » (modes Trouver et Éliminer) relit le nom en mandarin autant de fois qu'on veut. Pas dans Saisir pendant la question, où il donnerait la réponse (la fiche de réponse a déjà son 🔊).
+- **Sons de réponse** : un son court pour une bonne réponse, un autre pour une erreur, toujours les mêmes, dans Trouver, Éliminer et Saisir (rien pour « Passer »). Sons synthétisés par `tools/build_sounds.py` (aucun fichier extérieur, donc aucune licence), lus avec `speech/AnswerSounds` (SoundPool). Réglage « Sons de réponse », activé par défaut.
+- **Fiche dépliable en jeu** : après une réponse dans Trouver et Saisir, la fiche compacte a un bouton « En savoir plus » qui déplie la fiche complète (comme dans Apprendre). **Le chrono est en pause** tant qu'elle est ouverte (« ⏸ en pause » sous le temps) ; il repart en la refermant ou en passant à la question suivante. Le moteur utilise `game/Stopwatch`. Pas de fiche dans Éliminer, où l'on enchaîne sans bouton « Suivant ».
 
 ### Modes futurs
 
@@ -467,6 +480,16 @@ Privilégie les solutions simples, lisibles et robustes.
 
 ## 15. État du projet et mission en cours
 
+### Version 1.2 en cours (2026-10-25) — retours après essai sur le Pixel
+
+Codée, 143 tests unitaires, essayée sur l'émulateur puis dans Android Studio par l'utilisateur, **commitée** (`versionName = "1.2"`, `versionCode = 3`) ; pas encore poussée ni publiée en release. Détail des règles dans la section 7 (« Mode Eliminate » et « Son et fiches pendant les quiz ») :
+1. Bouton 🔊 pour réécouter la consigne (Trouver, Éliminer).
+2. Sons de bonne et de mauvaise réponse (`res/raw`, `tools/build_sounds.py`, `speech/AnswerSounds`, réglage `answerSounds`).
+3. Éliminer : une seule chance par lieu, avec sélection puis confirmation comme dans Trouver ; trouvé = effacé, manqué = reste ; à la fin il ne reste que les manqués.
+4. Fiche « En savoir plus » dépliable après chaque réponse dans Trouver et Saisir, chrono en pause (`game/Stopwatch`).
+
+À vérifier sur le Pixel : volume et timbre des sons, lisibilité de la fiche dépliée, rythme d'Éliminer (0,6 s après une bonne réponse, 1,5 s après une erreur).
+
 ### Où on en est (au 2026-10-25)
 
 **Version 1.1 terminée, testée sur l'émulateur, commitée et publiée sur GitHub** : https://github.com/saksa84/china-map-quiz (branche `main`). 138 tests unitaires, `versionName = "1.1"`, `versionCode = 2`. La V1 (commit `37a4fe8`) avait été validée sur le Pixel 8 Pro le 2026-10-24 ; la V1.1 n'a pas encore été installée ni écoutée sur le Pixel.
@@ -484,11 +507,11 @@ Contenu : 34 unités provinciales, 8 grandes régions (6 de premier rang, Zhongn
 
 - `data/` : `GeoEntity` (dont `knownAs`, `pinyinTones`, `lengthKm`), chargement et validation, `PlaceFacts`, `AssetGeoRepository` ;
 - `map/` : géométrie (surfaces, lignes, points), projection, détection du toucher, zoom ;
-- `game/` : moteurs `QuizSession` et `EliminateSession`, niveaux, `AnswerChecker`, `GeoCategory` ;
-- `progress/` : progression, réglages (`showHanzi`, `autoSpeak`) et DataStore ;
-- `speech/` : `Pronouncer` (synthèse vocale, sans dépendance du moteur de jeu) ;
+- `game/` : moteurs `QuizSession` et `EliminateSession`, chronomètre `Stopwatch`, niveaux, `AnswerChecker`, `GeoCategory` ;
+- `progress/` : progression, réglages (`showHanzi`, `autoSpeak`, `answerSounds`) et DataStore ;
+- `speech/` : `Pronouncer` (synthèse vocale, sans dépendance du moteur de jeu) et `AnswerSounds` (sons de réponse) ;
 - `ui/` : `AppViewModel`, écrans, `ChinaMap`, `common/EntityInfo` (fiche complète et fiche compacte), `common/SpeakButton` ;
-- `tools/` : scripts Python (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`, `build_tests_pdf.py`).
+- `tools/` : scripts Python (`download_natural_earth.py`, `build_map_geometry.py`, `build_features_geometry.py`, `build_icon.py`, `build_sounds.py`, `build_tests_pdf.py`).
 
 ### Commandes
 
@@ -506,7 +529,7 @@ Voir `docs/build.md`. Avec PowerShell : `$env:JAVA_HOME = "C:\Program Files\Andr
 
 - Le dépôt est public et **ne contient aucune capture d'application commerciale** : `Inspirations/` et `screenshot/` restent dans `.gitignore`, comme `tools/raw/`, les APK, les clés de signature et `.idea/deploymentTargetSelector.xml` (il contient le numéro de série du téléphone).
 - **Transparence** : le README et l'écran Paramètres → À propos disent que tout est fait avec une IA générative (Claude Code) et que le projet s'inspire des applications de Qbis Studio (World Map Quiz) sans rien copier ni être affilié. À conserver à chaque mise à jour.
-- Les 138 tests sont décrits dans `docs/tests-unitaires.md` et en PDF (`docs/tests-unitaires.pdf`). **Quand on ajoute ou modifie un test** : mettre à jour le `.md` (et le tableau du README), puis `python tools/build_tests_pdf.py`.
+- Les tests (143 en v1.2) sont décrits dans `docs/tests-unitaires.md` et en PDF (`docs/tests-unitaires.pdf`). **Quand on ajoute ou modifie un test** : mettre à jour le `.md` (et le tableau du README), puis `python tools/build_tests_pdf.py`.
 - Les commits se terminent par `Co-Authored-By: Claude` (la ligne exacte vient de la consigne d'attribution de la session).
 - **Ne jamais pousser sans autorisation explicite** (déjà donnée pour la V1.1 uniquement). Au premier envoi, Git Credential Manager demande une connexion GitHub dans le navigateur : c'est à l'utilisateur de la faire. Le README a été modifié sur GitHub par l'utilisateur après le premier envoi : toujours faire `git fetch` avant de travailler.
 

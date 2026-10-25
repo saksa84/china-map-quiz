@@ -1,6 +1,7 @@
 package io.github.saksa84.chinamapquiz.ui.game
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,10 +32,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.saksa84.chinamapquiz.R
 import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.MapData
 import io.github.saksa84.chinamapquiz.map.ShapeKind
@@ -40,6 +46,7 @@ import io.github.saksa84.chinamapquiz.ui.common.BackButton
 import io.github.saksa84.chinamapquiz.ui.common.CompactEntityInfo
 import io.github.saksa84.chinamapquiz.ui.common.QuizBackground
 import io.github.saksa84.chinamapquiz.ui.common.QuizColors
+import io.github.saksa84.chinamapquiz.ui.common.SpeakButton
 import io.github.saksa84.chinamapquiz.ui.common.formatDuration
 import kotlinx.coroutines.delay
 
@@ -140,12 +147,18 @@ fun rememberElapsed(elapsedMs: () -> Long): Long {
     return shown
 }
 
-/** Bouton retour, chronomètre à gauche ; deux lignes d'indicateurs à droite (points, tour…). */
+/**
+ * Bouton retour, chronomètre à gauche ; deux lignes d'indicateurs à droite (points, tour…).
+ * @param paused chrono en pause (fiche ouverte) : signalé sous le temps
+ */
 @Composable
-fun GameTopBar(elapsedMs: Long, firstLine: String, secondLine: String, onBack: () -> Unit) {
+fun GameTopBar(elapsedMs: Long, firstLine: String, secondLine: String, onBack: () -> Unit, paused: Boolean = false) {
     Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         BackButton(onBack)
-        Text(formatDuration(elapsedMs), color = QuizColors.OnDark, fontSize = 24.sp, modifier = Modifier.padding(start = 12.dp))
+        Column(Modifier.padding(start = 12.dp)) {
+            Text(formatDuration(elapsedMs), color = QuizColors.OnDark, fontSize = 24.sp)
+            if (paused) Text(stringResource(R.string.timer_paused), color = QuizColors.Accent, fontSize = 13.sp)
+        }
         Spacer(Modifier.weight(1f))
         Column(horizontalAlignment = Alignment.End) {
             Text(firstLine, color = QuizColors.OnDark, fontSize = 20.sp)
@@ -164,9 +177,12 @@ fun FeedbackText(text: String?, color: Color) {
     }
 }
 
-/** Fiche du lieu qu'il fallait trouver, affichée pendant le retour. */
+/**
+ * Fiche du lieu qu'il fallait trouver, affichée pendant le retour. « En savoir plus » la déplie ;
+ * elle défile alors, pour tout lire sans cacher le bas de l'écran.
+ */
 @Composable
-fun AnswerCard(data: MapData, entityId: String?) {
+fun AnswerCard(data: MapData, entityId: String?, factsExpanded: Boolean, onFactsExpandedChange: (Boolean) -> Unit) {
     val entity = entityId?.let { data.catalog[it] } ?: return
     CompactEntityInfo(
         data.catalog,
@@ -174,9 +190,13 @@ fun AnswerCard(data: MapData, entityId: String?) {
         data.facts[entity.id],
         Modifier
             .fillMaxWidth()
-            .background(QuizColors.Tile.copy(alpha = 0.9f), RoundedCornerShape(6.dp))
+            .heightIn(max = 440.dp)
+            .background(QuizColors.Tile.copy(alpha = if (factsExpanded) 0.97f else 0.9f), RoundedCornerShape(6.dp))
+            .verticalScroll(rememberScrollState())
             .padding(12.dp),
         color = QuizColors.OnDark,
+        factsExpanded = factsExpanded,
+        onFactsExpandedChange = onFactsExpandedChange,
     )
     Spacer(Modifier.height(8.dp))
 }
@@ -191,6 +211,22 @@ fun PromptText(text: String) {
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth(),
     )
+}
+
+/** Consigne suivie d'un bouton 🔊 pour réentendre le nom demandé autant de fois qu'on veut. */
+@Composable
+fun PromptWithSpeech(text: String, hanzi: String?) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text,
+            color = QuizColors.Accent,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f, fill = false),
+        )
+        SpeakButton(hanzi)
+    }
 }
 
 @Composable

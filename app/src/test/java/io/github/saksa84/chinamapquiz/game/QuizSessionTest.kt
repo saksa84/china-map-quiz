@@ -135,6 +135,22 @@ class QuizSessionTest {
         assertEquals(listOf("A"), s.summary().missedTargetIds)
     }
 
+    @Test
+    fun readingTheFacts_pausesTheTimerUntilTheNextQuestion() {
+        val s = session("A", "B")
+        now += 2_000
+        s.answer("A")
+        s.pause()
+        assertTrue(s.isPaused)
+        now += 30_000 // lecture de la fiche
+        assertEquals(2_000, s.elapsedMs())
+        s.next()
+        assertFalse("Question suivante : le chrono repart", s.isPaused)
+        now += 1_000
+        assertEquals(3_000, s.elapsedMs())
+        assertEquals(3_000, s.answer("B")!!.atMs)
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun duplicateTargets_areRejected() {
         session("A", "A")
