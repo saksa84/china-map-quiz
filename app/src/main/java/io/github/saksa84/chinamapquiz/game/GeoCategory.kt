@@ -13,6 +13,7 @@ enum class GeoCategory(val categories: Set<Category>, val configKey: String?) {
     RIVERS(setOf(Category.RIVER), "rivers"),
     MOUNTAINS(setOf(Category.MOUNTAIN), "mountains"),
     LAKES(setOf(Category.LAKE), "lakes"),
+    PARKS(setOf(Category.PARK), "parks"),
     ;
 
     /**

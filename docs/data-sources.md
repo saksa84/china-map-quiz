@@ -14,7 +14,9 @@ Registre de toutes les données intégrées à l'application : provenance, versi
 | `natural-earth-mountains` | 17 zones de chaînes et 17 sommets avec altitude | Natural Earth `geography_regions_polys` et `geography_regions_elevation_points` v5.1.2 | Domaine public | — |
 | `manual-peaks` | Tai Shan, Huang Shan, Emei Shan (absents de Natural Earth) | Coordonnées et altitudes approximatives d'après les articles encyclopédiques | Faits | — |
 | `natural-earth-lakes` | Contours de 19 lacs et 2 lacs de barrage (version 2) | Natural Earth `lakes` v5.1.2 ; superficies et altitudes : voir « Lacs » plus bas | Domaine public | — |
-| `manual-lakes` | Xi Hu, Dian Chi, Er Hai, représentés par un point (absents de Natural Earth) | Coordonnées, superficies et altitudes de [Wikidata](https://www.wikidata.org/) (Q502371, Q83640, Q83628), consulté le 2026-10-25 | Faits ; Wikidata CC0 | — |
+| `osm-parks` | Contours de 14 parcs et sites naturels (version 2), dans `osm.geometry.json` avec les 3 petits lacs | [OpenStreetMap](https://www.openstreetmap.org/), objets listés dans `tools/build_osm_geometry.py`, extraits le 2026-10-25 par l'API Overpass ; statuts d'après les listes de l'UNESCO et l'annonce des parcs nationaux de 2021 | **ODbL 1.0** : `osm.geometry.json` est une base dérivée, sous ODbL (voir « Parcs » plus bas) | **Obligatoire** : « © les contributeurs d'OpenStreetMap » dans l'écran À propos et le README |
+| `manual-parks` | Parcs nationaux Tigre et léopard, Forêt tropicale de Hainan, représentés par un point | Centre approximatif du parc, saisi pour le projet (absents d'OSM le 2026-10-25) | Faits | — |
+| `osm-lakes` | Xi Hu, Dian Chi, Er Hai (absents de Natural Earth) | Contours OpenStreetMap (relations 2308774, 254775, 254433) dans `osm.geometry.json` ; superficies et altitudes de [Wikidata](https://www.wikidata.org/) (Q502371, Q83640, Q83628), consulté le 2026-10-25 | Contours ODbL 1.0 ; chiffres Wikidata CC0 | « © les contributeurs d'OpenStreetMap » |
 | `facts.json` (pas de `sourceId`) | Fiches « En savoir plus » : population, superficie, langues, histoire, économie, plat, anecdotes | Rédigées par Claude à partir de connaissances générales (2026-10-24), **à relire** ; population : recensement chinois 2020 (Hong Kong et Macao 2021, Taïwan estimation 2023) | Texte original du projet | — |
 | `manual-disputes` | Statut des territoires disputés (pays revendicateurs) | Saisie manuelle d'après les sources encyclopédiques ([Paracel Islands](https://en.wikipedia.org/wiki/Paracel_Islands)) | Faits non protégeables, saisis pour le projet | — |
 
@@ -158,12 +160,56 @@ Règle, comme pour les cours d'eau : **Wikipédia en chinois** (infobox ou texte
 | LK-DIANCHI | 297,9 | 1 900 | Wikidata Q83640 |
 | LK-ERHAI | 252,91 | 1 972 | Wikidata Q83628 |
 
+## Parcs (version 2)
+
+### Licence : OpenStreetMap, ODbL
+
+Les contours des parcs viennent d'OpenStreetMap, sous **Open Database License 1.0**. Conséquences, appliquées dans le projet :
+
+- **Attribution** : « © les contributeurs d'OpenStreetMap » avec un lien vers <https://www.openstreetmap.org/copyright>, dans l'écran Paramètres → À propos et dans le README.
+- **Base dérivée sous la même licence** : `assets/geo/osm.geometry.json` reste sous ODbL. Il est séparé de `features.geometry.json` (Natural Earth, domaine public) pour que chaque fichier garde sa licence ; son en-tête le rappelle.
+- **Reproductibilité** : `tools/build_osm_geometry.py --download` refait l'extraction ; la réponse brute (`tools/raw/osm_features.json`) n'est pas versionnée.
+
+Le reste du projet (code, autres données) n'est pas concerné : l'ODbL ne s'étend pas à l'application qui affiche la base.
+
+### Objets retenus
+
+Recherche par nom chinois dans OSM le 2026-10-25 (objets `boundary=national_park` ou `protected_area`, ou `leisure=nature_reserve`). Contours simplifiés à 0,3 km (davantage pour les deux très grands parcs, 600 sommets au plus) ; les miettes de moins de 0,5 % de la plus grande partie sont retirées.
+
+| Identifiant | Objet OSM | Remarque |
+|---|---|---|
+| PA-SANJIANGYUAN | relation 13373980 (三江源国家公园) | 152 800 km² dessinés (190 700 km² annoncés) |
+| PA-PANDA | relation 13556512 (大熊猫国家公园) | Sur le Sichuan, le Shaanxi et le Gansu ; rattaché au Sichuan |
+| PA-WUYISHAN | relation 21522962 (武夷山, Mount Wuyi) | Partie du Fujian ; le parc national s'étend aussi au Jiangxi |
+| PA-JIUZHAIGOU | relation 7516592 | Entouré par le parc du Panda géant : la plus petite zone l'emporte au toucher |
+| PA-HUANGLONG | relation 6213328 | |
+| PA-WULINGYUAN | relation 18589298 | |
+| PA-LIJIANG | relation 21263564 | Zone centrale du bien UNESCO « Karst de Chine du Sud » à Guilin |
+| PA-SHILIN | relation 21669396 | Zone centrale seulement (1 km²) |
+| PA-FANJINGSHAN | chemin 626892766 | |
+| PA-KANAS | chemin 614666060 | |
+| PA-DANXIA | relation 21669142 | |
+| PA-LUSHAN | relation 6634714 | |
+| PA-SANQINGSHAN | chemin 385707111 | |
+| PA-ZHANGYE | chemin 379678356 | Zone touristique du Danxia coloré |
+| PA-HUBAO | — | **Absent d'OSM** : point (130,5° E, 43,3° N), entre Hunchun et Wangqing |
+| PA-HAINAN | — | **Absent d'OSM** : point (109,6° E, 18,95° N), massif central de l'île |
+
+Écartés faute de contour dans OSM : Shennongjia, Tianchi du Tianshan, Trois rivières parallèles, Xishuangbanna. Ils pourront revenir sous forme de point.
+
+Nouvelle recherche le 2026-10-25 pour les deux parcs nationaux en point : OSM n'a que des points (`东北虎豹国家公园`, nœud 11243074638) et une route touristique autour de la forêt de Hainan, pas de limite. La base mondiale WDPA (Protected Planet) a ces limites mais **interdit la redistribution** ; les cartes officielles chinoises ne sont pas sous licence libre. Ils restent donc en point.
+
+### Statuts (`designations` dans `parks.json`)
+
+On affiche le statut exact : seuls les 5 parcs créés en octobre 2021 sont des **parcs nationaux** ; les autres sont des sites du patrimoine mondial, des géoparcs mondiaux UNESCO, des réserves naturelles nationales ou des zones panoramiques nationales. Les années d'inscription au patrimoine mondial et de label géoparc viennent des listes de l'UNESCO ; elles ont été saisies de mémoire par Claude et **restent à vérifier**. Les zones panoramiques et les réserves n'ont pas d'année.
+
 ## Régénérer les données
 
 ```powershell
 python tools/download_natural_earth.py        # télécharge dans tools/raw/ et vérifie les SHA-256
 python tools/build_map_geometry.py            # écrit map.geometry.json et affiche un rapport
 python tools/build_features_geometry.py       # écrit features.geometry.json (villes, cours d'eau, montagnes, lacs)
+python tools/build_osm_geometry.py --download  # écrit osm.geometry.json (OpenStreetMap, ODbL)
 ```
 
 Empreintes SHA-256 attendues (v5.1.2) :

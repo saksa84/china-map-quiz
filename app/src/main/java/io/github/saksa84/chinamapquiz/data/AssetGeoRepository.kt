@@ -16,7 +16,9 @@ class AssetGeoRepository(private val assets: AssetManager) {
             is LoadResult.Malformed -> error("Données géographiques illisibles : ${result.message}")
             is LoadResult.Invalid -> error("Données géographiques incohérentes : ${result.errors}")
         }
-        val geometry = MapGeometry.parse(read(GEOMETRY_FILE)) + MapGeometry.parse(read(FEATURES_GEOMETRY_FILE), overlay = true)
+        val geometry = OVERLAY_GEOMETRY_FILES.fold(MapGeometry.parse(read(GEOMETRY_FILE))) { all, file ->
+            all + MapGeometry.parse(read(file), overlay = true)
+        }
         val facts = when (val result = PlaceFactsLoader.load(read(FACTS_FILE), catalog)) {
             is FactsResult.Success -> result.facts
             is FactsResult.Malformed -> error("Fiches illisibles : ${result.message}")
@@ -28,10 +30,13 @@ class AssetGeoRepository(private val assets: AssetManager) {
     private fun read(name: String): String = assets.open("geo/$name").bufferedReader().use { it.readText() }
 
     companion object {
-        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json", "cities.json", "rivers.json", "mountains.json", "lakes.json")
+        val CATALOG_FILES = listOf("provinces.json", "regions.json", "islands.json", "cities.json", "rivers.json", "mountains.json", "lakes.json", "parks.json")
         const val GEOMETRY_FILE = "map.geometry.json"
-        /** Villes, cours d'eau et montagnes, dessinés par-dessus les provinces. */
-        const val FEATURES_GEOMETRY_FILE = "features.geometry.json"
+        /**
+         * Lieux dessinés par-dessus les provinces : villes, cours d'eau, montagnes et lacs (Natural Earth,
+         * domaine public) ; parcs (OpenStreetMap, ODbL : fichier à part, sous sa propre licence).
+         */
+        val OVERLAY_GEOMETRY_FILES = listOf("features.geometry.json", "osm.geometry.json")
         /** Fiches « En savoir plus », indexées par identifiant. */
         const val FACTS_FILE = "facts.json"
     }

@@ -166,6 +166,7 @@ private fun hint(category: GeoCategory, regionView: Boolean): Int = when (catego
     GeoCategory.RIVERS -> R.string.learn_hint_rivers
     GeoCategory.MOUNTAINS -> R.string.learn_hint_mountains
     GeoCategory.LAKES -> R.string.learn_hint_lakes
+    GeoCategory.PARKS -> R.string.learn_hint_parks
 }
 
 @Composable
@@ -251,6 +252,7 @@ private val FEATURE_RANGE = Color(0xFFA0522D)
 private val FEATURE_CITY = Color(0xFFD32F2F)
 private val FEATURE_PEAK = Color(0xFF5D4037)
 private val FEATURE_LAKE = Color(0xFF42A5F5)
+private val FEATURE_PARK = Color(0xFF2E7D32)
 
 /** Villes, cours d'eau, montagnes : provinces en fond neutre non touchable, lieux de la catégorie par-dessus. */
 private fun featureStyle(data: MapData, id: String, featureIds: Set<String>, highlighted: Set<String>): ShapeStyle? {
@@ -261,6 +263,8 @@ private fun featureStyle(data: MapData, id: String, featureIds: Set<String>, hig
     val selected = id in highlighted
     val base = when {
         entity?.category == Category.LAKE -> FEATURE_LAKE
+        entity?.category == Category.PARK && shape.kind == ShapeKind.POLYGON -> FEATURE_PARK.copy(alpha = if (selected) 0.75f else 0.4f)
+        entity?.category == Category.PARK -> FEATURE_PARK
         shape.kind == ShapeKind.LINE -> FEATURE_RIVER
         shape.kind == ShapeKind.POLYGON -> FEATURE_RANGE.copy(alpha = if (selected) 0.75f else 0.4f)
         entity?.type == FeatureType.CITY -> FEATURE_CITY
@@ -271,7 +275,7 @@ private fun featureStyle(data: MapData, id: String, featureIds: Set<String>, hig
         fill = if (selected && (shape.kind != ShapeKind.POLYGON || entity?.category == Category.LAKE)) base.darken(0.3f) else base,
         emphasized = selected,
         lineWidthDp = if (selected) width * 1.6f else width,
-        largePoint = entity?.category != Category.LAKE,
+        largePoint = entity?.category != Category.PARK,
     )
 }
 

@@ -98,7 +98,7 @@ L'application est livrée en trois versions de contenu successives. Chaque versi
 
 **Version 2 — Approfondissement** (plan et décisions : `docs/plan-v2.md`)
 - Parcs : les 5 parcs nationaux officiels (créés en 2021) et une quinzaine de sites naturels célèbres, avec leur statut exact affiché. Contours tirés d'**OpenStreetMap** (ODbL : attribution, fichier dérivé sous ODbL). Décision du 2026-10-25.
-- Lacs : une vingtaine de grands lacs en surface (Natural Earth `ne_10m_lakes`, domaine public), plus Xi Hu, Dian Chi et Erhai par un point. Bangong Co (ligne de contrôle Chine–Inde) écarté pour l'instant.
+- Lacs : une vingtaine de grands lacs en surface (Natural Earth `ne_10m_lakes`, domaine public), plus Xi Hu, Dian Chi et Erhai dont les contours viennent d'OpenStreetMap (décision du 2026-10-25, d'abord en point). Bangong Co (ligne de contrôle Chine–Inde) écarté pour l'instant.
 - Villes-préfectures (après les lacs et les parcs).
 
 **Version 3 — Culture**
@@ -483,8 +483,10 @@ Privilégie les solutions simples, lisibles et robustes.
 ### Version 2 en cours (2026-10-25) : lacs et parcs
 
 Version 1.2 poussée sur GitHub (`a93dded`). Plan, sources examinées et décisions dans `docs/plan-v2.md`.
-- **Étape A (lacs) faite, pas encore commitée** : `assets/geo/lakes.json` (24 lacs, types `lake`, `reservoir`, `small_lake`, champ `areaKm2`, parent = province), contours dans `features.geometry.json` (dictionnaire `LAKES` de `build_features_geometry.py`), catégorie `GeoCategory.LAKES`, niveaux `lakes-west` / `lakes-east` / `lakes-all`, 147 tests. Sources des superficies dans `docs/data-sources.md`. Les petits lacs sont des points de même taille que les lacs vus de loin (`ShapeStyle.largePoint = false`) pour ne pas donner d'indice. Pas encore de fiches « En savoir plus » pour les lacs (étape C).
-- Prochaine étape : B (parcs, contours OpenStreetMap).
+- **Étape A (lacs) faite, pas encore commitée** : `assets/geo/lakes.json` (24 lacs, types `lake` et `reservoir`, champ `areaKm2`, parent = province), contours dans `features.geometry.json` (dictionnaire `LAKES` de `build_features_geometry.py`), catégorie `GeoCategory.LAKES`, niveaux `lakes-west` / `lakes-east` / `lakes-all`, 147 tests. Sources des superficies dans `docs/data-sources.md`. Xi Hu, Dian Chi et Er Hai : contours OSM dans `osm.geometry.json` (le type `small_lake` en point a été supprimé). Pas encore de fiches « En savoir plus » pour les lacs (étape C).
+- **Étape A commitée** (`2851072`).
+- **Étape B (parcs) faite, pas encore commitée** : `assets/geo/parks.json` (16 parcs, champ `designations` : national_park, world_heritage, global_geopark, national_nature_reserve, national_scenic_area, avec l'année), contours OSM dans `osm.geometry.json` (**ODbL**, fichier séparé, script `tools/build_osm_geometry.py`), attribution OSM dans À propos et le README. Parcs Tigre et léopard et Hainan en points (absents d'OSM ; WDPA interdit la redistribution), de même taille que les petits parcs vus de loin (`ShapeStyle.largePoint = false`). Tous les lieux OSM (parcs et 3 petits lacs) sont dans `osm.geometry.json`, construit par `tools/build_osm_geometry.py`. Au toucher, la plus petite de deux zones superposées l'emporte (`HitTester`) ; au dessin, les grandes zones passent dessous. 151 tests. Années UNESCO saisies de mémoire : à vérifier.
+- Prochaine étape : C (fiches « En savoir plus » des lacs et des parcs), puis D (finitions, version 2.0).
 
 ### Version 1.2 (2026-10-25) — retours après essai sur le Pixel
 

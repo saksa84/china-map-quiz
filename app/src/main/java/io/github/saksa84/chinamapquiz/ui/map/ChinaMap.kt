@@ -50,8 +50,8 @@ import io.github.saksa84.chinamapquiz.map.MapViewport
  * @param emphasized lieu sélectionné ou montré en réponse : s'il est minuscule, un réticule l'entoure
  * @param tappable le lieu peut être touché (faux pour le fond de carte d'un quiz sur les fleuves, par exemple)
  * @param lineWidthDp épaisseur du trait d'un cours d'eau, constante à l'écran
- * @param largePoint lieu ponctuel (ville, sommet) dessiné en gros point ; faux pour un petit lac, dessiné
- *   comme les surfaces minuscules pour ne pas paraître plus grand que les grands lacs vus de loin
+ * @param largePoint lieu ponctuel (ville, sommet) dessiné en gros point ; faux pour un parc sans contour, dessiné
+ *   comme les surfaces minuscules pour ne pas se distinguer des autres parcs vus de loin
  */
 data class ShapeStyle(
     val fill: Color,
@@ -98,7 +98,8 @@ fun ChinaMap(
     val paths = remember(geometry) { geometry.shapes.filter { it.kind != ShapeKind.POINT }.associate { it.id to it.toPath() } }
     // Dessin par couches : fond des provinces, zones de montagne, cours d'eau (les points viennent à la fin).
     val baseShapes = remember(geometry) { geometry.shapes.filter { !it.overlay } }
-    val overlayAreas = remember(geometry) { geometry.shapes.filter { it.overlay && it.kind == ShapeKind.POLYGON } }
+    // Les grandes zones d'abord : un petit parc ou un lac reste visible par-dessus un grand parc ou une chaîne.
+    val overlayAreas = remember(geometry) { geometry.shapes.filter { it.overlay && it.kind == ShapeKind.POLYGON }.sortedByDescending { it.area } }
     val overlayLines = remember(geometry) { geometry.shapes.filter { it.kind == ShapeKind.LINE } }
     // Silhouette de la Chine : les zones de montagne qui débordent sur les pays voisins y sont coupées.
     val chinaOutline = remember(geometry) {

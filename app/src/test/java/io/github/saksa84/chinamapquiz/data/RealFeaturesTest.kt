@@ -25,18 +25,20 @@ class RealFeaturesTest {
     private fun asset(path: String) = File("src/main/assets/$path").readText()
 
     private val catalog = (GeoCatalogLoader.load(*AssetGeoRepository.CATALOG_FILES.map { asset("geo/$it") }.toTypedArray()) as LoadResult.Success).catalog
-    private val geometry = MapGeometry.parse(asset("geo/map.geometry.json")) +
-        MapGeometry.parse(asset("geo/features.geometry.json"), overlay = true)
+    private val geometry = AssetGeoRepository.OVERLAY_GEOMETRY_FILES.fold(MapGeometry.parse(asset("geo/map.geometry.json"))) { all, file ->
+        all + MapGeometry.parse(asset("geo/$file"), overlay = true)
+    }
     private val levels = QuizLevels.buildAll(LevelsConfig.parse(asset("game/levels.json")), catalog.entities.map { it.id }.filter { geometry[it] != null }.toSet())
 
     @Test
     fun everyFeatureHasGeometryOfTheRightKind() {
         val expected = mapOf(Category.CITY to ShapeKind.POINT, Category.RIVER to ShapeKind.LINE)
+        // Parcs à part (testés plus bas) : contour ou point selon OpenStreetMap.
         val features = listOf(Category.CITY, Category.RIVER, Category.MOUNTAIN, Category.LAKE).flatMap { catalog.inCategory(it) }
         for (entity in features) {
             val shape = geometry[entity.id]
             assertTrue("${entity.id} sans géométrie", shape != null)
-            val kind = expected[entity.category] ?: if (entity.type in setOf(FeatureType.PEAK, FeatureType.SMALL_LAKE)) ShapeKind.POINT else ShapeKind.POLYGON
+            val kind = expected[entity.category] ?: if (entity.type == FeatureType.PEAK) ShapeKind.POINT else ShapeKind.POLYGON
             assertEquals(entity.id, kind, shape!!.kind)
             assertTrue(entity.id, shape.overlay)
         }
@@ -146,6 +148,7 @@ class RealFeaturesTest {
         assertEquals(mapOf("rivers-major" to 12, "rivers-tributaries" to 15, "rivers-all" to 27), sizes[GeoCategory.RIVERS])
         assertEquals(mapOf("mountains-ranges" to 17, "mountains-peaks" to 20, "mountains-all" to 37), sizes[GeoCategory.MOUNTAINS])
         assertEquals(mapOf("lakes-west" to 9, "lakes-east" to 15, "lakes-all" to 24), sizes[GeoCategory.LAKES])
+        assertEquals(mapOf("parks-national" to 5, "parks-sites" to 11, "parks-all" to 16), sizes[GeoCategory.PARKS])
         assertEquals(5, sizes[GeoCategory.REGIONS]!!.size)
     }
 
@@ -169,6 +172,27 @@ class RealFeaturesTest {
         catalog.inCategory(Category.LAKE).filter { it.id != "LK-DANJIANGKOU" }.forEach { lake ->
             // Point du lac, ou point d'étiquette de son contour (partie chinoise pour le lac Khanka).
             assertEquals(lake.id, lake.parentId, provinces.hit(geometry[lake.id]!!.label, tolerance = 150f))
+        }
+    }
+
+    @Test
+    fun theFiveNationalParks_areExactlyThoseOf2021() {
+        val national = catalog.inCategory(Category.PARK)
+            .filter { park -> park.designations.any { it.type == DesignationType.NATIONAL_PARK } }
+        assertEquals(setOf("PA-SANJIANGYUAN", "PA-PANDA", "PA-HUBAO", "PA-HAINAN", "PA-WUYISHAN"), national.map { it.id }.toSet())
+        national.forEach { park -> assertEquals(park.id, 2021, park.designations.first { it.type == DesignationType.NATIONAL_PARK }.year) }
+    }
+
+    @Test
+    fun parksHaveAContourFromOsm_exceptTheTwoMissingOnes() {
+        // Absents d'OpenStreetMap le 2026-10-25 : représentés par un point (docs/data-sources.md).
+        val points = setOf("PA-HUBAO", "PA-HAINAN")
+        val provinces = HitTester(geometry.shapes.filter { !it.overlay })
+        catalog.inCategory(Category.PARK).forEach { park ->
+            val shape = geometry[park.id]!!
+            assertEquals(park.id, if (park.id in points) ShapeKind.POINT else ShapeKind.POLYGON, shape.kind)
+            assertTrue(park.id, shape.overlay)
+            assertEquals(park.id, park.parentId, provinces.hit(shape.label, tolerance = 150f))
         }
     }
 
@@ -198,6 +222,8 @@ class RealFeaturesTest {
         assertEquals("LK-QINGHAI", at(100.2, 36.9) { it.startsWith("LK-") })
         assertEquals("LK-XIHU", at(120.14, 30.24) { it.startsWith("LK-") })
         assertEquals("LK-XINGKAI", at(132.5, 45.3) { it.startsWith("LK-") })
+        // Jiuzhaigou est entouré par le parc du Panda géant : la plus petite zone l'emporte.
+        assertEquals("PA-JIUZHAIGOU", at(103.92, 33.16) { it.startsWith("PA-") })
         assertNull(at(130.0, 20.0) { it.startsWith("RV-") })
     }
 

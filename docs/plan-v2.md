@@ -27,13 +27,13 @@ Le modèle de données a prévu ces catégories dès la version 1 : `Category.LA
 ## Décisions prises le 2026-10-25
 
 1. **Parcs** : les 5 parcs nationaux officiels **plus une quinzaine de sites naturels célèbres** (Jiuzhaigou, Zhangjiajie, Guilin–Lijiang, Huanglong, Forêt de pierre…). La fiche affiche le statut exact de chacun (parc national, site naturel UNESCO, zone panoramique nationale) : on ne présente pas comme « parc national » ce qui n'en est pas un. Pas de doublon avec les sommets déjà présents (Huang Shan, Tai Shan).
-2. **Dessin des parcs** : par une **zone tirée d'OpenStreetMap** (licence ODbL). Conséquences : attribution « © les contributeurs d'OpenStreetMap » dans À propos et `data-sources.md` ; le fichier de contours dérivé (`parks.geometry.json`) est lui-même sous ODbL, ce qui est indiqué dans le registre ; le script d'extraction est versionné pour pouvoir régénérer le fichier. Un parc sans contour exploitable dans OSM est signalé et décidé au cas par cas (point de repli).
-3. **Petits lacs célèbres** : Xi Hu, Dian Chi et Erhai ajoutés **par un point** ; les ~20 grands lacs en surface depuis Natural Earth.
+2. **Dessin des parcs** : par une **zone tirée d'OpenStreetMap** (licence ODbL). Conséquences : attribution « © les contributeurs d'OpenStreetMap » dans À propos et `data-sources.md` ; le fichier de contours dérivé (`osm.geometry.json`) est lui-même sous ODbL, ce qui est indiqué dans le registre ; le script d'extraction est versionné pour pouvoir régénérer le fichier. Un parc sans contour exploitable dans OSM est signalé et décidé au cas par cas (point de repli).
+3. **Petits lacs célèbres** : Xi Hu, Dian Chi et Erhai ajoutés d'abord par un point, puis (même jour, à la demande) avec leur **contour OpenStreetMap** ; les ~20 grands lacs en surface depuis Natural Earth.
 
 ## Étapes prévues (après les décisions)
 
 - **A. Lacs.** *Faite le 2026-10-25* : 24 lacs, catégorie « Lacs » (niveaux Ouest et plateaux / Est et Sud / Tous), 147 tests. Restent les fiches (étape C). Détail : télécharger `ne_10m_lakes` (empreinte ajoutée à `tools/download_natural_earth.py`), choisir les lacs, les découper à la frontière (lac Khanka) dans `build_features_geometry.py`, écrire `lakes.json` (noms, alias, hanzi, pinyin avec tons, province, superficie, nom connu), catégorie « Lacs » dans le menu, niveaux, tests sur les vraies données.
-- **B. Parcs.** Script d'extraction des contours OpenStreetMap (requête Overpass, simplification, découpe à la frontière), `parks.json` (noms, statut, date de création, province, source), `parks.geometry.json` sous ODbL, catégorie « Parcs », niveaux, tests.
+- **B. Parcs.** *Faite le 2026-10-25* : 16 parcs (14 contours OSM, 2 points), statuts exacts, catégorie « Parcs » (Parcs nationaux / Sites naturels / Tous), attribution ODbL, 151 tests. Shennongjia, Tianchi, Trois rivières parallèles et Xishuangbanna écartés faute de contour. Détail : script d'extraction des contours OpenStreetMap (requête Overpass, simplification, découpe à la frontière), `parks.json` (noms, statut, date de création, province, source), `osm.geometry.json` sous ODbL, catégorie « Parcs », niveaux, tests.
 - **C. Fiches.** Fiches « En savoir plus » des nouveaux lieux dans `facts.json`, marquées « à vérifier ».
 - **D. Finitions.** Écran d'accueil à 6 catégories, documentation (`data-sources.md`, README, tests), version 2.0.
 

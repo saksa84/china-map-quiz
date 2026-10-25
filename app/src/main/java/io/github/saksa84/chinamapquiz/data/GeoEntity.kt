@@ -27,7 +27,7 @@ enum class GeometryKind {
     /** Fleuves, lignes de crête. */
     LINE,
 
-    /** Villes, sommets, petits lacs. */
+    /** Villes, sommets ; parcs absents d'OpenStreetMap. */
     POINT,
 
     /** Pas de tracé propre : union des membres (grandes régions). */
@@ -81,14 +81,31 @@ enum class FeatureType(
     /** Lac de barrage (Danjiangkou, Qiandao Hu). */
     @SerialName("reservoir") RESERVOIR(Category.LAKE, GeometryKind.POLYGON, setOf(Category.PROVINCIAL)),
 
-    /** Lac trop petit pour être dessiné à l'échelle de la carte (Xi Hu, Dian Chi) : représenté par un point. */
-    @SerialName("small_lake") SMALL_LAKE(Category.LAKE, GeometryKind.POINT, setOf(Category.PROVINCIAL)),
-
-    @SerialName("park") PARK(Category.PARK, GeometryKind.POLYGON),
+    /**
+     * Parc national ou site naturel protégé ; parent : la province où se trouve l'essentiel du parc.
+     * Contour tiré d'OpenStreetMap, ou un point quand OSM n'en a pas (voir docs/data-sources.md).
+     */
+    @SerialName("park") PARK(Category.PARK, GeometryKind.POLYGON, setOf(Category.PROVINCIAL)),
 
     /** Archipel hors des unités provinciales, sans parent pour ne pas trancher une souveraineté disputée. */
     @SerialName("island_group") ISLAND_GROUP(Category.ISLAND, GeometryKind.POLYGON),
 }
+
+/** Statut de protection d'un parc. On affiche le statut exact : tout site célèbre n'est pas un parc national. */
+@Serializable
+enum class DesignationType {
+    /** Parc national (国家公园) : 5 créés en octobre 2021. */
+    @SerialName("national_park") NATIONAL_PARK,
+    @SerialName("world_heritage") WORLD_HERITAGE,
+    @SerialName("global_geopark") GLOBAL_GEOPARK,
+    @SerialName("national_nature_reserve") NATIONAL_NATURE_RESERVE,
+    /** Zone panoramique et historique nationale (国家级风景名胜区). */
+    @SerialName("national_scenic_area") NATIONAL_SCENIC_AREA,
+}
+
+/** Un statut et, quand elle est connue, son année d'attribution. */
+@Serializable
+data class Designation(val type: DesignationType, val year: Int? = null)
 
 /** Provenance d'un ensemble de données, référencée par [GeoEntity.sourceId]. */
 @Serializable
@@ -144,6 +161,8 @@ data class GeoEntity(
     val elevation: Int? = null,
     /** Lacs : superficie en km² (variable selon la saison pour certains ; voir la source). */
     val areaKm2: Double? = null,
+    /** Parcs : statuts de protection (au moins un). */
+    val designations: List<Designation> = emptyList(),
     /** Cours d'eau : longueur totale en km, de la source principale à l'embouchure (voir la source). */
     val lengthKm: Int? = null,
     /** Cours d'eau transfrontaliers : longueur du tronçon en Chine, en km. */

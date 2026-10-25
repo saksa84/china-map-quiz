@@ -6,7 +6,8 @@ package io.github.saksa84.chinamapquiz.map
  * Ordre de priorité :
  * 1. un point (ville, sommet) ou une ligne (cours d'eau) dans le rayon de tolérance : ce sont de
  *    petites cibles, posées par-dessus les surfaces (un sommet dans sa chaîne, une ville dans sa province) ;
- * 2. une surface qui contient exactement le toucher ;
+ * 2. une surface qui contient exactement le toucher ; si plusieurs se superposent (un site dans un
+ *    grand parc, un lac dans une zone de montagne), la plus petite, sinon elle serait inaccessible ;
  * 3. la surface la plus proche dans le rayon de tolérance, pour que Macao ou un îlot des Paracel
  *    restent sélectionnables au doigt.
  */
@@ -17,7 +18,8 @@ class HitTester(private val shapes: List<MapShape>) {
         if (tolerance > 0f) {
             nearest(point, tolerance) { it.kind != ShapeKind.POLYGON && accept(it) }?.let { return it }
         }
-        shapes.firstOrNull { it.kind == ShapeKind.POLYGON && accept(it) && it.contains(point.x, point.y) }?.let { return it.id }
+        shapes.filter { it.kind == ShapeKind.POLYGON && accept(it) && it.contains(point.x, point.y) }
+            .minByOrNull { it.area }?.let { return it.id }
         if (tolerance <= 0f) return null
         return nearest(point, tolerance) { it.kind == ShapeKind.POLYGON && accept(it) }
     }

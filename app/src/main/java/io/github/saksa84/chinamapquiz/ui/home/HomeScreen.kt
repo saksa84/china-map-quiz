@@ -69,6 +69,7 @@ fun categoryName(category: GeoCategory): Int = when (category) {
     GeoCategory.RIVERS -> R.string.category_rivers
     GeoCategory.MOUNTAINS -> R.string.category_mountains
     GeoCategory.LAKES -> R.string.category_lakes
+    GeoCategory.PARKS -> R.string.category_parks
 }
 
 @StringRes
@@ -78,4 +79,5 @@ private fun categoryDescription(category: GeoCategory): Int = when (category) {
     GeoCategory.RIVERS -> R.string.category_rivers_sub
     GeoCategory.MOUNTAINS -> R.string.category_mountains_sub
     GeoCategory.LAKES -> R.string.category_lakes_sub
+    GeoCategory.PARKS -> R.string.category_parks_sub
 }

@@ -39,6 +39,16 @@ class HitTesterTest {
     }
 
     @Test
+    fun overlappingAreas_theSmallestWins() {
+        // Un petit site (Jiuzhaigou) dans un grand parc (Panda géant), dans n'importe quel ordre.
+        val big = MapShape("BIG", listOf(square(0f, 0f, 100f)), overlay = true)
+        val small = MapShape("SMALL", listOf(square(40f, 40f, 10f)), overlay = true)
+        assertEquals("SMALL", HitTester(listOf(big, small)).hit(MapPoint(45f, 45f)))
+        assertEquals("SMALL", HitTester(listOf(small, big)).hit(MapPoint(45f, 45f)))
+        assertEquals("BIG", HitTester(listOf(small, big)).hit(MapPoint(10f, 10f)))
+    }
+
+    @Test
     fun pointNearSmallIsland_isFoundWithinTolerance() {
         assertEquals("A", tester.hit(MapPoint(22f, 0.5f), tolerance = 1.5f))
         assertNull(tester.hit(MapPoint(25f, 0.5f), tolerance = 1.5f))

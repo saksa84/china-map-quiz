@@ -392,8 +392,20 @@ class GeoCatalogLoaderTest {
     }
 
     @Test
+    fun parkDesignations_areRequiredForParksOnly() {
+        val province = """{"id":"CN-A","type":"province","name":"Sichuan","parentId":"CN","sourceId":"s"}"""
+        val park = """{"id":"PA-A","type":"park","name":"Jiuzhaigou","parentId":"CN-A","designations":[{"type":"world_heritage","year":1992}],"sourceId":"s"}"""
+        val loaded = (GeoCatalogLoader.load(fileWith(province, park)) as LoadResult.Success).catalog["PA-A"]!!
+        assertEquals(listOf(Designation(DesignationType.WORLD_HERITAGE, 1992)), loaded.designations)
+        val bare = """{"id":"PA-A","type":"park","name":"Jiuzhaigou","parentId":"CN-A","sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidDesignations("PA-A")), errorsOf(fileWith(province, bare)))
+        val lake = """{"id":"LK-A","type":"lake","name":"Xi Hu","parentId":"CN-A","designations":[{"type":"world_heritage"}],"sourceId":"s"}"""
+        assertEquals(listOf(ValidationError.InvalidDesignations("LK-A")), errorsOf(fileWith(province, lake)))
+    }
+
+    @Test
     fun lakeOutsideAProvince_isRejected() {
-        val lake = """{"id":"LK-A","type":"small_lake","name":"Xi Hu","sourceId":"s"}"""
+        val lake = """{"id":"LK-A","type":"lake","name":"Xi Hu","sourceId":"s"}"""
         assertEquals(listOf(ValidationError.MissingParent("LK-A")), errorsOf(fileWith(lake)))
     }
 

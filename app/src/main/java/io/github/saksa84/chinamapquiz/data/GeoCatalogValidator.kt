@@ -46,6 +46,9 @@ sealed interface ValidationError {
 
     /** Superficie réservée aux lacs, strictement positive. */
     data class InvalidArea(val entityId: String) : ValidationError
+
+    /** Un parc a au moins un statut de protection ; les autres lieux n'en ont pas. */
+    data class InvalidDesignations(val entityId: String) : ValidationError
 }
 
 object GeoCatalogValidator {
@@ -106,6 +109,9 @@ object GeoCatalogValidator {
                 if (!COUNTRY_CODE.matches(code)) errors += ValidationError.InvalidClaimant(entity.id, code)
             }
             if (!hasValidLength(entity)) errors += ValidationError.InvalidLength(entity.id)
+            if ((entity.category == Category.PARK) != entity.designations.isNotEmpty()) {
+                errors += ValidationError.InvalidDesignations(entity.id)
+            }
             entity.areaKm2?.let { area ->
                 if (entity.category != Category.LAKE || area <= 0) errors += ValidationError.InvalidArea(entity.id)
             }

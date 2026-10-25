@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.saksa84.chinamapquiz.R
+import io.github.saksa84.chinamapquiz.data.Designation
+import io.github.saksa84.chinamapquiz.data.DesignationType
 import io.github.saksa84.chinamapquiz.data.FeatureType
 import io.github.saksa84.chinamapquiz.data.GeoCatalog
 import io.github.saksa84.chinamapquiz.data.GeoEntity
@@ -105,10 +107,14 @@ fun EntityInfo(
                 val peaks = catalog.children(entity.id).map { it.shortName }
                 if (peaks.isNotEmpty()) Text(stringResource(R.string.info_peaks, peaks.joinToString(", ")), color = color)
             }
-            FeatureType.LAKE, FeatureType.RESERVOIR, FeatureType.SMALL_LAKE -> {
+            FeatureType.LAKE, FeatureType.RESERVOIR -> {
                 parent?.let { Text(stringResource(R.string.info_province, it.shortName), color = color) }
                 entity.areaKm2?.let { Text(stringResource(R.string.facts_area, areaText(it)), color = color) }
                 entity.elevation?.let { Text(stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)), color = color) }
+            }
+            FeatureType.PARK -> {
+                parent?.let { Text(stringResource(R.string.info_province, it.shortName), color = color) }
+                entity.designations.forEach { Text(designationText(it), color = color) }
             }
             else -> Unit
         }
@@ -172,6 +178,21 @@ private fun populationText(facts: PlaceFacts): String? {
     return stringResource(R.string.facts_population, millionsText(millions), year)
 }
 
+/** « Patrimoine mondial de l'UNESCO (1992) ». */
+@Composable
+private fun designationText(designation: Designation): String {
+    val name = stringResource(
+        when (designation.type) {
+            DesignationType.NATIONAL_PARK -> R.string.designation_national_park
+            DesignationType.WORLD_HERITAGE -> R.string.designation_world_heritage
+            DesignationType.GLOBAL_GEOPARK -> R.string.designation_global_geopark
+            DesignationType.NATIONAL_NATURE_RESERVE -> R.string.designation_nature_reserve
+            DesignationType.NATIONAL_SCENIC_AREA -> R.string.designation_scenic_area
+        },
+    )
+    return designation.year?.let { stringResource(R.string.designation_with_year, name, it) } ?: name
+}
+
 /** Superficie d'un lac : « 4 489 », « 6,5 » pour Xi Hu. */
 private fun areaText(km2: Double): String =
     if (km2 < 100) String.format(Locale.FRENCH, "%.1f", km2) else String.format(Locale.FRENCH, "%,d", Math.round(km2))
@@ -217,11 +238,12 @@ fun CompactEntityInfo(
                 entity.elevation?.let { stringResource(R.string.info_elevation, String.format(Locale.FRENCH, "%,d", it)) },
                 parent?.shortName,
             )
-            FeatureType.LAKE, FeatureType.RESERVOIR, FeatureType.SMALL_LAKE -> listOfNotNull(
+            FeatureType.LAKE, FeatureType.RESERVOIR -> listOfNotNull(
                 parent?.shortName,
                 entity.areaKm2?.let { stringResource(R.string.compact_area, areaText(it)) },
                 entity.elevation?.let { stringResource(R.string.compact_elevation, String.format(Locale.FRENCH, "%,d", it)) },
             )
+            FeatureType.PARK -> listOfNotNull(parent?.shortName) + entity.designations.take(2).map { designationText(it) }
             else -> listOfNotNull(
                 entity.capital?.let { stringResource(R.string.info_capital, it) },
                 facts?.populationMillions?.let { stringResource(R.string.compact_population, millionsText(it)) },
@@ -256,8 +278,17 @@ private fun RiverLength(entity: GeoEntity, color: Color) {
 @Composable
 private fun subtitle(entity: GeoEntity): String {
     val hanzi = entity.hanzi.takeIf { LocalShowHanzi.current }
-    return listOfNotNull(entity.pinyinTones, hanzi, stringResource(typeLabel(entity.type))).joinToString(" · ")
+    return listOfNotNull(entity.pinyinTones, hanzi, stringResource(typeLabel(entity))).joinToString(" · ")
 }
+
+/** Un parc n'est « parc national » que s'il en a le statut ; sinon c'est un site naturel. */
+@StringRes
+private fun typeLabel(entity: GeoEntity): Int =
+    if (entity.type == FeatureType.PARK) {
+        if (entity.designations.any { it.type == DesignationType.NATIONAL_PARK }) R.string.type_national_park else R.string.type_natural_site
+    } else {
+        typeLabel(entity.type)
+    }
 
 @StringRes
 private fun typeLabel(type: FeatureType): Int = when (type) {
@@ -273,7 +304,7 @@ private fun typeLabel(type: FeatureType): Int = when (type) {
     FeatureType.TRIBUTARY -> R.string.type_tributary
     FeatureType.MOUNTAIN_RANGE -> R.string.type_mountain_range
     FeatureType.PEAK -> R.string.type_peak
-    FeatureType.LAKE, FeatureType.SMALL_LAKE -> R.string.type_lake
+    FeatureType.LAKE -> R.string.type_lake
     FeatureType.RESERVOIR -> R.string.type_reservoir
     else -> R.string.type_other
 }

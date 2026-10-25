@@ -130,6 +130,29 @@
           "LK-HULUN", "LK-XINGKAI", "LK-DANJIANGKOU", "LK-QIANDAO", "LK-XIHU", "LK-DIANCHI", "LK-ERHAI"
         ]
       }
+    ],
+    "parks": [
+      {
+        "id": "parks-national", "name": "Parcs nationaux", "subtitle": "Les 5 parcs officiels (2021)",
+        "memberIds": [
+          "PA-SANJIANGYUAN", "PA-PANDA", "PA-HUBAO", "PA-HAINAN", "PA-WUYISHAN"
+        ]
+      },
+      {
+        "id": "parks-sites", "name": "Sites naturels", "subtitle": "Patrimoine mondial, géoparcs, réserves",
+        "memberIds": [
+          "PA-JIUZHAIGOU", "PA-HUANGLONG", "PA-WULINGYUAN", "PA-LIJIANG", "PA-SHILIN", "PA-FANJINGSHAN",
+          "PA-KANAS", "PA-DANXIA", "PA-LUSHAN", "PA-SANQINGSHAN", "PA-ZHANGYE"
+        ]
+      },
+      {
+        "id": "parks-all", "name": "Tous les parcs",
+        "memberIds": [
+          "PA-SANJIANGYUAN", "PA-PANDA", "PA-HUBAO", "PA-HAINAN", "PA-WUYISHAN",
+          "PA-JIUZHAIGOU", "PA-HUANGLONG", "PA-WULINGYUAN", "PA-LIJIANG", "PA-SHILIN", "PA-FANJINGSHAN",
+          "PA-KANAS", "PA-DANXIA", "PA-LUSHAN", "PA-SANQINGSHAN", "PA-ZHANGYE"
+        ]
+      }
     ]
   }
 }

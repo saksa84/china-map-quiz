@@ -127,6 +127,7 @@ fun gameStyle(id: String, data: MapData, inLevel: Set<String>, state: Color?, em
     val lake = entity?.category == Category.LAKE
     val color = state ?: when {
         lake -> QuizColors.Lake
+        entity?.category == Category.PARK -> QuizColors.Park
         shape.kind == ShapeKind.LINE -> QuizColors.River
         shape.kind == ShapeKind.POLYGON -> QuizColors.Range
         else -> QuizColors.Point
@@ -134,7 +135,8 @@ fun gameStyle(id: String, data: MapData, inLevel: Set<String>, state: Color?, em
     // Zone de montagne translucide pour laisser voir les provinces dessous ; un lac reste plein.
     val fill = if (shape.kind == ShapeKind.POLYGON && !lake) color.copy(alpha = if (state != null) 0.8f else 0.5f) else color
     val width = (if (entity?.type == FeatureType.MAJOR_RIVER) 3.5f else 2.2f) * (if (state != null) 1.5f else 1f)
-    return ShapeStyle(fill, emphasized = emphasized, lineWidthDp = width, largePoint = !lake)
+    // Parcs sans contour : point de la taille des surfaces minuscules, pour ne pas les distinguer des autres parcs.
+    return ShapeStyle(fill, emphasized = emphasized, lineWidthDp = width, largePoint = entity?.category != Category.PARK)
 }
 
 /** Temps écoulé relu dix fois par seconde (le moteur le fige lui-même en fin de partie). */

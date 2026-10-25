@@ -9,10 +9,10 @@
       "version": "5.1.2"
     },
     {
-      "id": "manual-lakes",
-      "name": "Petits lacs absents de Natural Earth : coordonnées, superficies et altitudes d'après Wikidata (consulté le 2026-10-25)",
-      "license": "Faits non protégeables ; Wikidata CC0",
-      "url": "https://www.wikidata.org/"
+      "id": "osm-lakes",
+      "name": "Petits lacs absents de Natural Earth : contours OpenStreetMap (tools/build_osm_geometry.py) ; superficies et altitudes d'après Wikidata (consulté le 2026-10-25)",
+      "license": "Contours : ODbL 1.0 — © les contributeurs d'OpenStreetMap ; chiffres : Wikidata CC0",
+      "url": "https://www.openstreetmap.org/copyright"
     }
   ],
   "entities": [
@@ -37,8 +37,8 @@
     { "id": "LK-EBINUR", "type": "lake", "name": "Aibi Hu", "aliases": ["Ebinur", "Ebinur Hu", "Ebi Nur", "Aibi"], "hanzi": "艾比湖", "pinyinTones": "Àibǐ Hú", "parentId": "CN-XJ", "areaKm2": 500, "elevation": 189, "sourceId": "natural-earth-lakes" },
     { "id": "LK-DANJIANGKOU", "type": "reservoir", "name": "Danjiangkou Shuiku", "aliases": ["Danjiangkou", "Reservoir de Danjiangkou"], "hanzi": "丹江口水库", "pinyinTones": "Dānjiāngkǒu Shuǐkù", "parentId": "CN-HB", "areaKm2": 1022.75, "sourceId": "natural-earth-lakes" },
     { "id": "LK-QIANDAO", "type": "reservoir", "name": "Qiandao Hu", "knownAs": "Lac des Mille Îles", "aliases": ["Qiandao", "Xin'anjiang Shuiku", "Lac des Mille Iles"], "hanzi": "千岛湖", "pinyinTones": "Qiāndǎo Hú", "parentId": "CN-ZJ", "areaKm2": 567.4, "sourceId": "natural-earth-lakes" },
-    { "id": "LK-XIHU", "type": "small_lake", "name": "Xi Hu", "knownAs": "Lac de l'Ouest", "aliases": ["Xihu", "West Lake", "Lac de l'Ouest"], "hanzi": "西湖", "pinyinTones": "Xī Hú", "parentId": "CN-ZJ", "areaKm2": 6.5, "elevation": 10, "sourceId": "manual-lakes" },
-    { "id": "LK-DIANCHI", "type": "small_lake", "name": "Dian Chi", "aliases": ["Dianchi", "Lac Dian", "Kunming Hu"], "hanzi": "滇池", "pinyinTones": "Diān Chí", "parentId": "CN-YN", "areaKm2": 297.9, "elevation": 1900, "sourceId": "manual-lakes" },
-    { "id": "LK-ERHAI", "type": "small_lake", "name": "Er Hai", "aliases": ["Erhai", "Lac Erhai"], "hanzi": "洱海", "pinyinTones": "Ěr Hǎi", "parentId": "CN-YN", "areaKm2": 252.91, "elevation": 1972, "sourceId": "manual-lakes" }
+    { "id": "LK-XIHU", "type": "lake", "name": "Xi Hu", "knownAs": "Lac de l'Ouest", "aliases": ["Xihu", "West Lake", "Lac de l'Ouest"], "hanzi": "西湖", "pinyinTones": "Xī Hú", "parentId": "CN-ZJ", "areaKm2": 6.5, "elevation": 10, "sourceId": "osm-lakes" },
+    { "id": "LK-DIANCHI", "type": "lake", "name": "Dian Chi", "aliases": ["Dianchi", "Lac Dian", "Kunming Hu"], "hanzi": "滇池", "pinyinTones": "Diān Chí", "parentId": "CN-YN", "areaKm2": 297.9, "elevation": 1900, "sourceId": "osm-lakes" },
+    { "id": "LK-ERHAI", "type": "lake", "name": "Er Hai", "aliases": ["Erhai", "Lac Erhai"], "hanzi": "洱海", "pinyinTones": "Ěr Hǎi", "parentId": "CN-YN", "areaKm2": 252.91, "elevation": 1972, "sourceId": "osm-lakes" }
   ]
 }

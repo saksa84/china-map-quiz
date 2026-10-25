@@ -26,6 +26,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from build_osm_geometry import OSM_IDS
 from build_map_geometry import (
     GRID_KM, LAT0, LAT1, LAT2, LON0, SOURCE_ID, douglas_peucker, key, label_point, point_in_rings, project,
 )
@@ -49,10 +50,6 @@ MANUAL_POINTS = {
     "PK-TAISHAN": (117.10, 36.25),
     "PK-HUANGSHAN": (118.16, 30.13),
     "PK-EMEI": (103.33, 29.52),
-    # Petits lacs, d'après Wikidata (P625) : Xi Hu Q502371, Dian Chi Q83640, Er Hai Q83628.
-    "LK-XIHU": (120.141, 30.238),
-    "LK-DIANCHI": (102.671, 24.801),
-    "LK-ERHAI": (100.188, 25.763),
 }
 
 # Villes : nom chinois dans Natural Earth (champ NAME_ZH).
@@ -264,7 +261,9 @@ def line_label(runs):
 def main() -> int:
     geometry = load(ASSETS / "map.geometry.json")
     china = China(geometry)
-    meta = {e["id"]: e for name in ("cities", "rivers", "mountains", "lakes") for e in load(ASSETS / f"{name}.json")["entities"]}
+    # Les lieux tirés d'OpenStreetMap (petits lacs) sont construits par build_osm_geometry.py.
+    meta = {e["id"]: e for name in ("cities", "rivers", "mountains", "lakes") for e in load(ASSETS / f"{name}.json")["entities"]
+            if e["id"] not in OSM_IDS}
     errors = []
     out = []
 
@@ -338,12 +337,6 @@ def main() -> int:
         found = china.province_of(x, y)
         if found != meta[lid]["parentId"] and china.distance_to_border(x, y) > LAKE_PROVINCE_SLACK:
             errors.append(f"{lid} : centre dans {found}, attendu {meta[lid]['parentId']}")
-    for lid in [i for i in meta if i.startswith("LK-") and i not in LAKES]:
-        point = next((g for i, k, g in out if i == lid), None)
-        if point is None:
-            errors.append(f"{lid} : ni contour ni point")
-        elif china.province_of(*point) != meta[lid]["parentId"]:
-            errors.append(f"{lid} : dans {china.province_of(*point)}, attendu {meta[lid]['parentId']}")
 
     # --- Contrôles ----------------------------------------------------------------------
     ids = [i for i, _, _ in out]

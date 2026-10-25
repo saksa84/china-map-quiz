@@ -80,7 +80,7 @@
     <string name="about_title">À propos</string>
     <string name="about_text">China Map Quiz, version %1$s. Application personnelle d\'apprentissage de la géographie chinoise : hors ligne, sans compte, sans publicité ni collecte de données.</string>
     <string name="about_credits">Réalisée entièrement avec une IA générative, Claude Code (Anthropic) : code, données, fiches et tests. Les fiches « En savoir plus » peuvent contenir des erreurs. Inspirée des applications de quiz géographique de Qbis Studio (World Map Quiz) : projet indépendant, sans aucun élément copié, ni affilié à Qbis Studio.</string>
-    <string name="about_sources">Cartes : Made with Natural Earth (domaine public), version 5.1.2. Codes des provinces : ISO 3166-2:CN. Territoires disputés présentés de façon neutre (« revendiqué par »).</string>
+    <string name="about_sources">Cartes : Made with Natural Earth (domaine public), version 5.1.2. Contours des parcs : © les contributeurs d\'OpenStreetMap, licence ODbL (openstreetmap.org/copyright). Codes des provinces : ISO 3166-2:CN. Territoires disputés présentés de façon neutre (« revendiqué par »).</string>
 
     <string name="quit_title">Quitter la partie ?</string>
     <string name="quit_message">La partie en cours sera perdue.</string>
@@ -113,6 +113,14 @@
     <string name="type_peak">Sommet</string>
     <string name="type_lake">Lac</string>
     <string name="type_reservoir">Lac de barrage</string>
+    <string name="type_national_park">Parc national</string>
+    <string name="type_natural_site">Site naturel</string>
+    <string name="designation_national_park">Parc national</string>
+    <string name="designation_world_heritage">Patrimoine mondial de l\'UNESCO</string>
+    <string name="designation_global_geopark">Géoparc mondial UNESCO</string>
+    <string name="designation_nature_reserve">Réserve naturelle nationale</string>
+    <string name="designation_scenic_area">Zone panoramique nationale</string>
+    <string name="designation_with_year">%1$s (%2$d)</string>
     <string name="compact_area">%1$s km²</string>
     <string name="compact_elevation">%1$s m d\'altitude</string>
     <string name="info_province">Province : %1$s</string>
@@ -153,10 +161,13 @@
     <string name="category_mountains_sub">Chaînes et sommets</string>
     <string name="category_lakes">Lacs</string>
     <string name="category_lakes_sub">Grands lacs et réservoirs</string>
+    <string name="category_parks">Parcs</string>
+    <string name="category_parks_sub">Parcs nationaux et sites naturels</string>
     <string name="learn_title_category">Apprendre : %1$s</string>
     <string name="learn_hint_cities">Touchez une ville pour afficher sa fiche.\nPincez pour zoomer : les villes proches se séparent.</string>
     <string name="learn_hint_rivers">Touchez un cours d\'eau pour afficher sa fiche.\nLes grands fleuves sont plus épais que les affluents.</string>
-    <string name="learn_hint_lakes">Touchez un lac pour afficher sa fiche.\nLes plus petits (Xi Hu, Dian Chi, Er Hai) sont des points.</string>
+    <string name="learn_hint_parks">Touchez un parc pour afficher sa fiche et son statut.\nLes petits sites apparaissent comme des points.</string>
+    <string name="learn_hint_lakes">Touchez un lac pour afficher sa fiche.\nVus de loin, les lacs sont des points : zoomez pour voir leur forme.</string>
     <string name="learn_hint_mountains">Touchez une chaîne (zone) ou un sommet (point) pour afficher sa fiche.</string>
     <string name="type_region">Grande région</string>
     <string name="info_members">Provinces : %1$s</string>

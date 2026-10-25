@@ -15,7 +15,8 @@ Application Android personnelle pour apprendre la géographie de la Chine sur un
 - 40 grandes villes (plus de 3 millions d'habitants au recensement de 2020, plus Hong Kong et Taipei).
 - 27 cours d'eau (12 grands fleuves, 15 affluents), avec leur longueur.
 - 17 chaînes de montagnes et 20 sommets, avec leur altitude.
-- 24 lacs (version 2, en cours) : 21 grands lacs et lacs de barrage dessinés en surface, et 3 petits lacs célèbres (Xi Hu, Dian Chi, Er Hai) par un point, avec leur superficie et leur altitude.
+- 16 parcs et sites naturels (version 2, en cours) : les 5 parcs nationaux officiels et 11 sites célèbres (Jiuzhaigou, Zhangjiajie, Guilin, Forêt de pierre…), avec leur statut exact (parc national, patrimoine mondial, géoparc).
+- 24 lacs (version 2, en cours) : dont 2 lacs de barrage, tous dessinés en surface (Natural Earth, et OpenStreetMap pour Xi Hu, Dian Chi et Er Hai), avec leur superficie et leur altitude.
 
 **Modes de jeu**, pour chaque catégorie :
 - **Apprendre** : explorer la carte, toucher un lieu pour afficher sa fiche, avec une section « En savoir plus ».
@@ -42,7 +43,7 @@ Conséquences à connaître :
 - Les commits portent la mention `Co-Authored-By: Claude`.
 - Les **fiches « En savoir plus »** ont été rédigées par Claude à partir de ses connaissances générales, sans source consultée pour chaque phrase. Elles ont été relues, mais peuvent contenir des erreurs. L'application les signale par la mention « à vérifier ».
 - Les **données vérifiables** (frontières, coordonnées, populations, longueurs des fleuves) viennent de sources citées dans [docs/data-sources.md](docs/data-sources.md), et non de la mémoire de l'IA.
-- Les tests automatisés (147, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
+- Les tests automatisés (151, décrits plus bas) et les essais sur téléphone servent de garde-fous, mais ne garantissent pas l'absence d'erreur.
 
 ## Inspiration et crédits
 
@@ -55,6 +56,7 @@ China Map Quiz est un projet **indépendant et personnel** :
 
 **Données.**
 - Cartes : *Made with [Natural Earth](https://www.naturalearthdata.com/)*, version 5.1.2 (domaine public).
+- Contours des parcs et de trois petits lacs : © les contributeurs d'[OpenStreetMap](https://www.openstreetmap.org/copyright), sous licence [ODbL](https://opendatacommons.org/licenses/odbl/). Le fichier `app/src/main/assets/geo/osm.geometry.json` qui en est tiré reste sous ODbL.
 - Codes des provinces : ISO 3166-2:CN.
 - Populations : recensement chinois de 2020.
 - Longueurs des fleuves : Wikipédia (révisions citées).
@@ -82,7 +84,7 @@ Prérequis : Android Studio 2026.2 ou plus récent (il fournit le JDK utilisé p
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-.\gradlew.bat testDebugUnitTest   # 147 tests unitaires, sur le PC, sans émulateur
+.\gradlew.bat testDebugUnitTest   # 151 tests unitaires, sur le PC, sans émulateur
 .\gradlew.bat assembleDebug       # APK debug
 ```
 
@@ -90,20 +92,20 @@ APK généré : `app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Tests unitaires
 
-Les **147 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
+Les **151 tests** s'exécutent sur le PC en quelques secondes, sans émulateur. Les règles du jeu, la géométrie de la carte et la validation des données sont écrites en Kotlin pur, sans dépendre d'Android, justement pour pouvoir être testées ainsi. Une partie des tests vérifie les **vraies données livrées** dans l'application, et pas seulement des exemples fabriqués.
 
 | Fichier | Tests | Ce qui est vérifié |
 |---|---:|---|
-| `data/GeoCatalogLoaderTest` | 44 | Lecture et validation des fichiers de données : identifiants uniques, hiérarchie (une province sous la Chine, un affluent sous un fleuve…), grandes régions, noms en alphabet latin, territoires disputés, longueurs, superficies des lacs, noms connus, pinyin avec tons. |
+| `data/GeoCatalogLoaderTest` | 45 | Lecture et validation des fichiers de données : identifiants uniques, hiérarchie (une province sous la Chine, un affluent sous un fleuve…), grandes régions, noms en alphabet latin, territoires disputés, longueurs, superficies des lacs, statuts des parcs, noms connus, pinyin avec tons. |
 | `data/RealAssetsTest` | 9 | Vraies données provinciales : 34 unités et leurs types, codes ISO, capitales, hanzi, découpage des grandes régions, îles Paracel neutres. |
-| `data/RealFeaturesTest` | 14 | Vraies villes, fleuves, montagnes et lacs : géométrie du bon type, villes et lacs dans leur province, fleuves sans trou, pinyin cohérent avec le nom, niveaux de jeu. |
+| `data/RealFeaturesTest` | 16 | Vraies villes, fleuves, montagnes, lacs et parcs : géométrie du bon type, villes, lacs et parcs dans leur province, les 5 parcs nationaux de 2021, fleuves sans trou, pinyin cohérent avec le nom, niveaux de jeu. |
 | `data/PlaceFactsTest` | 5 | Fiches « En savoir plus » : validation, et une fiche complète pour chacun des 138 lieux. |
 | `game/AnswerCheckerTest` | 10 | Mode Saisir : normalisation (tons, accents, casse), alias acceptés, fautes refusées, Shanxi et Shaanxi jamais confondus. |
 | `game/QuizSessionTest` | 14 | Moteur des modes Trouver et Saisir : score, une seule réponse par question, fin de partie, chronomètre (et sa pause pendant la lecture d'une fiche), erreurs à rejouer. |
 | `game/EliminateSessionTest` | 7 | Moteur du mode Éliminer : une seule chance par lieu, lieux éliminés, seuls les lieux manqués restent, fin de partie, bilan. |
 | `game/StopwatchTest` | 3 | Chronomètre : le temps de pause n'est pas compté, arrêt définitif en fin de partie. |
 | `game/QuizLevelsTest` | 6 | Niveaux Nord, Sud et Toute la Chine : couverture, tailles, équilibre, aucune question sans réponse. |
-| `map/HitTesterTest` | 13 | Détection du toucher : îles, trous, tolérance pour les petites régions, lignes, points prioritaires. |
+| `map/HitTesterTest` | 14 | Détection du toucher : îles, trous, tolérance pour les petites régions, lignes, points prioritaires, la plus petite de deux zones superposées. |
 | `map/MapViewportTest` | 5 | Zoom et déplacement : centrage, zoom sous les doigts, limites. |
 | `map/RealMapTest` | 7 | Vraie carte et vraies coordonnées GPS : Pékin dans Beijing, Macao et les Paracel touchables, la mer ne répond pas. |
 | `progress/ProgressTest` | 9 | Records, erreurs fréquentes, taux de réussite, sauvegarde. |

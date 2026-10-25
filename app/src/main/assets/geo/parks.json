@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "osm-parks",
+      "name": "Contours des parcs : OpenStreetMap (objets listés dans tools/build_osm_geometry.py), extraits le 2026-10-25 ; statuts d'après les listes de l'UNESCO (patrimoine mondial, géoparcs mondiaux) et l'annonce des 5 parcs nationaux (2021)",
+      "license": "ODbL 1.0 — © les contributeurs d'OpenStreetMap",
+      "url": "https://www.openstreetmap.org/copyright"
+    },
+    {
+      "id": "manual-parks",
+      "name": "Parcs nationaux sans contour dans OpenStreetMap : point approximatif au centre du parc ; statut d'après l'annonce des 5 parcs nationaux (2021)",
+      "license": "Faits non protégeables"
+    }
+  ],
+  "entities": [
+    { "id": "PA-SANJIANGYUAN", "type": "park", "name": "Sanjiangyuan", "aliases": ["San Jiang Yuan", "Sources des trois fleuves"], "hanzi": "三江源", "pinyinTones": "Sānjiāngyuán", "parentId": "CN-QH", "designations": [{ "type": "national_park", "year": 2021 }], "sourceId": "osm-parks" },
+    { "id": "PA-PANDA", "type": "park", "name": "Daxiongmao", "knownAs": "Panda géant", "aliases": ["Panda geant", "Giant Panda", "Panda"], "hanzi": "大熊猫", "pinyinTones": "Dàxióngmāo", "parentId": "CN-SC", "designations": [{ "type": "national_park", "year": 2021 }], "sourceId": "osm-parks" },
+    { "id": "PA-HUBAO", "type": "park", "name": "Dongbei Hubao", "knownAs": "Tigre et léopard", "aliases": ["Tigre et leopard", "Hubao", "Tiger and Leopard"], "hanzi": "东北虎豹", "pinyinTones": "Dōngběi Hǔbào", "parentId": "CN-JL", "designations": [{ "type": "national_park", "year": 2021 }], "sourceId": "manual-parks" },
+    { "id": "PA-HAINAN", "type": "park", "name": "Hainan Redai Yulin", "knownAs": "Forêt tropicale de Hainan", "aliases": ["Foret tropicale de Hainan", "Hainan Rainforest", "Redai Yulin"], "hanzi": "海南热带雨林", "pinyinTones": "Hǎinán Rèdài Yǔlín", "parentId": "CN-HI", "designations": [{ "type": "national_park", "year": 2021 }], "sourceId": "manual-parks" },
+    { "id": "PA-WUYISHAN", "type": "park", "name": "Wuyishan", "knownAs": "Mont Wuyi", "aliases": ["Wuyi", "Mount Wuyi"], "hanzi": "武夷山", "pinyinTones": "Wǔyíshān", "parentId": "CN-FJ", "designations": [{ "type": "national_park", "year": 2021 }, { "type": "world_heritage", "year": 1999 }], "sourceId": "osm-parks" },
+    { "id": "PA-JIUZHAIGOU", "type": "park", "name": "Jiuzhaigou", "aliases": ["Jiuzhai", "Vallee de Jiuzhai"], "hanzi": "九寨沟", "pinyinTones": "Jiǔzhàigōu", "parentId": "CN-SC", "designations": [{ "type": "world_heritage", "year": 1992 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-HUANGLONG", "type": "park", "name": "Huanglong", "aliases": ["Huang Long"], "hanzi": "黄龙", "pinyinTones": "Huánglóng", "parentId": "CN-SC", "designations": [{ "type": "world_heritage", "year": 1992 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-WULINGYUAN", "type": "park", "name": "Wulingyuan", "knownAs": "Zhangjiajie", "aliases": ["Zhang Jia Jie"], "hanzi": "武陵源", "pinyinTones": "Wǔlíngyuán", "parentId": "CN-HN", "designations": [{ "type": "world_heritage", "year": 1992 }, { "type": "global_geopark", "year": 2004 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-LIJIANG", "type": "park", "name": "Li Jiang", "knownAs": "Guilin", "aliases": ["Lijiang", "Riviere Li", "Li River", "Guilin Lijiang"], "hanzi": "漓江", "pinyinTones": "Lí Jiāng", "parentId": "CN-GX", "designations": [{ "type": "world_heritage", "year": 2014 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-SHILIN", "type": "park", "name": "Shilin", "knownAs": "Forêt de pierre", "aliases": ["Foret de pierre", "Stone Forest", "Shi Lin"], "hanzi": "石林", "pinyinTones": "Shílín", "parentId": "CN-YN", "designations": [{ "type": "world_heritage", "year": 2007 }, { "type": "global_geopark", "year": 2004 }], "sourceId": "osm-parks" },
+    { "id": "PA-FANJINGSHAN", "type": "park", "name": "Fanjing Shan", "aliases": ["Fanjingshan", "Fanjing"], "hanzi": "梵净山", "pinyinTones": "Fànjìng Shān", "parentId": "CN-GZ", "designations": [{ "type": "world_heritage", "year": 2018 }, { "type": "national_nature_reserve" }], "sourceId": "osm-parks" },
+    { "id": "PA-KANAS", "type": "park", "name": "Kanasi", "knownAs": "Kanas", "aliases": ["Kanas Hu", "Kanasi Hu"], "hanzi": "喀纳斯", "pinyinTones": "Kānàsī", "parentId": "CN-XJ", "designations": [{ "type": "national_nature_reserve" }], "sourceId": "osm-parks" },
+    { "id": "PA-DANXIA", "type": "park", "name": "Danxia Shan", "aliases": ["Danxiashan", "Mont Danxia", "Danxia"], "hanzi": "丹霞山", "pinyinTones": "Dānxiá Shān", "parentId": "CN-GD", "designations": [{ "type": "world_heritage", "year": 2010 }, { "type": "global_geopark", "year": 2004 }], "sourceId": "osm-parks" },
+    { "id": "PA-LUSHAN", "type": "park", "name": "Lu Shan", "aliases": ["Lushan", "Mont Lu"], "hanzi": "庐山", "pinyinTones": "Lú Shān", "parentId": "CN-JX", "designations": [{ "type": "world_heritage", "year": 1996 }, { "type": "global_geopark", "year": 2004 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-SANQINGSHAN", "type": "park", "name": "Sanqing Shan", "aliases": ["Sanqingshan", "Mont Sanqing"], "hanzi": "三清山", "pinyinTones": "Sānqīng Shān", "parentId": "CN-JX", "designations": [{ "type": "world_heritage", "year": 2008 }, { "type": "national_scenic_area" }], "sourceId": "osm-parks" },
+    { "id": "PA-ZHANGYE", "type": "park", "name": "Zhangye Danxia", "aliases": ["Zhangye", "Rainbow Mountains", "Montagnes arc-en-ciel"], "hanzi": "张掖丹霞", "pinyinTones": "Zhāngyè Dānxiá", "parentId": "CN-GS", "designations": [{ "type": "global_geopark", "year": 2019 }], "sourceId": "osm-parks" }
+  ]
+}
